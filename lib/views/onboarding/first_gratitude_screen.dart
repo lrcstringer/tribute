@@ -9,15 +9,35 @@ class FirstGratitudeScreen extends StatefulWidget {
   State<FirstGratitudeScreen> createState() => _FirstGratitudeScreenState();
 }
 
-class _FirstGratitudeScreenState extends State<FirstGratitudeScreen> {
+class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
+    with SingleTickerProviderStateMixin {
   final _controller = TextEditingController();
   bool _hasCompleted = false;
   bool _showPulse = false;
   bool _showResult = false;
+  late final AnimationController _lightController;
+  late final Animation<double> _lightOpacity;
+  late final Animation<double> _lightRise;
+
+  @override
+  void initState() {
+    super.initState();
+    _lightController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _lightOpacity = Tween<double>(begin: 0.6, end: 0.0).animate(
+      CurvedAnimation(parent: _lightController, curve: Curves.easeIn),
+    );
+    _lightRise = Tween<double>(begin: 0.0, end: -180.0).animate(
+      CurvedAnimation(parent: _lightController, curve: Curves.easeOut),
+    );
+  }
 
   @override
   void dispose() {
     _controller.dispose();
+    _lightController.dispose();
     super.dispose();
   }
 
@@ -26,6 +46,7 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen> {
       _hasCompleted = true;
       _showPulse = true;
     });
+    _lightController.forward();
     Future.delayed(const Duration(milliseconds: 400), () {
       if (mounted) setState(() => _showResult = true);
     });
@@ -136,15 +157,24 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen> {
     return Column(children: [
       Stack(alignment: Alignment.center, children: [
         if (_showPulse)
-          Container(
-            width: 200, height: 200,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: RadialGradient(colors: [
-                TributeColor.golden.withValues(alpha: 0.2),
-                TributeColor.golden.withValues(alpha: 0.05),
-                Colors.transparent,
-              ]),
+          AnimatedBuilder(
+            animation: _lightController,
+            builder: (context, child) => Transform.translate(
+              offset: Offset(0, _lightRise.value),
+              child: Opacity(
+                opacity: _lightOpacity.value,
+                child: Container(
+                  width: 160, height: 160,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(colors: [
+                      TributeColor.golden.withValues(alpha: 0.35),
+                      TributeColor.golden.withValues(alpha: 0.08),
+                      Colors.transparent,
+                    ]),
+                  ),
+                ),
+              ),
             ),
           ),
         AnimatedOpacity(

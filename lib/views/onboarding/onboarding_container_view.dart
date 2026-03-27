@@ -198,6 +198,9 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
           habitName: _customHabitName,
           habitCategory: _selectedCategory ?? HabitCategory.gratitude,
           purposeStatement: _customPurpose,
+          trackingType: _customTrackingType,
+          dailyTarget: _customDailyTarget,
+          targetUnit: _customTargetUnit,
           onComplete: widget.onComplete,
         );
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../models/habit.dart';
 import '../../theme/app_theme.dart';
 
@@ -7,6 +8,9 @@ class DedicationCeremonyScreen extends StatefulWidget {
   final String habitName;
   final HabitCategory habitCategory;
   final String purposeStatement;
+  final HabitTrackingType trackingType;
+  final double dailyTarget;
+  final String targetUnit;
   final VoidCallback onComplete;
 
   const DedicationCeremonyScreen({
@@ -15,6 +19,9 @@ class DedicationCeremonyScreen extends StatefulWidget {
     required this.habitName,
     required this.habitCategory,
     this.purposeStatement = '',
+    this.trackingType = HabitTrackingType.checkIn,
+    this.dailyTarget = 1,
+    this.targetUnit = '',
     required this.onComplete,
   });
 
@@ -49,7 +56,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
     Future.delayed(const Duration(milliseconds: 700), () {
       if (mounted) setState(() => _showGratitudeTile = true);
     });
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 900), () {
       if (mounted) setState(() => _showHabitTile = true);
     });
     Future.delayed(const Duration(milliseconds: 1500), () {
@@ -64,6 +71,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
   }
 
   void _performDedication() {
+    HapticFeedback.mediumImpact();
     setState(() {
       _tilesGlow = true;
       _glowOpacity = 0.25;
@@ -217,7 +225,13 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         isShowing: _showHabitTile,
         isGlowing: _tilesGlow,
       ),
-      const SizedBox(height: 24),
+      const SizedBox(height: 16),
+      AnimatedOpacity(
+        opacity: _showHabitTile ? 1.0 : 0.0,
+        duration: const Duration(milliseconds: 500),
+        child: _microMilestoneSection(),
+      ),
+      const SizedBox(height: 16),
       AnimatedOpacity(
         opacity: _showVerse ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 600),
@@ -331,6 +345,63 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         ]),
       ),
     ]);
+  }
+
+  Widget _microMilestoneSection() {
+    final weekday = DateTime.now().weekday;
+    final daysLeft = weekday == 7 ? 6 : (6 - weekday + 1);
+    if (daysLeft <= 0) return const SizedBox.shrink();
+
+    final gratitudeLine = '$daysLeft day${daysLeft == 1 ? '' : 's'} of gratitude';
+
+    final String customLine;
+    switch (widget.trackingType) {
+      case HabitTrackingType.timed:
+        final mins = (widget.dailyTarget * daysLeft).toInt();
+        final unit = widget.targetUnit.isNotEmpty ? widget.targetUnit : 'minutes';
+        customLine = '$mins $unit of ${widget.habitName.toLowerCase()}';
+      case HabitTrackingType.count:
+        final count = (widget.dailyTarget * daysLeft).toInt();
+        final unit = widget.targetUnit.isNotEmpty ? widget.targetUnit : 'completed';
+        customLine = '$count $unit of ${widget.habitName.toLowerCase()}';
+      case HabitTrackingType.checkIn:
+        customLine = '$daysLeft day${daysLeft == 1 ? '' : 's'} of ${widget.habitName.toLowerCase()}';
+      case HabitTrackingType.abstain:
+        customLine = '$daysLeft clean day${daysLeft == 1 ? '' : 's'}';
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: TributeColor.golden.withValues(alpha: 0.04),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.12), width: 0.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('If you hit your targets this week:',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+          const SizedBox(height: 10),
+          _milestoneLine(gratitudeLine),
+          if (widget.habitName.isNotEmpty) _milestoneLine(customLine),
+        ],
+      ),
+    );
+  }
+
+  Widget _milestoneLine(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Icon(Icons.auto_awesome, size: 11, color: TributeColor.golden),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(text,
+              style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.6), height: 1.4)),
+        ),
+      ]),
+    );
   }
 
   Widget _habitTile({

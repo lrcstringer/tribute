@@ -104,9 +104,9 @@ class EngagementService extends ChangeNotifier {
       case 7:
         message = null;
       case 8:
-        message = const EngagementMessage(icon: 'person.2.fill', title: "You're not alone", body: 'Having even one person praying with you makes a real difference. Prayer Circles are coming soon.', accent: EngagementAccent.golden);
+        message = const EngagementMessage(icon: 'person.2.fill', title: "You're not alone", body: 'Having even one person praying with you makes a real difference. Start or join a Prayer Circle today.', accent: EngagementAccent.golden);
       case 9:
-        message = const EngagementMessage(icon: 'person.2.fill', title: 'Community matters', body: "Accountability isn't about pressure — it's about knowing someone's in your corner. Stay tuned for Prayer Circles.", accent: EngagementAccent.golden);
+        message = const EngagementMessage(icon: 'person.2.fill', title: 'Community matters', body: "Accountability isn't about pressure — it's about knowing someone's in your corner. Start a Prayer Circle and invite a few people.", accent: EngagementAccent.golden);
       case 10:
         message = EngagementMessage(icon: 'star.fill', title: '10 days in', body: '10 days of gratitude. $gratitudeDays times you chose to thank God. This is when most people quit other apps. Not you.', accent: EngagementAccent.golden);
       default:

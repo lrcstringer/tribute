@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
+import '../shared/golden_pulse_view.dart';
 
 class ReframeScreen extends StatefulWidget {
   final VoidCallback onNext;
@@ -13,6 +14,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
   bool _showLeft = false;
   bool _showRight = false;
   bool _showPoints = false;
+  bool _showPulse = false;
 
   @override
   void initState() {
@@ -28,9 +30,17 @@ class _ReframeScreenState extends State<ReframeScreen> {
     });
   }
 
+  void _onContinue() {
+    setState(() => _showPulse = true);
+    Future.delayed(const Duration(milliseconds: 1200), () {
+      if (mounted) widget.onNext();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Stack(children: [
+      Column(children: [
       Expanded(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
@@ -165,7 +175,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
         child: SizedBox(
           width: double.infinity,
           child: ElevatedButton.icon(
-            onPressed: widget.onNext,
+            onPressed: _showPulse ? null : _onContinue,
             icon: const Icon(Icons.arrow_forward_rounded, size: 16),
             label: const Text("Got it. Let\u2019s set up my habits",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
@@ -176,6 +186,13 @@ class _ReframeScreenState extends State<ReframeScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
           ),
+        ),
+      ),
+    ]),
+    if (_showPulse)
+      const Positioned.fill(
+        child: IgnorePointer(
+          child: Center(child: GoldenPulseView()),
         ),
       ),
     ]);

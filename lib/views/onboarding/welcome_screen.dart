@@ -87,7 +87,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       child: AnimatedScale(
                         scale: _showTitle ? 1.0 : 0.8,
                         duration: const Duration(milliseconds: 900),
-                        curve: Curves.elasticOut,
+                        curve: Curves.easeOut,
                         child: Stack(alignment: Alignment.center, children: [
                           Container(
                             width: 280,

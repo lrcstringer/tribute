@@ -12,7 +12,7 @@ class CoreMechanicsScreen extends StatefulWidget {
 class _CoreMechanicsScreenState extends State<CoreMechanicsScreen> {
   final _pageController = PageController();
   int _currentPanel = 0;
-  double _counterValue = 0;
+  int _counterKey = 0;
 
   @override
   void dispose() {
@@ -21,13 +21,10 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen> {
   }
 
   void _onPageChanged(int index) {
-    setState(() => _currentPanel = index);
-    if (index == 1) {
-      setState(() => _counterValue = 0);
-      Future.delayed(const Duration(milliseconds: 100), () {
-        if (mounted) setState(() => _counterValue = 247);
-      });
-    }
+    setState(() {
+      _currentPanel = index;
+      if (index == 1) _counterKey++;
+    });
   }
 
   @override
@@ -168,12 +165,13 @@ class _CoreMechanicsScreenState extends State<CoreMechanicsScreen> {
         border: Border.all(color: TributeColor.golden.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Column(children: [
-        AnimatedSwitcher(
-          duration: const Duration(milliseconds: 2000),
-          transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
-          child: Text(
-            '${_counterValue.toInt()}',
-            key: ValueKey(_counterValue.toInt()),
+        TweenAnimationBuilder<int>(
+          key: ValueKey(_counterKey),
+          tween: IntTween(begin: 0, end: 247),
+          duration: const Duration(milliseconds: 1800),
+          curve: Curves.easeOut,
+          builder: (context, value, _) => Text(
+            '$value',
             style: const TextStyle(
               fontSize: 48, fontWeight: FontWeight.w700, color: TributeColor.golden,
             ),
