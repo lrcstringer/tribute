@@ -35,8 +35,10 @@ class _TributePaywallViewState extends State<TributePaywallView> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         setState(() {});
+        // Capture Navigator before the async gap to satisfy use_build_context_synchronously.
+        final nav = Navigator.of(context);
         Future.delayed(const Duration(milliseconds: 1200), () {
-          if (mounted) Navigator.pop(context);
+          if (mounted) nav.pop();
         });
       });
     }

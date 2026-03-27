@@ -69,8 +69,10 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
       } else {
         final dedicated = await wcm.weekDedicatedDate;
         if (!mounted) return;
-        if (dedicated != null) setState(() => _showAutoCarryBanner = true);
-        if (mounted) setState(() => _showingDedication = true);
+        setState(() {
+          if (dedicated != null) _showAutoCarryBanner = true;
+          _showingDedication = true;
+        });
       }
     }
   }

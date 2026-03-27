@@ -158,6 +158,9 @@ class WeekCycleManager {
   }
 
   String? microMilestonePreview(Habit habit) {
+    // Guard against zero dailyTarget to prevent division by zero in projection calculations.
+    if (habit.dailyTarget <= 0) return null;
+
     final activeDaysRemaining = currentWeekDates.where((d) => d.isAfter(DateTime.now()) && habit.isActive(d)).length;
 
     switch (habit.trackingType) {

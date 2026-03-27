@@ -70,8 +70,9 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       final now = DateTime.now();
       final todayStart = DateTime(now.year, now.month, now.day);
       final selStart = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day);
-      // Advance _selectedDate by one day if the day rolled over while backgrounded.
-      if (selStart == todayStart.subtract(const Duration(days: 1))) {
+      // Advance _selectedDate to today if the day rolled over while backgrounded.
+      // Handles any gap (1 day, multiple days) so the user is never stuck on a past date.
+      if (selStart.isBefore(todayStart)) {
         setState(() => _selectedDate = now);
       }
     }

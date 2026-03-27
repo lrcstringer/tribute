@@ -84,11 +84,16 @@ class DatabaseService {
     };
 
     // Load only the last 400 days for in-memory use (covers 52-week heatmap + weekly display).
+    // Use date-only format (yyyy-MM-dd) so SQLite string comparison works correctly against
+    // the date column, which also stores date-only strings. A full ISO timestamp would sort
+    // as less than a date-only string for the same day (e.g. '2024-01-01T12:00' > '2024-01-01').
     final cutoff = DateTime.now().subtract(const Duration(days: 400));
+    final cutoffDate =
+        '${cutoff.year.toString().padLeft(4, '0')}-${cutoff.month.toString().padLeft(2, '0')}-${cutoff.day.toString().padLeft(2, '0')}';
     final entryRows = await db.query(
       'habit_entries',
       where: 'date >= ?',
-      whereArgs: [cutoff.toIso8601String()],
+      whereArgs: [cutoffDate],
     );
 
     final entriesByHabitId = <String, List<HabitEntry>>{};

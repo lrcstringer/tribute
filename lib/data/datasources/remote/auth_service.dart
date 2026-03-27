@@ -79,7 +79,8 @@ class AuthService extends ChangeNotifier {
       );
 
       final userCredential = await FirebaseAuth.instance.signInWithCredential(oAuthCredential);
-      final user = userCredential.user!;
+      final user = userCredential.user;
+      if (user == null) throw StateError('Apple sign-in completed but Firebase returned a null user');
 
       // Apple only provides name on the very first sign-in
       String? name;
