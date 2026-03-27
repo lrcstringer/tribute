@@ -1,0 +1,208 @@
+import 'package:flutter/material.dart';
+import '../../services/milestone_service.dart';
+import '../../theme/app_theme.dart';
+
+class MilestoneCelebrationView extends StatefulWidget {
+  final Milestone milestone;
+  final VoidCallback onDismiss;
+
+  const MilestoneCelebrationView({
+    super.key,
+    required this.milestone,
+    required this.onDismiss,
+  });
+
+  @override
+  State<MilestoneCelebrationView> createState() => _MilestoneCelebrationViewState();
+}
+
+class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _burstScale;
+  late final Animation<double> _burstOpacity;
+  late final Animation<double> _contentScale;
+  late final Animation<double> _contentOpacity;
+  bool _showVerse = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600));
+
+    _burstScale = Tween(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.4, curve: Curves.easeOut)),
+    );
+    _burstOpacity = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 25),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.3), weight: 75),
+    ]).animate(CurvedAnimation(parent: _controller, curve: const Interval(0.0, 1.0)));
+
+    _contentScale = Tween(begin: 0.9, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.1, 0.45, curve: Curves.easeOut)),
+    );
+    _contentOpacity = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.1, 0.45)),
+    );
+
+    _controller.forward();
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) setState(() => _showVerse = true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _dismiss() async {
+    await _controller.reverse(from: 0.3);
+    widget.onDismiss();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: GestureDetector(
+        onTap: _dismiss,
+        child: Container(
+          color: Colors.black.withValues(alpha: 0.6),
+          child: Center(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, _) => Stack(
+                alignment: Alignment.center,
+                children: [
+                  Transform.scale(
+                    scale: _burstScale.value,
+                    child: Opacity(
+                      opacity: _burstOpacity.value,
+                      child: Container(
+                        width: 360,
+                        height: 360,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: TributeColor.golden.withValues(alpha: 0.08),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: _burstScale.value * 0.8,
+                    child: Opacity(
+                      opacity: _burstOpacity.value * 0.5,
+                      child: Container(
+                        width: 260,
+                        height: 260,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: TributeColor.golden.withValues(alpha: 0.15),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Transform.scale(
+                    scale: _contentScale.value,
+                    child: Opacity(
+                      opacity: _contentOpacity.value,
+                      child: _content(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _content() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.star_rounded, color: TributeColor.golden, size: 44),
+          const SizedBox(height: 12),
+          Text(
+            'MILESTONE REACHED',
+            style: TextStyle(
+              color: TributeColor.softGold.withValues(alpha: 0.7),
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            widget.milestone.message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: TributeColor.warmWhite,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              height: 1.4,
+            ),
+          ),
+          if (_showVerse && widget.milestone.verse != null) ...[
+            const SizedBox(height: 16),
+            AnimatedOpacity(
+              opacity: _showVerse ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 400),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  children: [
+                    Text(
+                      '\u201C${widget.milestone.verse!.text}\u201D',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: TributeColor.softGold.withValues(alpha: 0.5),
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      widget.milestone.verse!.reference,
+                      style: TextStyle(
+                        color: TributeColor.golden.withValues(alpha: 0.4),
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: 24),
+          GestureDetector(
+            onTap: _dismiss,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+              decoration: BoxDecoration(
+                color: TributeColor.golden,
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: const Text(
+                'Continue',
+                style: TextStyle(
+                  color: TributeColor.charcoal,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

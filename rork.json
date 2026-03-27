@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "Tribute",
+      "path": "ios",
+      "framework": "swift"
+    }
+  ]
+}

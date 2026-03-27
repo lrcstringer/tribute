@@ -1,0 +1,98 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper functions ──────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isCircleMember(circleId) {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/circles/$(circleId)/members/$(request.auth.uid));
+    }
+
+    function isCircleAdmin(circleId) {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/circles/$(circleId)/members/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ─── users ────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // ─── inviteCodes ──────────────────────────────────────────────────────
+    // Public read for the join flow. All writes go through Admin SDK.
+    match /inviteCodes/{code} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ─── circles ──────────────────────────────────────────────────────────
+    match /circles/{circleId} {
+      allow read: if isCircleMember(circleId);
+      allow create: if isSignedIn();
+      allow update: if isCircleAdmin(circleId);
+      allow delete: if false;
+
+      // members subcollection
+      match /members/{userId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if false; // Admin SDK only
+      }
+
+      // gratitudes subcollection
+      match /gratitudes/{gratitudeId} {
+        allow read: if isCircleMember(circleId);
+        // Owner can only flip deleted=true, nothing else
+        allow update: if isCircleMember(circleId) &&
+                         resource.data.userId == request.auth.uid &&
+                         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deleted']) &&
+                         request.resource.data.deleted == true;
+        allow create, delete: if false;
+      }
+
+      // heatmapEntries subcollection — owner writes, any member reads
+      match /heatmapEntries/{userId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if isOwner(userId) && isCircleMember(circleId);
+      }
+
+      // sosRequests subcollection — backend writes only
+      match /sosRequests/{sosId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if false;
+      }
+
+      // milestones — backend Admin SDK writes only
+      match /milestones/{milestoneId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if false;
+      }
+
+      // meta/totals aggregate — backend writes only
+      match /meta/{docId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if false;
+      }
+
+      // userSeenGratitude — owner read/write
+      match /userSeenGratitude/{userId} {
+        allow read, write: if isOwner(userId) && isCircleMember(circleId);
+      }
+
+      // sosContacts — owner write, members read
+      match /sosContacts/{userId} {
+        allow read: if isCircleMember(circleId);
+        allow write: if isOwner(userId) && isCircleMember(circleId);
+      }
+    }
+  }
+}

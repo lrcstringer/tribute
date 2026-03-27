@@ -1,0 +1,33 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.g.dart
+*.freezed.dart
+
+# Firebase config files (contain secrets — add manually per device)
+google-services.json
+GoogleService-Info.plist
+lib/firebase_options.dart
+
+# Cloud Functions
+functions/node_modules/
+functions/lib/
+
+# Environment
+.env
+*.local
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+ui-debug.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# macOS
+.DS_Store
