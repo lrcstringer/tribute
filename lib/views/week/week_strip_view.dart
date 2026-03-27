@@ -119,7 +119,9 @@ class _DayTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _tileColor();
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       width: 34,
       height: 34,
       decoration: BoxDecoration(

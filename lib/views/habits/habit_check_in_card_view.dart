@@ -169,6 +169,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           Positioned.fill(
             child: MilestoneCelebrationView(
               milestone: _celebrationMilestone!,
+              trackingType: _habit.habitTrackingType,
               onDismiss: () => setState(() => _celebrationMilestone = null),
             ),
           ),

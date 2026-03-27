@@ -21,11 +21,13 @@ import '../week/week_strip_view.dart';
 class TodayView extends StatefulWidget {
   final WeekCycleManager weekCycleManager;
   final bool showAutoCarryBanner;
+  final VoidCallback? onDismissAutoCarry;
 
   const TodayView({
     super.key,
     required this.weekCycleManager,
     required this.showAutoCarryBanner,
+    this.onDismissAutoCarry,
   });
 
   @override
@@ -191,28 +193,35 @@ class _TodayViewState extends State<TodayView> {
   }
 
   Widget _autoCarryBanner() {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: TributeColor.golden.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle_outline, color: TributeColor.golden, size: 16),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              'New week, same habits. You\'re already on Day ${DateTime.now().weekday % 7 + 1}. Let\'s keep going.',
-              style: TextStyle(
-                color: TributeColor.softGold.withValues(alpha: 0.85),
-                fontSize: 12,
+    return GestureDetector(
+      onTap: widget.onDismissAutoCarry,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        padding: const EdgeInsets.fromLTRB(14, 10, 6, 10),
+        decoration: BoxDecoration(
+          color: TributeColor.golden.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.check_circle_outline, color: TributeColor.golden, size: 16),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'New week, same habits. You\'re already on Day ${DateTime.now().weekday % 7 + 1}. Let\'s keep going.',
+                style: TextStyle(
+                  color: TributeColor.softGold.withValues(alpha: 0.85),
+                  fontSize: 12,
+                ),
               ),
             ),
-          ),
-        ],
+            GestureDetector(
+              onTap: widget.onDismissAutoCarry,
+              child: Icon(Icons.close, size: 14, color: TributeColor.softGold.withValues(alpha: 0.4)),
+            ),
+          ],
+        ),
       ),
     );
   }

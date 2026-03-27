@@ -72,7 +72,9 @@ class HeatmapView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: tileSpacing / 2),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: Container(
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
                       decoration: BoxDecoration(
                         color: _tileFill(day, accentColor),
                         borderRadius: BorderRadius.circular(cornerRadius),

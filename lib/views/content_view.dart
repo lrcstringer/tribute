@@ -100,6 +100,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
               TodayView(
                 weekCycleManager: _weekCycleManager,
                 showAutoCarryBanner: _showAutoCarryBanner,
+                onDismissAutoCarry: () => setState(() => _showAutoCarryBanner = false),
               ),
               WeekView(weekCycleManager: _weekCycleManager),
               const JourneyView(),

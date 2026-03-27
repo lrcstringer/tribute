@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../models/habit.dart';
 import '../../services/milestone_service.dart';
 import '../../theme/app_theme.dart';
 
 class MilestoneCelebrationView extends StatefulWidget {
   final Milestone milestone;
   final VoidCallback onDismiss;
+  final HabitTrackingType? trackingType;
 
   const MilestoneCelebrationView({
     super.key,
     required this.milestone,
     required this.onDismiss,
+    this.trackingType,
   });
 
   @override
@@ -120,13 +123,53 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
     );
   }
 
+  Widget _milestoneIcon() {
+    switch (widget.trackingType) {
+      case HabitTrackingType.abstain:
+        return TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.0, end: 1.0),
+          duration: const Duration(milliseconds: 700),
+          curve: Curves.easeOut,
+          builder: (_, t, _) => ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [TributeColor.golden, TributeColor.golden, TributeColor.softGold.withValues(alpha: 0.3)],
+              stops: [0.0, t.clamp(0.0, 1.0), t.clamp(0.0, 1.0)],
+            ).createShader(bounds),
+            child: const Icon(Icons.shield_rounded, size: 48, color: Colors.white),
+          ),
+        );
+      case HabitTrackingType.count:
+        final target = widget.milestone.threshold.toInt();
+        final start = (target * 0.88).toInt();
+        return TweenAnimationBuilder<int>(
+          tween: IntTween(begin: start, end: target),
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeOut,
+          builder: (_, v, _) => Text(
+            '$v',
+            style: const TextStyle(
+              fontSize: 42,
+              fontWeight: FontWeight.w700,
+              color: TributeColor.golden,
+            ),
+          ),
+        );
+      case HabitTrackingType.timed:
+        return const Icon(Icons.timer_rounded, color: TributeColor.golden, size: 44);
+      default:
+        return const Icon(Icons.star_rounded, color: TributeColor.golden, size: 44);
+    }
+  }
+
   Widget _content() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.star_rounded, color: TributeColor.golden, size: 44),
+          _milestoneIcon(),
           const SizedBox(height: 12),
           Text(
             'MILESTONE REACHED',
