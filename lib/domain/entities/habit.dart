@@ -232,6 +232,7 @@ class Habit {
     return activeDays
         .split(',')
         .map((s) => int.tryParse(s.trim()) ?? 0)
+        .where((d) => d >= 1 && d <= 7)
         .toSet();
   }
 

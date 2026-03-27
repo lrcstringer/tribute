@@ -3,14 +3,15 @@ import 'package:flutter/foundation.dart';
 import '../../domain/entities/habit.dart';
 import '../../domain/entities/habit_entry.dart';
 import '../../domain/repositories/habit_repository.dart';
-import '../../data/datasources/remote/api_service.dart';
-import '../../data/datasources/remote/auth_service.dart';
+import '../../domain/repositories/circle_repository.dart';
 import '../../domain/services/daily_score_service.dart';
 
 class HabitProvider extends ChangeNotifier {
   final HabitRepository _repository;
+  final bool Function() _isAuthenticated;
+  final CircleRepository _circleRepository;
 
-  HabitProvider(this._repository);
+  HabitProvider(this._repository, this._isAuthenticated, this._circleRepository);
 
   List<Habit> _habits = [];
   bool _isLoading = false;
@@ -176,7 +177,7 @@ class HabitProvider extends ChangeNotifier {
   // Heatmap sync
 
   Future<void> _syncHeatmapToCircles() async {
-    if (!AuthService.shared.isAuthenticated) return;
+    if (!_isAuthenticated()) return;
     try {
       final today = DateTime.now();
       final dayStart = _dayStart(today);
@@ -195,9 +196,9 @@ class HabitProvider extends ChangeNotifier {
         };
       }).toList();
 
-      final circles = await APIService.shared.listCircles();
+      final circles = await _circleRepository.listCircles();
       for (final circle in circles) {
-        await APIService.shared.submitHeatmapData(circle.id, weekData);
+        await _circleRepository.submitHeatmapData(circle.id, weekData);
       }
     } catch (_) {
       // Fire-and-forget — never surface heatmap sync errors to the user.
@@ -239,14 +240,16 @@ class HabitProvider extends ChangeNotifier {
     _habits = [
       for (final h in _habits)
         if (h.id == habit.id)
-          _withUpdatedEntry(h, entry)
+          _withUpdatedEntry(h, entry, previous: existing)
         else
           h,
     ];
   }
 
   /// Returns a copy of [habit] with [entry] inserted or replaced in its entries list.
-  static Habit _withUpdatedEntry(Habit habit, HabitEntry entry) {
+  /// Also adjusts [allTimeCompletedCount] and [allTimeTotalValue] by the delta between
+  /// [previous] and the new [entry], keeping cached aggregates in sync after in-session check-ins.
+  static Habit _withUpdatedEntry(Habit habit, HabitEntry entry, {HabitEntry? previous}) {
     final entries = List<HabitEntry>.from(habit.entries);
     final idx = entries.indexWhere((e) => e.id == entry.id);
     if (idx >= 0) {
@@ -254,7 +257,29 @@ class HabitProvider extends ChangeNotifier {
     } else {
       entries.add(entry);
     }
-    return habit.copyWith(entries: entries);
+
+    // Update cached aggregate counts if they are present.
+    int? newAllTimeCompleted = habit.allTimeCompletedCount;
+    double? newAllTimeTotalValue = habit.allTimeTotalValue;
+
+    if (newAllTimeCompleted != null) {
+      final wasCompleted = previous?.isCompleted ?? false;
+      if (!wasCompleted && entry.isCompleted) {
+        newAllTimeCompleted += 1;
+      } else if (wasCompleted && !entry.isCompleted) {
+        newAllTimeCompleted = (newAllTimeCompleted - 1).clamp(0, newAllTimeCompleted);
+      }
+    }
+
+    if (newAllTimeTotalValue != null) {
+      newAllTimeTotalValue += entry.value - (previous?.value ?? 0.0);
+    }
+
+    return habit.copyWith(
+      entries: entries,
+      allTimeCompletedCount: newAllTimeCompleted,
+      allTimeTotalValue: newAllTimeTotalValue,
+    );
   }
 
   static DateTime _dayStart(DateTime date) =>

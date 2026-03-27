@@ -1,5 +1,6 @@
 /// Circle domain entities — pure Dart, no JSON or platform imports.
 /// All JSON parsing lives in the data layer (CircleRepositoryImpl).
+library;
 
 class Circle {
   final String id;

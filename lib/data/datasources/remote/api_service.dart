@@ -282,8 +282,8 @@ class APIService {
 
   Future<AuthResponse> ensureProfile({String? displayName, String? email}) {
     final body = <String, dynamic>{
-      if (displayName != null) 'displayName': displayName,
-      if (email != null) 'email': email,
+      'displayName': ?displayName,
+      'email': ?email,
     };
     return _postMutation<AuthResponse>(
       'auth.ensureProfile',
@@ -316,7 +316,7 @@ class APIService {
       _postMutation('sos.send', body: {'circleId': circleId, 'message': message, 'recipientIds': recipientIds}, fromJson: (j) => SOSSendResponse.fromJson(j));
 
   Future<List<SOSItem>> getRecentSOS({String? circleId, int limit = 20}) =>
-      _getQuery('sos.getRecent', input: {'limit': limit, if (circleId != null) 'circleId': circleId}, fromJson: (j) => (j as List<dynamic>).map((e) => SOSItem.fromJson(e as Map<String, dynamic>)).toList());
+      _getQuery('sos.getRecent', input: {'limit': limit, 'circleId': ?circleId}, fromJson: (j) => (j as List<dynamic>).map((e) => SOSItem.fromJson(e as Map<String, dynamic>)).toList());
 
   Future<ShareLinkResponse> generateShareLink(String circleId) =>
       _postMutation('invite.generateShareLink', body: {'circleId': circleId}, fromJson: (j) => ShareLinkResponse.fromJson(j));
@@ -338,7 +338,7 @@ class APIService {
       _getQuery('gratitudes.getWall', input: {'circleId': circleId, 'weeksBack': weeksBack}, fromJson: (j) => GratitudeWallResponse.fromJson(j));
 
   Future<void> shareGratitude({required List<String> circleIds, required String gratitudeText, required bool isAnonymous, String? displayName}) =>
-      _postMutation<Map<String, dynamic>>('gratitudes.share', body: {'circleIds': circleIds, 'gratitudeText': gratitudeText, 'isAnonymous': isAnonymous, if (displayName != null) 'displayName': displayName}, fromJson: (j) => j);
+      _postMutation<Map<String, dynamic>>('gratitudes.share', body: {'circleIds': circleIds, 'gratitudeText': gratitudeText, 'isAnonymous': isAnonymous, 'displayName': ?displayName}, fromJson: (j) => j);
 
   Future<void> deleteGratitude(String circleId, String gratitudeId) =>
       _postMutation<Map<String, dynamic>>('gratitudes.delete', body: {'circleId': circleId, 'gratitudeId': gratitudeId}, fromJson: (j) => j);
@@ -373,7 +373,7 @@ class APIService {
     final response = await http.get(uri, headers: await _buildAuthHeaders());
     _checkStatus(response);
     final body = jsonDecode(response.body) as Map<String, dynamic>;
-    return fromJson(body['result']['data'] as Map<String, dynamic>);
+    return fromJson(body['result']['data']);
   }
 
   Future<T> _postMutation<T>(String procedure, {required Map<String, dynamic> body, required T Function(Map<String, dynamic>) fromJson}) async {

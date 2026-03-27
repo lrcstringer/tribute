@@ -4,7 +4,8 @@ import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/scripture.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
-import '../../../data/datasources/remote/api_service.dart';
+import '../../../domain/entities/circle.dart';
+import '../../../domain/repositories/circle_repository.dart';
 import '../../../data/datasources/remote/auth_service.dart';
 import '../../theme/app_theme.dart';
 import 'share_gratitude_sheet.dart';
@@ -33,7 +34,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
   Scripture? _verse;
   bool _showSharePrompt = false;
   bool _shareConfirmed = false;
-  List<CircleListItem> _circles = [];
+  List<Circle> _circles = [];
   String? _lastCompletedText;
 
   @override
@@ -96,12 +97,12 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
   void _loadCirclesForShare() {
     final auth = context.read<AuthService>();
     if (!auth.isAuthenticated) return;
-    APIService.shared.listCircles().then((circles) {
+    context.read<CircleRepository>().listCircles().then((circles) {
       if (!mounted || circles.isEmpty) return;
       Future.delayed(const Duration(milliseconds: 1300), () {
         if (mounted) setState(() { _circles = circles; _showSharePrompt = true; });
       });
-    }).catchError((_) {});
+    }).catchError((Object e) { debugPrint('ShareGratitude failed: $e'); });
   }
 
   String get _dayName {
@@ -268,7 +269,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
           final text = (_lastCompletedText?.isNotEmpty ?? false)
               ? _lastCompletedText!
               : (isAnonymous ? 'gave thanks to God today' : '${auth.displayName?.split(' ').first ?? 'Someone'} gave thanks to God today');
-          APIService.shared.shareGratitude(
+          context.read<CircleRepository>().shareGratitude(
             circleIds: circleIds,
             gratitudeText: text,
             isAnonymous: isAnonymous,

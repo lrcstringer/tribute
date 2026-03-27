@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../entities/habit.dart';
 import '../repositories/user_preferences_repository.dart';
+import '../utils/seeded_rng.dart';
 
 enum EngagementAccent { golden, sage }
 
@@ -33,6 +34,7 @@ class EngagementService extends ChangeNotifier {
 
   EngagementMessage? currentMessage;
   bool isPremium = false;
+  bool _evaluating = false;
 
   Future<int> get daysSinceOnboarding async {
     final ms = await _prefs.getInt('tribute_onboarding_date');
@@ -57,6 +59,16 @@ class EngagementService extends ChangeNotifier {
   }
 
   Future<void> evaluateMessage(List<Habit> habits) async {
+    if (_evaluating) return;
+    _evaluating = true;
+    try {
+      await _evaluateMessageInner(habits);
+    } finally {
+      _evaluating = false;
+    }
+  }
+
+  Future<void> _evaluateMessageInner(List<Habit> habits) async {
     if (await _isDismissedToday) {
       currentMessage = null;
       notifyListeners();
@@ -160,7 +172,7 @@ class EngagementService extends ChangeNotifier {
 
     final lastShown = await _prefs.getInt('tribute_variable_reinforcement_last') ?? 0;
     final daysSinceLast = day - lastShown;
-    final rng = _SeededRng(day * 7 + 31);
+    final rng = SeededRng(day * 7 + 31);
     final interval = 14 + (rng.next() % 15);
     if (daysSinceLast < interval) { currentMessage = null; notifyListeners(); return; }
 
@@ -212,12 +224,3 @@ class EngagementService extends ChangeNotifier {
   }
 }
 
-class _SeededRng {
-  int _state;
-  _SeededRng(int seed) : _state = seed;
-
-  int next() {
-    _state = ((_state * 1103515245) + 12345) & 0x7fffffff;
-    return _state;
-  }
-}

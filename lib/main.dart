@@ -37,7 +37,13 @@ void main() async {
         ChangeNotifierProvider<EngagementService>(create: (_) => EngagementService(userPrefs)),
         Provider<CircleRepository>(
             create: (_) => CircleRepositoryImpl(APIService.shared)),
-        ChangeNotifierProvider(create: (_) => HabitProvider(habitRepository)..loadHabits()),
+        ChangeNotifierProvider(
+          create: (context) => HabitProvider(
+            habitRepository,
+            () => AuthService.shared.isAuthenticated,
+            context.read<CircleRepository>(),
+          )..loadHabits(),
+        ),
         ChangeNotifierProvider(create: (_) => StoreProvider()),
         ChangeNotifierProvider.value(value: AuthService.shared),
       ],

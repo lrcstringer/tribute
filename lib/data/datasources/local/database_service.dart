@@ -8,12 +8,9 @@ class DatabaseService {
   factory DatabaseService() => _instance;
   DatabaseService._internal();
 
-  Database? _db;
+  Future<Database>? _dbFuture;
 
-  Future<Database> get database async {
-    _db ??= await _initDb();
-    return _db!;
-  }
+  Future<Database> get database => _dbFuture ??= _initDb();
 
   Future<Database> _initDb() async {
     final dbPath = await getDatabasesPath();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../domain/entities/habit.dart';
+import '../../../domain/repositories/user_preferences_repository.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
@@ -32,10 +32,10 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Future<void> _loadPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final enabled = prefs.getBool('tribute_reminders_enabled') ?? false;
-    final hour = prefs.getInt('tribute_reminder_hour') ?? 8;
-    final minute = prefs.getInt('tribute_reminder_minute') ?? 0;
+    final prefs = context.read<UserPreferencesRepository>();
+    final enabled = await prefs.getBool('tribute_reminders_enabled') ?? false;
+    final hour = await prefs.getInt('tribute_reminder_hour') ?? 8;
+    final minute = await prefs.getInt('tribute_reminder_minute') ?? 0;
     if (mounted) {
       setState(() {
         _remindersEnabled = enabled;
@@ -50,7 +50,7 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Future<void> _savePrefs() async {
-    final prefs = await SharedPreferences.getInstance();
+    final prefs = context.read<UserPreferencesRepository>();
     await prefs.setBool('tribute_reminders_enabled', _remindersEnabled);
     await prefs.setInt('tribute_reminder_hour', _reminderTime.hour);
     await prefs.setInt('tribute_reminder_minute', _reminderTime.minute);
@@ -98,11 +98,11 @@ class _SettingsViewState extends State<SettingsView> {
 
   Future<void> _resetAllData() async {
     final provider = context.read<HabitProvider>();
+    final prefs = context.read<UserPreferencesRepository>();
     final habits = List<Habit>.from(provider.habits);
     for (final h in habits) {
       if (!h.isBuiltIn) await provider.deleteHabit(h);
     }
-    final prefs = await SharedPreferences.getInstance();
     await prefs.remove('tribute_reminders_enabled');
     await prefs.remove('tribute_reminder_hour');
     await prefs.remove('tribute_reminder_minute');

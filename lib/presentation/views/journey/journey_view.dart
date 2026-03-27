@@ -18,7 +18,6 @@ class JourneyView extends StatefulWidget {
 
 class _JourneyViewState extends State<JourneyView> {
   static const _milestoneService = MilestoneService.instance;
-  bool _showPaywall = false;
 
   int _totalGivingDays(List<Habit> habits) {
     final seen = <String>{};
@@ -74,7 +73,6 @@ class _JourneyViewState extends State<JourneyView> {
                   _perHabitStatsSection(habits.toList()),
                   const SizedBox(height: 20),
                   _milestonesSection(allMilestones),
-                  if (_showPaywall) ...[],
                 ]),
               ),
             ),

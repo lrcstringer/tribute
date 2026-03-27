@@ -4,7 +4,8 @@ import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/scripture.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
-import '../../../data/datasources/remote/api_service.dart';
+import '../../../domain/entities/circle.dart';
+import '../../../domain/repositories/circle_repository.dart';
 import '../../../data/datasources/remote/auth_service.dart';
 import '../../../domain/services/engagement_service.dart';
 import '../../../domain/services/week_cycle_manager.dart';
@@ -34,7 +35,7 @@ class TodayView extends StatefulWidget {
   State<TodayView> createState() => _TodayViewState();
 }
 
-class _TodayViewState extends State<TodayView> {
+class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
   DateTime _selectedDate = DateTime.now();
   EngagementMessage? _engagementMessage;
   bool _showEngagementBanner = false;
@@ -51,8 +52,29 @@ class _TodayViewState extends State<TodayView> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _selectedDate = DateTime.now();
     _loadEngagementMessage();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      final now = DateTime.now();
+      final todayStart = DateTime(now.year, now.month, now.day);
+      final selStart = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day);
+      // Advance _selectedDate by one day if the day rolled over while backgrounded.
+      if (selStart == todayStart.subtract(const Duration(days: 1))) {
+        setState(() => _selectedDate = now);
+      }
+    }
   }
 
   Future<void> _loadEngagementMessage() async {
@@ -405,7 +427,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
   Scripture? _verse;
   bool _expanded = false;
   bool _showSharePrompt = false;
-  List<CircleListItem>? _userCircles;
+  List<Circle>? _userCircles;
 
   @override
   void initState() {
@@ -475,7 +497,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
 
   Future<void> _loadCirclesForShare() async {
     try {
-      final circles = await APIService.shared.listCircles();
+      final circles = await context.read<CircleRepository>().listCircles();
       if (mounted && circles.isNotEmpty) {
         setState(() { _userCircles = circles; _showSharePrompt = true; });
       }
@@ -488,12 +510,12 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
     final text = (entry?.gratitudeNote?.isNotEmpty ?? false)
         ? entry!.gratitudeNote!
         : (isAnonymous ? 'gave thanks to God today' : '${auth.displayName?.split(' ').first ?? 'Someone'} gave thanks to God today');
-    APIService.shared.shareGratitude(
+    context.read<CircleRepository>().shareGratitude(
       circleIds: circleIds,
       gratitudeText: text,
       isAnonymous: isAnonymous,
       displayName: auth.displayName,
-    ).catchError((_) {});
+    ).catchError((Object e) { debugPrint('ShareGratitude failed: $e'); });
   }
 
   @override

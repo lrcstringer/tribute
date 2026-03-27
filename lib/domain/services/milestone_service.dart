@@ -110,10 +110,21 @@ class MilestoneService {
     switch (habit.trackingType) {
       case HabitTrackingType.timed:
       case HabitTrackingType.count:
-        valueBefore = entriesBefore.fold(0.0, (s, e) => s + e.value);
+        // Use allTimeTotalValue when available — stays accurate beyond the 400-day in-memory window.
+        if (habit.allTimeTotalValue != null) {
+          final duringTotal = entriesDuring.fold(0.0, (s, e) => s + e.value);
+          valueBefore = habit.allTimeTotalValue! - duringTotal;
+        } else {
+          valueBefore = entriesBefore.fold(0.0, (s, e) => s + e.value);
+        }
       case HabitTrackingType.checkIn:
       case HabitTrackingType.abstain:
-        valueBefore = entriesBefore.length.toDouble();
+        // Use allTimeCompletedCount when available — stays accurate beyond the 400-day in-memory window.
+        if (habit.allTimeCompletedCount != null) {
+          valueBefore = (habit.allTimeCompletedCount! - entriesDuring.length).toDouble();
+        } else {
+          valueBefore = entriesBefore.length.toDouble();
+        }
     }
 
     var running = valueBefore;

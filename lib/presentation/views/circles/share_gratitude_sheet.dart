@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../data/datasources/remote/api_service.dart';
+import '../../../domain/entities/circle.dart';
 import '../../../data/datasources/remote/auth_service.dart';
 import '../../theme/app_theme.dart';
 
 class ShareGratitudeSheet extends StatefulWidget {
-  final List<CircleListItem> circles;
+  final List<Circle> circles;
   final String? gratitudeText;
   final void Function(List<String> circleIds, bool isAnonymous) onShare;
 
