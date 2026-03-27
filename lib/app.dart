@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'theme/app_theme.dart';
-import 'views/root_view.dart';
+import 'presentation/theme/app_theme.dart';
+import 'presentation/views/root_view.dart';
 
 class TributeApp extends StatelessWidget {
   const TributeApp({super.key});
