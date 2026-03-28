@@ -63,7 +63,7 @@ class FirestoreCircleRepository implements CircleRepository {
       final data = s.data()! as Map<String, dynamic>;
       final membership = memberSnaps.docs
           .firstWhere((m) => m.reference.parent.parent!.id == s.id)
-          .data() as Map<String, dynamic>;
+          .data();
       return Circle(
         id: s.id,
         name: data['name'] as String? ?? '',
