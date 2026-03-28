@@ -23,6 +23,7 @@ import { onRequest } from 'firebase-functions/v2/https';
 import { onMessagePublished } from 'firebase-functions/v2/pubsub';
 import { Timestamp } from 'firebase-admin/firestore';
 import * as https from 'https';
+import { GoogleAuth } from 'google-auth-library';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -243,11 +244,16 @@ async function validateGooglePurchase(
 async function getGoogleAccessToken(): Promise<string> {
   const serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON;
   if (!serviceAccountJson) throw new Error('GOOGLE_SERVICE_ACCOUNT_JSON not configured');
-  // Use the Firebase Admin SDK's Google Auth to get an access token for the
-  // Google Play Developer API — requires the service account to be granted access.
-  // In production: use google-auth-library for the specific scope needed.
-  // For now: parse the service account and obtain a token via JWT.
-  throw new Error('Google access token acquisition not yet implemented — add google-auth-library');
+
+  const credentials = JSON.parse(serviceAccountJson);
+  const auth = new GoogleAuth({
+    credentials,
+    scopes: ['https://www.googleapis.com/auth/androidpublisher'],
+  });
+  const client = await auth.getClient();
+  const tokenResponse = await client.getAccessToken();
+  if (!tokenResponse.token) throw new Error('Failed to obtain Google access token');
+  return tokenResponse.token;
 }
 
 function fetchJson(url: string, bearerToken: string): Promise<Record<string, unknown>> {

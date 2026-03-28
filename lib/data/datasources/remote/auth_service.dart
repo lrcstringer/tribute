@@ -50,6 +50,20 @@ class AuthService extends ChangeNotifier {
     _email = prefs.getString('tribute_email');
     _photoURL = prefs.getString('tribute_photo_url');
 
+    // On reinstall the SharedPreferences cache is empty but FirebaseAuth
+    // still has the session (stored in the platform keychain/keystore).
+    // Fall back to the Firebase Auth profile so givenName is never null
+    // after a reinstall — personalisation copy depends on it.
+    final cached = FirebaseAuth.instance.currentUser;
+    if (cached != null) {
+      _displayName ??= cached.displayName;
+      _email ??= cached.email;
+      _photoURL ??= cached.photoURL;
+      if (_displayName != null && _givenName == null) {
+        _givenName = _displayName!.split(' ').first;
+      }
+    }
+
     // Listen for Firebase Auth state changes and keep APIService token in sync
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user != null) {

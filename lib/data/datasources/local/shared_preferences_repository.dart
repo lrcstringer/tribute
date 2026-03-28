@@ -5,6 +5,10 @@ class SharedPreferencesRepository implements UserPreferencesRepository {
   // Cache the instance to avoid the overhead of resolving the singleton on every call.
   late final Future<SharedPreferences> _instance = SharedPreferences.getInstance();
 
+  // Local-only implementation — always in sync, nothing to pull from a remote store.
+  @override
+  Future<void> init() async {}
+
   @override
   Future<int?> getInt(String key) async => (await _instance).getInt(key);
 

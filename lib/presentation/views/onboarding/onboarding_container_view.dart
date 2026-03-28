@@ -28,6 +28,7 @@ class OnboardingContainerView extends StatefulWidget {
 
 class _OnboardingContainerViewState extends State<OnboardingContainerView> {
   int _currentStep = 0;
+  bool _isSavingHabit = false;
   String? _gratitudeNote;
   HabitCategory? _selectedCategory;
   String _customHabitName = '';
@@ -183,10 +184,7 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
           dailyTarget: _customDailyTarget,
           targetUnit: _customTargetUnit,
           activeDays: _customActiveDays,
-          onFinish: () {
-            _createCustomHabit();
-            _advance();
-          },
+          onFinish: () => _createCustomHabitAndAdvance(),
         );
 
       case 8:
@@ -256,18 +254,37 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
     });
   }
 
-  void _createCustomHabit() {
-    if (_selectedCategory == null || _customHabitName.isEmpty) return;
-    context.read<HabitProvider>().addHabit(
-      name: _customHabitName,
-      category: _selectedCategory!,
-      trackingType: _customTrackingType,
-      purpose: _customPurpose,
-      dailyTarget: _customDailyTarget,
-      targetUnit: _customTargetUnit,
-      activeDays: _customActiveDays,
-      trigger: _customTrigger,
-      copingPlan: _customCopingPlan,
-    );
+  Future<void> _createCustomHabitAndAdvance() async {
+    if (_isSavingHabit) return;
+    if (_selectedCategory == null || _customHabitName.isEmpty) {
+      _advance();
+      return;
+    }
+    setState(() => _isSavingHabit = true);
+    try {
+      await context.read<HabitProvider>().addHabit(
+        name: _customHabitName,
+        category: _selectedCategory!,
+        trackingType: _customTrackingType,
+        purpose: _customPurpose,
+        dailyTarget: _customDailyTarget,
+        targetUnit: _customTargetUnit,
+        activeDays: _customActiveDays,
+        trigger: _customTrigger,
+        copingPlan: _customCopingPlan,
+      );
+      if (mounted) _advance();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Couldn't save your habit. Check your connection and try again."),
+            duration: Duration(seconds: 4),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSavingHabit = false);
+    }
   }
 }

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 /// Product IDs — must match App Store Connect / Google Play Console exactly.
@@ -13,7 +14,7 @@ class TributeProducts {
   static const all = {monthly, annual, lifetime};
 }
 
-class StoreProvider extends ChangeNotifier {
+class StoreProvider extends ChangeNotifier with WidgetsBindingObserver {
   final FirebaseFirestore _db;
   final InAppPurchase _iap;
 
@@ -52,6 +53,7 @@ class StoreProvider extends ChangeNotifier {
 
   /// Call once after the provider is created (and the user may be authenticated).
   Future<void> init() async {
+    WidgetsBinding.instance.addObserver(this);
     isLoading = true;
     notifyListeners();
 
@@ -81,8 +83,18 @@ class StoreProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _purchaseSub?.cancel();
     super.dispose();
+  }
+
+  /// Re-sync premium status from Firestore whenever the app returns to the
+  /// foreground — catches subscription lapses that occurred while it was closed.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _syncPremiumFromFirestore().then((_) => notifyListeners());
+    }
   }
 
   // ── Products ──────────────────────────────────────────────────────────────
@@ -215,41 +227,31 @@ class StoreProvider extends ChangeNotifier {
 
   // ── Server validation ─────────────────────────────────────────────────────
 
-  /// Calls the `validateReceipt` Firebase Function to verify the purchase
-  /// server-side and write subscription status to Firestore.
+  /// Calls the `validateReceipt` Firebase callable Function to verify the
+  /// purchase server-side and write subscription status to Firestore.
   Future<void> _validateWithServer(PurchaseDetails purchase) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return;
+    if (FirebaseAuth.instance.currentUser == null) return;
 
     try {
-      // TODO(production): call the `validateReceipt` Firebase callable function here,
-      // passing platform + receiptData/purchaseToken + productId. The function validates
-      // with Apple/Google and writes to users/{uid}/subscription/status in Firestore.
-      //
-      // Example payload to send:
-      //   { platform: 'ios', receiptData: <base64>, productId: purchase.productID }
-      //   { platform: 'android', purchaseToken: <token>, productId: purchase.productID }
-      //
-      // Dev placeholder: write directly to Firestore so the app is testable locally.
-      await _setDevPremium(uid, purchase.productID);
+      final payload = <String, dynamic>{
+        'platform': Platform.isIOS ? 'ios' : 'android',
+        'productId': purchase.productID,
+      };
+
+      if (Platform.isIOS) {
+        // localVerificationData is the base64-encoded App Store receipt.
+        payload['receiptData'] = purchase.verificationData.localVerificationData;
+      } else {
+        // serverVerificationData is the Google Play purchase token.
+        payload['purchaseToken'] = purchase.verificationData.serverVerificationData;
+      }
+
+      final callable = FirebaseFunctions.instanceFor(region: 'us-central1')
+          .httpsCallable('validateReceipt');
+      final result = await callable.call<Map<String, dynamic>>(payload);
+      isPremium = result.data['isPremium'] as bool? ?? false;
     } catch (e) {
       error = 'Receipt validation failed: ${e.toString()}';
     }
-  }
-
-  /// Temporary dev-only helper: writes a local-only subscription record.
-  /// Replace with a real callable function invocation before production launch.
-  Future<void> _setDevPremium(String uid, String productId) async {
-    final isLifetime = productId == TributeProducts.lifetime;
-    await _db.collection('users').doc(uid).collection('subscription').doc('status').set({
-      'productId': productId,
-      'platform': Platform.isIOS ? 'ios' : 'android',
-      'status': 'active',
-      'validatedAt': FieldValue.serverTimestamp(),
-      'expiresAt': isLifetime
-          ? null
-          : Timestamp.fromDate(DateTime.now().add(const Duration(days: 365))),
-    });
-    isPremium = true;
   }
 }
