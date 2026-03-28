@@ -139,7 +139,7 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
           onPressed: _complete,
           icon: const Icon(Icons.favorite_rounded, size: 14),
           label: Text(
-            _controller.text.trim().isEmpty ? 'Thank you, God' : 'Give thanks',
+            _controller.text.trim().isEmpty ? 'Thank you, Lord' : 'Give thanks',
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
           style: ElevatedButton.styleFrom(

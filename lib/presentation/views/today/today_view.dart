@@ -616,7 +616,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     child: ElevatedButton.icon(
                       onPressed: _complete,
                       icon: const Icon(Icons.favorite, size: 14),
-                      label: Text(_controller.text.isEmpty ? 'Thank you, God' : 'Give thanks'),
+                      label: Text(_controller.text.isEmpty ? 'Thank you, Lord' : 'Give thanks'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: TributeColor.golden,
                         foregroundColor: TributeColor.charcoal,
@@ -633,7 +633,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     child: ElevatedButton.icon(
                       onPressed: _complete,
                       icon: const Icon(Icons.favorite, size: 14),
-                      label: const Text('Thank you, God'),
+                      label: const Text('Thank you, Lord'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: TributeColor.golden,
                         foregroundColor: TributeColor.charcoal,

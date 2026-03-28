@@ -58,6 +58,14 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // ─── collectionGroup: members ─────────────────────────────────────────
+    // Allows listCircles() to query collectionGroup('members').where('userId', ==, uid).
+    // Rule must check the userId FIELD (not the document ID) so Firestore can validate
+    // the query filter — checking the doc ID would cause PERMISSION_DENIED on the query.
+    match /{path=**}/members/{memberId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
     // ─── circles ──────────────────────────────────────────────────────────
     match /circles/{circleId} {
       allow read: if isCircleMember(circleId);

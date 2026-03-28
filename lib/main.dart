@@ -13,7 +13,7 @@ import 'data/datasources/local/notification_service.dart';
 import 'data/repositories/firestore_user_preferences_repository.dart';
 import 'data/repositories/firestore_habit_repository.dart';
 import 'data/repositories/firestore_user_repository.dart';
-import 'data/repositories/circle_repository_impl.dart';
+import 'data/repositories/firestore_circle_repository.dart';
 import 'domain/repositories/user_preferences_repository.dart';
 import 'domain/repositories/circle_repository.dart';
 import 'domain/repositories/user_repository.dart';
@@ -60,7 +60,7 @@ void main() async {
         Provider<WeekCycleManager>(create: (_) => WeekCycleManager(userPrefs)),
         ChangeNotifierProvider<EngagementService>(create: (_) => EngagementService(userPrefs)),
         Provider<CircleRepository>(
-            create: (_) => CircleRepositoryImpl(APIService.shared)),
+            create: (_) => FirestoreCircleRepository()),
         ChangeNotifierProvider(
           create: (context) => HabitProvider(
             habitRepository,

@@ -89,8 +89,13 @@ class _RootViewState extends State<RootView> {
       final wcm = context.read<WeekCycleManager>();
       final userPrefs = context.read<UserPreferencesRepository>();
       await userPrefs.setBool('tribute_onboarding_complete', true);
-      await userPrefs.setInt('tribute_onboarding_date', DateTime.now().millisecondsSinceEpoch);
-      await wcm.dedicateCurrentWeek();
+      // Only set the onboarding date and dedicate the week for new users.
+      // Returning users (reinstall / new device) already have these set in Firestore.
+      final existingDate = await userPrefs.getInt('tribute_onboarding_date');
+      if (existingDate == null) {
+        await userPrefs.setInt('tribute_onboarding_date', DateTime.now().millisecondsSinceEpoch);
+        await wcm.dedicateCurrentWeek();
+      }
     } catch (_) {
       // Always complete onboarding — errors here must not leave the user stuck.
     }

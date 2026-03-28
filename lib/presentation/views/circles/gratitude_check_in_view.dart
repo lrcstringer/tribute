@@ -209,7 +209,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
           onPressed: _complete,
           icon: const Icon(Icons.favorite_rounded, size: 14),
           label: Text(
-            _controller.text.trim().isEmpty ? 'Thank you, God' : 'Give thanks',
+            _controller.text.trim().isEmpty ? 'Thank you, Lord' : 'Give thanks',
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           ),
           style: ElevatedButton.styleFrom(

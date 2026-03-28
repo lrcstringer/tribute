@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
+import '../../../domain/repositories/user_preferences_repository.dart';
 import '../../../domain/repositories/user_repository.dart';
 import '../../../domain/entities/habit.dart';
 import '../../providers/habit_provider.dart';
@@ -119,7 +120,7 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
         return WelcomeScreen(onNext: _advance);
 
       case 1:
-        return SignInScreen(onNext: _advance);
+        return SignInScreen(onNext: _onSignInComplete);
 
       case 2:
         final auth = context.read<AuthService>();
@@ -218,6 +219,23 @@ class _OnboardingContainerViewState extends State<OnboardingContainerView> {
   }
 
   // ── Callbacks ─────────────────────────────────────────────────────────────
+
+  /// Called when sign-in completes. Checks Firestore before advancing so that
+  /// returning users (reinstall / new device) go straight to ContentView instead
+  /// of being walked through the full new-user onboarding flow again.
+  Future<void> _onSignInComplete() async {
+    final userPrefs = context.read<UserPreferencesRepository>();
+    await userPrefs.init(); // Pull Firestore → local cache
+    if (!mounted) return;
+    final alreadyOnboarded =
+        await userPrefs.getBool('tribute_onboarding_complete') ?? false;
+    if (!mounted) return;
+    if (alreadyOnboarded) {
+      widget.onComplete(); // Returning user — skip all onboarding steps
+    } else {
+      _advance(); // New user — proceed with full onboarding
+    }
+  }
 
   Future<void> _onIdentityContinue(String name, List<String> selections) async {
     // Persist name + identity selections to Firestore.

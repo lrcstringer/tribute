@@ -45,6 +45,7 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   Future<void> _checkNotifStatus() async {
+    await NotificationService.shared.checkAuthorization();
     final authorized = NotificationService.shared.isAuthorized;
     if (mounted) setState(() => _notifDenied = !authorized);
   }
