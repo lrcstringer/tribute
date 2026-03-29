@@ -416,9 +416,14 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  ImageFiltered(
-                    imageFilter: ui.ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                    child: IgnorePointer(child: HeatmapView(habit: _habit, weekCount: 52)),
+                  ClipRect(
+                    child: SizedBox(
+                      height: 180,
+                      child: ImageFiltered(
+                        imageFilter: ui.ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                        child: IgnorePointer(child: HeatmapView(habit: _habit, weekCount: 52)),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 12),
                   Row(
