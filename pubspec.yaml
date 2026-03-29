@@ -73,6 +73,9 @@ dependencies:
   # System share sheet (invite links)
   share_plus: ^10.1.4
 
+  # Deep link handling (App Links / Universal Links / custom URL scheme)
+  app_links: ^6.3.0
+
   # Custom fonts (DM Serif Display + Inter)
   google_fonts: ^6.2.1
 

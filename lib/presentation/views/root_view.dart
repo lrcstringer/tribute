@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../../data/datasources/remote/auth_service.dart';
 import '../../data/datasources/local/notification_service.dart'; // used in _loadOnboardingState
+import '../../data/services/pending_invite_service.dart';
 import '../../domain/repositories/user_preferences_repository.dart';
 import '../../domain/services/week_cycle_manager.dart';
 import 'content_view.dart';
@@ -18,11 +21,13 @@ class RootView extends StatefulWidget {
 class _RootViewState extends State<RootView> {
   bool _onboardingComplete = false;
   bool _ready = false;
+  StreamSubscription<Uri>? _linkSub;
 
   @override
   void initState() {
     super.initState();
     _loadOnboardingState();
+    _initDeepLinks();
     // Re-check onboarding state when the user signs in on a new device.
     // On a fresh install, the local cache is empty until sign-in completes
     // and userPrefs.init() pulls the flag from Firestore.
@@ -31,8 +36,44 @@ class _RootViewState extends State<RootView> {
 
   @override
   void dispose() {
+    _linkSub?.cancel();
     AuthService.shared.removeListener(_onAuthStateChanged);
     super.dispose();
+  }
+
+  /// Initialises [AppLinks] deep-link handling.
+  ///
+  /// - `getInitialLink()` catches the URI that cold-started the app.
+  /// - `uriLinkStream` catches links while the app is already running.
+  ///
+  /// Both paths extract the invite code and hand it to [PendingInviteService],
+  /// which persists it for [ContentView] to pick up (even if onboarding hasn't
+  /// finished yet).
+  Future<void> _initDeepLinks() async {
+    final appLinks = AppLinks();
+    final inviteService = context.read<PendingInviteService>();
+
+    // Cold-start / app-not-running link.
+    try {
+      final initial = await appLinks.getInitialLink();
+      if (initial != null) _handleLink(initial, inviteService);
+    } catch (_) {}
+
+    // Link received while app is foregrounded or in background.
+    _linkSub = appLinks.uriLinkStream.listen(
+      (uri) => _handleLink(uri, inviteService),
+      onError: (_) {},
+    );
+  }
+
+  void _handleLink(Uri uri, PendingInviteService inviteService) {
+    // Accepts both:
+    //   tribute://join?code=XXXX
+    //   https://tribute.app/join?code=XXXX
+    final code = uri.queryParameters['code'];
+    if (code != null && code.isNotEmpty) {
+      inviteService.save(code);
+    }
   }
 
   /// Fires whenever FirebaseAuth state changes. If the user just authenticated

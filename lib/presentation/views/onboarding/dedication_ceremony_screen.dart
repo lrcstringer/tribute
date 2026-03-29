@@ -342,7 +342,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
               const SizedBox(height: 4),
-              Text('Start a Prayer Circle and do this together.',
+              Text('In Tribute you can start a Prayer Circle and do this together.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
             ]),

@@ -310,7 +310,7 @@ class _SettingsViewState extends State<SettingsView> {
       else
         GestureDetector(
           onTap: () => showModalBottomSheet(
-            context: context, isScrollControlled: true, backgroundColor: TributeColor.charcoal,
+            context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
             builder: (_) => const TributePaywallView(),
           ),
           child: Container(

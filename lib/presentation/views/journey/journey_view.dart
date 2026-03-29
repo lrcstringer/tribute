@@ -462,6 +462,7 @@ class _JourneyViewState extends State<JourneyView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => const TributePaywallView(),
     );

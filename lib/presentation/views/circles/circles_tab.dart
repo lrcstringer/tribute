@@ -9,29 +9,20 @@ import 'create_circle_view.dart';
 import 'join_circle_view.dart';
 
 class CirclesTab extends StatelessWidget {
-  final String? pendingInviteCode;
-  final VoidCallback? onInviteCodeConsumed;
-
-  const CirclesTab({super.key, this.pendingInviteCode, this.onInviteCodeConsumed});
+  const CirclesTab({super.key});
 
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
-    if (auth.isAuthenticated) {
-      return _CirclesListView(
-        pendingInviteCode: pendingInviteCode,
-        onInviteCodeConsumed: onInviteCodeConsumed,
-      );
-    }
-    return _CirclesAuthGateView(pendingInviteCode: pendingInviteCode);
+    if (auth.isAuthenticated) return const _CirclesListView();
+    return const _CirclesAuthGateView();
   }
 }
 
 // ─── Auth gate ──────────────────────────────────────────────────────────────
 
 class _CirclesAuthGateView extends StatelessWidget {
-  final String? pendingInviteCode;
-  const _CirclesAuthGateView({this.pendingInviteCode});
+  const _CirclesAuthGateView();
 
   static const _features = [
     (Icons.auto_awesome, 'SOS Prayers', 'Request urgent prayer from up to 20 people'),
@@ -99,9 +90,7 @@ class _CirclesAuthGateView extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                pendingInviteCode != null
-                    ? 'Sign in to join this Prayer Circle'
-                    : 'Sign in to create and join Prayer Circles',
+                'Sign in to create and join Prayer Circles',
                 style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.45)),
               ),
             ],
@@ -140,9 +129,7 @@ class _CirclesAuthGateView extends StatelessWidget {
 // ─── Circles list ────────────────────────────────────────────────────────────
 
 class _CirclesListView extends StatefulWidget {
-  final String? pendingInviteCode;
-  final VoidCallback? onInviteCodeConsumed;
-  const _CirclesListView({this.pendingInviteCode, this.onInviteCodeConsumed});
+  const _CirclesListView();
 
   @override
   State<_CirclesListView> createState() => _CirclesListViewState();
@@ -158,12 +145,6 @@ class _CirclesListViewState extends State<_CirclesListView> {
   void initState() {
     super.initState();
     _loadCircles();
-    final code = widget.pendingInviteCode;
-    if (code != null && code.isNotEmpty) {
-      _joinCode = code;
-      widget.onInviteCodeConsumed?.call();
-      WidgetsBinding.instance.addPostFrameCallback((_) => _openJoin());
-    }
   }
 
   Future<void> _loadCircles() async {

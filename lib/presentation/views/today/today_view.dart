@@ -361,6 +361,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -379,6 +380,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => const TributePaywallView(),
     );
@@ -390,6 +392,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
+        useSafeArea: true,
         backgroundColor: TributeColor.charcoal,
         builder: (_) => const TributePaywallView(
           contextTitle: 'SOS Support',
@@ -436,6 +439,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
   void initState() {
     super.initState();
     _refresh();
+    _preloadCircles();
   }
 
   @override
@@ -444,6 +448,19 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
     if (old.targetDate != widget.targetDate) {
       _controller.clear();
       _refresh();
+    }
+  }
+
+  Future<void> _preloadCircles() async {
+    final auth = context.read<AuthService>();
+    if (!auth.isAuthenticated) return;
+    try {
+      final circles = await context.read<CircleRepository>().listCircles();
+      if (mounted && circles.isNotEmpty) {
+        setState(() => _userCircles = circles);
+      }
+    } catch (e) {
+      debugPrint('[GratitudeCard] preloadCircles failed: $e');
     }
   }
 
@@ -494,7 +511,11 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
     if (!mounted) return;
     setState(() => _showPulse = false);
     if (!widget.isRetroactive && isAuthenticated) {
-      _loadCirclesForShare();
+      if (_userCircles != null && _userCircles!.isNotEmpty) {
+        setState(() => _showSharePrompt = true);
+      } else {
+        _loadCirclesForShare();
+      }
     }
   }
 
@@ -504,7 +525,9 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
       if (mounted && circles.isNotEmpty) {
         setState(() { _userCircles = circles; _showSharePrompt = true; });
       }
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[GratitudeCard] loadCirclesForShare failed: $e');
+    }
   }
 
   void _doShare(List<String> circleIds, bool isAnonymous) {
@@ -670,6 +693,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
+                          useSafeArea: true,
                           backgroundColor: TributeColor.charcoal,
                           builder: (_) => ShareGratitudeSheet(
                             circles: _userCircles!,

@@ -232,6 +232,7 @@ class _EditHabitViewState extends State<EditHabitView> {
             onTap: () => showModalBottomSheet(
               context: context,
               isScrollControlled: true,
+              useSafeArea: true,
               backgroundColor: TributeColor.charcoal,
               builder: (_) => const TributePaywallView(
                 contextTitle: 'Custom purpose statements',

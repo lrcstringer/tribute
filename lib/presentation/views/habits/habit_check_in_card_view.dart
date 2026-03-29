@@ -304,6 +304,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
+        useSafeArea: true,
         backgroundColor: TributeColor.charcoal,
         builder: (_) => const TributePaywallView(
           contextTitle: 'SOS Support',
@@ -519,6 +520,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

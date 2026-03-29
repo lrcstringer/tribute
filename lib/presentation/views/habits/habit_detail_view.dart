@@ -668,6 +668,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => const TributePaywallView(),
     );
@@ -677,6 +678,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

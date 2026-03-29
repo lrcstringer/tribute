@@ -603,6 +603,7 @@ class _AddHabitViewState extends State<AddHabitView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => const TributePaywallView(),
     );

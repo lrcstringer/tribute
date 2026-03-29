@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import '../../theme/app_theme.dart';
 import 'circle_sunday_summary_view.dart';
 import 'gratitude_wall_view.dart' show GratitudeWallWidget;
 import 'sos_prayer_request_view.dart';
+import '../shared/tribute_paywall_view.dart';
 
 class CircleDetailView extends StatefulWidget {
   final String circleId;
@@ -485,6 +487,17 @@ class _CircleDetailViewState extends State<CircleDetailView> {
   }
 
   void _showSOSRequest(CircleDetails detail) {
+    final isPremium = context.read<StoreProvider>().isPremium;
+    if (!isPremium && !kDebugMode) {
+      showModalBottomSheet(
+        context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
+        builder: (_) => const TributePaywallView(
+          contextTitle: 'SOS Support',
+          contextMessage: 'Tough moment? The SOS feature can help — it\'ll remind you why you started and connect you with your circle.',
+        ),
+      );
+      return;
+    }
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
       builder: (_) => SOSPrayerRequestView(circleId: widget.circleId, members: detail.members),
@@ -571,7 +584,7 @@ class _ShareInviteSheet extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  final text = 'Join my Prayer Circle "$circleName" on Tribute!\n\nUse invite code: $inviteCode\n\nDownload Tribute: https://tribute.app';
+                  final text = 'Join my Prayer Circle "$circleName" on Tribute!\n\nTap to join: https://tribute.app/join?code=$inviteCode\n\nOr enter invite code "$inviteCode" manually in the app.';
                   Share.share(text);
                 },
                 icon: const Icon(Icons.share_rounded, size: 18),

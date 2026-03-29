@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../../data/datasources/remote/auth_service.dart';
+import '../../data/services/pending_invite_service.dart';
 import '../../domain/repositories/circle_repository.dart';
 import '../../domain/services/week_cycle_manager.dart';
+import 'circles/circle_invitation_dialog.dart';
 import 'today/today_view.dart';
 import 'week/week_view.dart';
 import 'journey/journey_view.dart';
@@ -26,19 +29,42 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
   bool _showAutoCarryBanner = false;
   bool _hasNewGratitudes = false;
   bool _checkingGratitudes = false;
-  String? _pendingInviteCode;
+  StreamSubscription<String>? _inviteSub;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _onAppear());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _onAppear();
+      _consumePendingInvite();
+    });
+    // Listen for deep links that arrive while the app is already running.
+    _inviteSub = context
+        .read<PendingInviteService>()
+        .stream
+        .listen((code) => _showInviteDialog(code));
   }
 
   @override
   void dispose() {
+    _inviteSub?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  /// Picks up any invite code that was saved before ContentView was mounted
+  /// (e.g. the app was cold-started via a deep link during onboarding).
+  void _consumePendingInvite() {
+    final code = context.read<PendingInviteService>().consume();
+    if (code != null) _showInviteDialog(code);
+  }
+
+  Future<void> _showInviteDialog(String code) async {
+    if (!mounted) return;
+    await CircleInvitationDialog.show(context, code);
+    // Refresh gratitude badge in case the user just joined a new circle.
+    if (mounted) _checkNewGratitudes();
   }
 
   @override
@@ -116,11 +142,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
               ),
               WeekView(weekCycleManager: wcm),
               const JourneyView(),
-              CirclesTab(
-                pendingInviteCode: _pendingInviteCode,
-                onInviteCodeConsumed: () =>
-                    setState(() => _pendingInviteCode = null),
-              ),
+              const CirclesTab(),
               const SettingsView(),
             ],
           ),

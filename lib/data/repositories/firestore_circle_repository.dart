@@ -14,7 +14,11 @@ class FirestoreCircleRepository implements CircleRepository {
         _auth = FirebaseAuth.instance,
         _fn = FirebaseFunctions.instanceFor(region: 'us-central1');
 
-  String get _uid => _auth.currentUser!.uid;
+  String get _uid {
+    final user = _auth.currentUser;
+    if (user == null) throw StateError('listCircles called while unauthenticated');
+    return user.uid;
+  }
 
   // ── Collection references ────────────────────────────────────────────────
 

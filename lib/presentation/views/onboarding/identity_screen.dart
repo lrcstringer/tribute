@@ -45,6 +45,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) => _NameBottomSheet(
         initial: _name,

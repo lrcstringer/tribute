@@ -260,6 +260,7 @@ class _GratitudeCheckInViewState extends State<GratitudeCheckInView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => ShareGratitudeSheet(
         circles: _circles,

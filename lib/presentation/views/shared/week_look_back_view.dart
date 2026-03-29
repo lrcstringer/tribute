@@ -475,6 +475,7 @@ class _WeekLookBackViewState extends State<WeekLookBackView> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: TributeColor.charcoal,
       builder: (_) => const TributePaywallView(),
     );

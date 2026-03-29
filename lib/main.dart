@@ -14,6 +14,7 @@ import 'data/repositories/firestore_user_preferences_repository.dart';
 import 'data/repositories/firestore_habit_repository.dart';
 import 'data/repositories/firestore_user_repository.dart';
 import 'data/repositories/firestore_circle_repository.dart';
+import 'data/services/pending_invite_service.dart';
 import 'domain/repositories/user_preferences_repository.dart';
 import 'domain/repositories/circle_repository.dart';
 import 'domain/repositories/user_repository.dart';
@@ -51,10 +52,12 @@ void main() async {
   });
 
   final storeProvider = StoreProvider();
+  final pendingInviteService = PendingInviteService(sharedPrefs);
 
   runApp(
     MultiProvider(
       providers: [
+        Provider<PendingInviteService>.value(value: pendingInviteService),
         Provider<UserPreferencesRepository>.value(value: userPrefs),
         Provider<UserRepository>.value(value: userRepository),
         Provider<WeekCycleManager>(create: (_) => WeekCycleManager(userPrefs)),
