@@ -32,7 +32,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
     (Icons.bar_chart_rounded, 'Detailed Stats & Insights'),
     (Icons.notifications_rounded, 'Smart Reminders'),
     (Icons.shield_rounded, 'SOS Temptation Support'),
-    (Icons.auto_awesome, '52-Week Year in Tribute'),
+    (Icons.auto_awesome, '52-Week Year in MyWalk'),
   ];
 
   @override
@@ -100,12 +100,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
               duration: const Duration(milliseconds: 500),
               child: Column(children: [
                 const Text(
-                  'Go deeper with\nTribute Pro',
+                  'Go deeper with\nMyWalk Pro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
-                      color: TributeColor.warmWhite,
+                      color: MyWalkColor.warmWhite,
                       height: 1.3),
                 ),
                 const SizedBox(height: 10),
@@ -162,14 +162,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: TributeColor.charcoal))
+                          strokeWidth: 2, color: MyWalkColor.charcoal))
                   : const Icon(Icons.workspace_premium_rounded, size: 18),
               label: Text(_ctaLabel,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
@@ -200,7 +200,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               child: Text(store.error!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 12, color: TributeColor.warmCoral)),
+                      fontSize: 12, color: MyWalkColor.warmCoral)),
             ),
         ]),
       ),
@@ -216,13 +216,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isGold
-            ? TributeColor.golden.withValues(alpha: 0.06)
-            : TributeColor.cardBackground,
+            ? MyWalkColor.golden.withValues(alpha: 0.06)
+            : MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: isGold
-              ? TributeColor.golden.withValues(alpha: 0.2)
-              : TributeColor.cardBorder,
+              ? MyWalkColor.golden.withValues(alpha: 0.2)
+              : MyWalkColor.cardBorder,
           width: 0.5,
         ),
       ),
@@ -234,13 +234,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.5,
                 color: isGold
-                    ? TributeColor.golden
+                    ? MyWalkColor.golden
                     : Colors.white.withValues(alpha: 0.5),
               )),
           if (isGold) ...[
             const SizedBox(width: 6),
             const Icon(Icons.workspace_premium_rounded,
-                size: 10, color: TributeColor.golden),
+                size: 10, color: MyWalkColor.golden),
           ],
         ]),
         const SizedBox(height: 14),
@@ -252,8 +252,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   child: Icon(f.$1,
                       size: 13,
                       color: isGold
-                          ? TributeColor.golden
-                          : TributeColor.softGold.withValues(alpha: 0.5)),
+                          ? MyWalkColor.golden
+                          : MyWalkColor.softGold.withValues(alpha: 0.5)),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -261,7 +261,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         color: isGold
-                            ? TributeColor.warmWhite
+                            ? MyWalkColor.warmWhite
                             : Colors.white.withValues(alpha: 0.5),
                       )),
                 ),
@@ -342,13 +342,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
           color: isSelected
-              ? TributeColor.golden.withValues(alpha: 0.08)
-              : TributeColor.cardBackground,
+              ? MyWalkColor.golden.withValues(alpha: 0.08)
+              : MyWalkColor.cardBackground,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? TributeColor.golden.withValues(alpha: 0.4)
-                : TributeColor.cardBorder,
+                ? MyWalkColor.golden.withValues(alpha: 0.4)
+                : MyWalkColor.cardBorder,
             width: isSelected ? 1.5 : 0.5,
           ),
         ),
@@ -357,13 +357,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                  color: TributeColor.golden,
+                  color: MyWalkColor.golden,
                   borderRadius: BorderRadius.circular(20)),
               child: Text(badge,
                   style: const TextStyle(
                       fontSize: 9,
                       fontWeight: FontWeight.w700,
-                      color: TributeColor.charcoal)),
+                      color: MyWalkColor.charcoal)),
             )
           else
             const SizedBox(height: 17),
@@ -374,7 +374,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
                 color: isSelected
-                    ? TributeColor.golden
+                    ? MyWalkColor.golden
                     : Colors.white.withValues(alpha: 0.5),
               )),
           const SizedBox(height: 4),
@@ -383,7 +383,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: isSelected
-                    ? TributeColor.warmWhite
+                    ? MyWalkColor.warmWhite
                     : Colors.white.withValues(alpha: 0.5),
               )),
           const SizedBox(height: 2),
@@ -397,7 +397,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                     color: isSelected
-                        ? TributeColor.sage
+                        ? MyWalkColor.sage
                         : Colors.white.withValues(alpha: 0.3))),
           ],
         ]),

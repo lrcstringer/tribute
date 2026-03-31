@@ -10,7 +10,7 @@ import '../circles/sos_view.dart';
 import '../shared/fruit_tag_row.dart';
 import '../shared/golden_pulse_view.dart';
 import '../shared/milestone_celebration_view.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 import 'habit_detail_view.dart';
 
 class HabitCheckInCardView extends StatefulWidget {
@@ -141,7 +141,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       (p) => p.checkInPulseHabitId == _habit.id,
     );
     final isAbstain = _habit.trackingType == HabitTrackingType.abstain;
-    final accentColor = isAbstain ? TributeColor.sage : TributeColor.golden;
+    final accentColor = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
 
     return Stack(
       children: [
@@ -149,7 +149,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           onTap: () => _showDetail(context),
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -221,7 +221,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
-                  color: TributeColor.warmWhite,
+                  color: MyWalkColor.warmWhite,
                 ),
               ),
               if (_isCompleted)
@@ -229,7 +229,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                   _completedSubtitle(),
                   style: TextStyle(
                     fontSize: 11,
-                    color: TributeColor.sage,
+                    color: MyWalkColor.sage,
                   ),
                 )
               else
@@ -239,7 +239,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 11,
-                    color: TributeColor.softGold.withValues(alpha: 0.6),
+                    color: MyWalkColor.softGold.withValues(alpha: 0.6),
                   ),
                 ),
               if (_habit.fruitTags.isNotEmpty) ...[
@@ -281,7 +281,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         onPressed: _checkIn,
         style: ElevatedButton.styleFrom(
           backgroundColor: accentColor,
-          foregroundColor: TributeColor.charcoal,
+          foregroundColor: MyWalkColor.charcoal,
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -297,10 +297,10 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(Icons.shield_rounded, size: 13, color: TributeColor.warmCoral.withValues(alpha: 0.65)),
+          Icon(Icons.shield_rounded, size: 13, color: MyWalkColor.warmCoral.withValues(alpha: 0.65)),
           const SizedBox(width: 5),
           Text('SOS — Need help right now?',
-              style: TextStyle(fontSize: 12, color: TributeColor.warmCoral.withValues(alpha: 0.65))),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral.withValues(alpha: 0.65))),
         ]),
       ),
     );
@@ -313,8 +313,8 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: TributeColor.charcoal,
-        builder: (_) => const TributePaywallView(
+        backgroundColor: MyWalkColor.charcoal,
+        builder: (_) => const MyWalkPaywallView(
           contextTitle: 'SOS Support',
           contextMessage: 'Tough moment? The SOS feature can help — it\'ll remind you why you started and connect you with your circle.',
         ),
@@ -345,8 +345,8 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             ? 'Were you strong on ${_dayName(widget.targetDate)}?'
             : 'Stayed strong today?'),
         style: ElevatedButton.styleFrom(
-          backgroundColor: TributeColor.sage,
-          foregroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.sage,
+          foregroundColor: MyWalkColor.charcoal,
           padding: const EdgeInsets.symmetric(vertical: 12),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
@@ -413,12 +413,12 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: TributeColor.surfaceOverlay,
+          color: MyWalkColor.surfaceOverlay,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           label,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.softGold),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold),
         ),
       ),
     );
@@ -439,7 +439,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
-                color: _isCompleted ? accentColor : TributeColor.warmWhite,
+                color: _isCompleted ? accentColor : MyWalkColor.warmWhite,
               ),
             ),
             if (target > 0)
@@ -463,9 +463,9 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         height: 36,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: TributeColor.surfaceOverlay,
+          color: MyWalkColor.surfaceOverlay,
         ),
-        child: Icon(icon, size: 18, color: TributeColor.softGold),
+        child: Icon(icon, size: 18, color: MyWalkColor.softGold),
       ),
     );
   }
@@ -480,14 +480,14 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           style: TextStyle(
             fontSize: 11,
             fontStyle: FontStyle.italic,
-            color: TributeColor.softGold.withValues(alpha: 0.55),
+            color: MyWalkColor.softGold.withValues(alpha: 0.55),
             height: 1.5,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           verse.reference,
-          style: TextStyle(fontSize: 10, color: TributeColor.golden.withValues(alpha: 0.4)),
+          style: TextStyle(fontSize: 10, color: MyWalkColor.golden.withValues(alpha: 0.4)),
         ),
       ],
     );
@@ -529,7 +529,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

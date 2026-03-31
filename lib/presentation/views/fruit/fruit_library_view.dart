@@ -42,13 +42,13 @@ class _FruitLibraryViewState extends State<FruitLibraryView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
-        foregroundColor: TributeColor.warmWhite,
+        backgroundColor: MyWalkColor.charcoal,
+        foregroundColor: MyWalkColor.warmWhite,
         title: const Text(
           'Cultivate the Fruit of the Spirit',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: TributeColor.warmWhite),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(44),
@@ -56,10 +56,10 @@ class _FruitLibraryViewState extends State<FruitLibraryView>
             controller: _tabController,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            indicatorColor: TributeColor.golden,
+            indicatorColor: MyWalkColor.golden,
             indicatorWeight: 2,
-            labelColor: TributeColor.golden,
-            unselectedLabelColor: TributeColor.softGold.withValues(alpha: 0.5),
+            labelColor: MyWalkColor.golden,
+            unselectedLabelColor: MyWalkColor.softGold.withValues(alpha: 0.5),
             labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             unselectedLabelStyle: const TextStyle(fontSize: 12),
             tabs: FruitType.values
@@ -87,7 +87,7 @@ class _FruitLibraryViewState extends State<FruitLibraryView>
               style: TextStyle(
                 fontSize: 13,
                 fontStyle: FontStyle.italic,
-                color: TributeColor.softGold.withValues(alpha: 0.55),
+                color: MyWalkColor.softGold.withValues(alpha: 0.55),
               ),
             ),
           ),
@@ -127,9 +127,9 @@ class _MicroActionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: TributeColor.cardBackground,
+          color: MyWalkColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: TributeColor.cardBorder),
+          border: Border.all(color: MyWalkColor.cardBorder),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +154,7 @@ class _MicroActionCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      color: TributeColor.warmWhite,
+                      color: MyWalkColor.warmWhite,
                     ),
                   ),
                   const SizedBox(height: 3),
@@ -181,7 +181,7 @@ class _MicroActionCard extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Icon(Icons.add_circle_outline,
-                size: 20, color: TributeColor.golden.withValues(alpha: 0.7)),
+                size: 20, color: MyWalkColor.golden.withValues(alpha: 0.7)),
           ],
         ),
       ),
@@ -211,10 +211,10 @@ class _MicroActionCard extends StatelessWidget {
   Widget _badge(String text) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
         decoration: BoxDecoration(
-          color: TributeColor.surfaceOverlay,
+          color: MyWalkColor.surfaceOverlay,
           borderRadius: BorderRadius.circular(6),
         ),
         child: Text(text,
-            style: TextStyle(fontSize: 10, color: TributeColor.softGold.withValues(alpha: 0.65))),
+            style: TextStyle(fontSize: 10, color: MyWalkColor.softGold.withValues(alpha: 0.65))),
       );
 }

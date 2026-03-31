@@ -40,7 +40,7 @@ class HabitSelectionScreen extends StatelessWidget {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               'Now pick your\nown habit.',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: TributeColor.warmWhite, height: 1.3),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 10),
             Text(
@@ -50,7 +50,7 @@ class HabitSelectionScreen extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               'Pick 1 to start. You can add more later.',
-              style: TextStyle(fontSize: 12, color: TributeColor.softGold.withValues(alpha: 0.6)),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.softGold.withValues(alpha: 0.6)),
             ),
             const SizedBox(height: 20),
             GridView.count(
@@ -65,21 +65,21 @@ class HabitSelectionScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     decoration: BoxDecoration(
-                      color: TributeColor.cardBackground,
+                      color: MyWalkColor.cardBackground,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+                      border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(_icon(category), size: 26, color: TributeColor.golden),
+                        Icon(_icon(category), size: 26, color: MyWalkColor.golden),
                         const SizedBox(height: 10),
                         Text(
                           category.rawValue,
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           style: const TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w500, color: TributeColor.warmWhite,
+                            fontSize: 12, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -99,8 +99,8 @@ class HabitSelectionScreen extends StatelessWidget {
             const SizedBox(height: 12),
             _specialRow(
               icon: Icons.shield_rounded,
-              iconColor: TributeColor.warmCoral,
-              borderColor: TributeColor.warmCoral.withValues(alpha: 0.2),
+              iconColor: MyWalkColor.warmCoral,
+              borderColor: MyWalkColor.warmCoral.withValues(alpha: 0.2),
               title: 'I\u2019m letting go of something',
               subtitle: 'Break a bad habit with God\u2019s help',
               onTap: () => onSelect(HabitCategory.abstain),
@@ -108,8 +108,8 @@ class HabitSelectionScreen extends StatelessWidget {
             const SizedBox(height: 12),
             _specialRow(
               icon: Icons.auto_awesome,
-              iconColor: TributeColor.golden,
-              borderColor: TributeColor.golden.withValues(alpha: 0.15),
+              iconColor: MyWalkColor.golden,
+              borderColor: MyWalkColor.golden.withValues(alpha: 0.15),
               title: 'Something else entirely',
               subtitle: 'Create a fully custom habit',
               onTap: () => onSelect(HabitCategory.custom),
@@ -133,7 +133,7 @@ class HabitSelectionScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: TributeColor.cardBackground,
+          color: MyWalkColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: borderColor, width: 0.5),
         ),
@@ -143,7 +143,7 @@ class HabitSelectionScreen extends StatelessWidget {
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(title,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: TributeColor.warmWhite)),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
               const SizedBox(height: 3),
               Text(subtitle,
                   style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),

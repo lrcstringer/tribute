@@ -47,10 +47,10 @@ export const circleFetchBiblePassage = onCall(
       return { text: cached.data()!['text'] as string };
     }
 
-    // Fetch from API.Bible.
+    // Fetch from API.Bible using search (accepts human-readable references like "John 3:16").
     const apiKey = bibleApiKey.value();
     const encodedRef = encodeURIComponent(reference);
-    const url = `https://api.scripture.api.bible/v1/bibles/${bibleId}/passages/${encodedRef}?content-type=text&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false`;
+    const url = `https://api.scripture.api.bible/v1/bibles/${bibleId}/search?query=${encodedRef}&limit=1`;
 
     const resp = await fetch(url, {
       headers: { 'api-key': apiKey },
@@ -61,8 +61,10 @@ export const circleFetchBiblePassage = onCall(
       return { text: '' };
     }
 
-    const json = await resp.json() as { data?: { content?: string } };
-    const text = (json.data?.content ?? '').trim();
+    const json = await resp.json() as {
+      data?: { passages?: Array<{ content?: string }> };
+    };
+    const text = (json.data?.passages?.[0]?.content ?? '').trim();
 
     // Cache result to reduce API calls.
     if (text) {
@@ -194,12 +196,12 @@ export async function fetchPassageText(
 ): Promise<string> {
   const bibleId = BIBLE_IDS[translation.toUpperCase()] ?? BIBLE_IDS['NIV'];
   const encodedRef = encodeURIComponent(reference);
-  const url =
-    `https://api.scripture.api.bible/v1/bibles/${bibleId}/passages/${encodedRef}` +
-    `?content-type=text&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false`;
+  const url = `https://api.scripture.api.bible/v1/bibles/${bibleId}/search?query=${encodedRef}&limit=1`;
 
   const resp = await fetch(url, { headers: { 'api-key': apiKey } });
   if (!resp.ok) return '';
-  const json = await resp.json() as { data?: { content?: string } };
-  return (json.data?.content ?? '').trim();
+  const json = await resp.json() as {
+    data?: { passages?: Array<{ content?: string }> };
+  };
+  return (json.data?.passages?.[0]?.content ?? '').trim();
 }

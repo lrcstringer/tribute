@@ -65,8 +65,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
                     colors: [
-                      TributeColor.golden.withValues(alpha: 0.18),
-                      TributeColor.golden.withValues(alpha: 0.06),
+                      MyWalkColor.golden.withValues(alpha: 0.18),
+                      MyWalkColor.golden.withValues(alpha: 0.06),
                       Colors.transparent,
                     ],
                     center: const Alignment(0, 0.3),
@@ -96,19 +96,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               shape: BoxShape.circle,
                               gradient: RadialGradient(colors: [
                                 Colors.white.withValues(alpha: 0.04 + b * 0.08),
-                                TributeColor.golden.withValues(alpha: 0.08 + b * 0.17),
+                                MyWalkColor.golden.withValues(alpha: 0.08 + b * 0.17),
                                 Colors.transparent,
                               ]),
                             ),
                           ),
                           ShaderMask(
                             shaderCallback: (bounds) => const LinearGradient(
-                              colors: [TributeColor.warmWhite, TributeColor.softGold],
+                              colors: [MyWalkColor.warmWhite, MyWalkColor.softGold],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ).createShader(bounds),
                             child: Text(
-                              'TRIBUTE',
+                              'MY WALK',
                               style: TextStyle(
                                 fontSize: 52,
                                 fontWeight: FontWeight.w700,
@@ -116,11 +116,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                 color: Colors.white,
                                 shadows: [
                                   Shadow(
-                                    color: TributeColor.golden.withValues(alpha: 0.4 + b * 0.5),
+                                    color: MyWalkColor.golden.withValues(alpha: 0.4 + b * 0.5),
                                     blurRadius: 18 + b * 17,
                                   ),
                                   Shadow(
-                                    color: TributeColor.golden.withValues(alpha: 0.15 + b * 0.35),
+                                    color: MyWalkColor.golden.withValues(alpha: 0.15 + b * 0.35),
                                     blurRadius: 35 + b * 35,
                                   ),
                                 ],
@@ -141,7 +141,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
-                            color: TributeColor.softGold.withValues(alpha: 0.85),
+                            color: MyWalkColor.softGold.withValues(alpha: 0.85),
                           ),
                         ),
                       ),
@@ -160,14 +160,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             style: TextStyle(
                               fontSize: 14,
                               fontStyle: FontStyle.italic,
-                              color: TributeColor.softGold.withValues(alpha: 0.55),
+                              color: MyWalkColor.softGold.withValues(alpha: 0.55),
                               height: 1.6,
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
                             'Romans 12:1',
-                            style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.45)),
+                            style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.45)),
                           ),
                         ]),
                       ),
@@ -191,8 +191,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                           label: const Text("Let\u2019s begin",
                               style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: TributeColor.golden,
-                            foregroundColor: TributeColor.charcoal,
+                            backgroundColor: MyWalkColor.golden,
+                            foregroundColor: MyWalkColor.charcoal,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                           ),

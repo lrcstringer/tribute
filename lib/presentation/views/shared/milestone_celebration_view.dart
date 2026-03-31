@@ -88,7 +88,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
                         height: 360,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: TributeColor.golden.withValues(alpha: 0.08),
+                          color: MyWalkColor.golden.withValues(alpha: 0.08),
                         ),
                       ),
                     ),
@@ -102,7 +102,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
                         height: 260,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: TributeColor.golden.withValues(alpha: 0.15),
+                          color: MyWalkColor.golden.withValues(alpha: 0.15),
                         ),
                       ),
                     ),
@@ -134,7 +134,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
             shaderCallback: (bounds) => LinearGradient(
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
-              colors: [TributeColor.golden, TributeColor.golden, TributeColor.softGold.withValues(alpha: 0.3)],
+              colors: [MyWalkColor.golden, MyWalkColor.golden, MyWalkColor.softGold.withValues(alpha: 0.3)],
               stops: [0.0, t.clamp(0.0, 1.0), t.clamp(0.0, 1.0)],
             ).createShader(bounds),
             child: const Icon(Icons.shield_rounded, size: 48, color: Colors.white),
@@ -152,14 +152,14 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
             style: const TextStyle(
               fontSize: 42,
               fontWeight: FontWeight.w700,
-              color: TributeColor.golden,
+              color: MyWalkColor.golden,
             ),
           ),
         );
       case HabitTrackingType.timed:
-        return const Icon(Icons.timer_rounded, color: TributeColor.golden, size: 44);
+        return const Icon(Icons.timer_rounded, color: MyWalkColor.golden, size: 44);
       default:
-        return const Icon(Icons.star_rounded, color: TributeColor.golden, size: 44);
+        return const Icon(Icons.star_rounded, color: MyWalkColor.golden, size: 44);
     }
   }
 
@@ -174,7 +174,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
           Text(
             'MILESTONE REACHED',
             style: TextStyle(
-              color: TributeColor.softGold.withValues(alpha: 0.7),
+              color: MyWalkColor.softGold.withValues(alpha: 0.7),
               fontSize: 11,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.5,
@@ -185,7 +185,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
             widget.milestone.message,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              color: TributeColor.warmWhite,
+              color: MyWalkColor.warmWhite,
               fontSize: 18,
               fontWeight: FontWeight.w700,
               height: 1.4,
@@ -206,7 +206,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: TributeColor.softGold.withValues(alpha: 0.5),
+                        color: MyWalkColor.softGold.withValues(alpha: 0.5),
                         fontSize: 12,
                         fontStyle: FontStyle.italic,
                         height: 1.5,
@@ -216,7 +216,7 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
                     Text(
                       widget.milestone.verse!.reference,
                       style: TextStyle(
-                        color: TributeColor.golden.withValues(alpha: 0.4),
+                        color: MyWalkColor.golden.withValues(alpha: 0.4),
                         fontSize: 10,
                       ),
                     ),
@@ -231,13 +231,13 @@ class _MilestoneCelebrationViewState extends State<MilestoneCelebrationView>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
               decoration: BoxDecoration(
-                color: TributeColor.golden,
+                color: MyWalkColor.golden,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: const Text(
                 'Continue',
                 style: TextStyle(
-                  color: TributeColor.charcoal,
+                  color: MyWalkColor.charcoal,
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),

@@ -1,5 +1,5 @@
-name: tribute
-description: "Tribute — A habit tracking app for your faith journey."
+name: mywalk
+description: "MyWalk — A habit tracking app for your faith journey."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -109,10 +109,10 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logotran.png"
+  image_path: "assets/the4toedone.png"
   # Android adaptive icon: black background + icon as foreground layer
   adaptive_icon_background: "#000000"
-  adaptive_icon_foreground: "assets/logotran.png"
+  adaptive_icon_foreground: "assets/the4toedone.png"
   # Remove platform web/windows/macos icons (not needed)
   web:
     generate: false
@@ -127,11 +127,11 @@ flutter_native_splash:
   # Black background matches the app's dark theme
   color: "#000000"
   # Icon centred on the splash — shown at ~1/3 screen height
-  image: "assets/logotran.png"
+  image: "assets/the4toedone.png"
   # Android 12+ uses the new SplashScreen API
   android_12:
     color: "#000000"
-    image: "assets/logotran.png"
+    image: "assets/the4toedone.png"
     icon_background_color: "#000000"
   # Keep splash visible until Flutter signals it's ready
   android_gravity: center

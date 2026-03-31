@@ -55,7 +55,7 @@ class _FruitIntroScreenState extends State<FruitIntroScreen>
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
-              color: TributeColor.warmWhite,
+              color: MyWalkColor.warmWhite,
               height: 1.2,
             ),
           ),
@@ -64,7 +64,7 @@ class _FruitIntroScreenState extends State<FruitIntroScreen>
             'The goal is who you\'re becoming. In Galatians, Paul describes the fruit of a life connected to God\'s Spirit:',
             style: TextStyle(
               fontSize: 16,
-              color: TributeColor.warmWhite.withValues(alpha: 0.75),
+              color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
               height: 1.6,
             ),
           ),
@@ -77,11 +77,11 @@ class _FruitIntroScreenState extends State<FruitIntroScreen>
           Container(
             padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
             decoration: BoxDecoration(
-              color: TributeColor.golden.withValues(alpha: 0.07),
+              color: MyWalkColor.golden.withValues(alpha: 0.07),
               borderRadius: BorderRadius.circular(10),
               border: Border(
                 left: BorderSide(
-                    color: TributeColor.golden.withValues(alpha: 0.4), width: 3),
+                    color: MyWalkColor.golden.withValues(alpha: 0.4), width: 3),
               ),
             ),
             child: Text(
@@ -89,7 +89,7 @@ class _FruitIntroScreenState extends State<FruitIntroScreen>
               style: TextStyle(
                 fontSize: 14,
                 fontStyle: FontStyle.italic,
-                color: TributeColor.softGold.withValues(alpha: 0.85),
+                color: MyWalkColor.softGold.withValues(alpha: 0.85),
                 height: 1.5,
               ),
             ),
@@ -102,8 +102,8 @@ class _FruitIntroScreenState extends State<FruitIntroScreen>
             child: ElevatedButton(
               onPressed: widget.onNext,
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),

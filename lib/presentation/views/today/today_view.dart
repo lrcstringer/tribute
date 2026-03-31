@@ -16,7 +16,7 @@ import '../habits/add_habit_view.dart';
 import '../habits/habit_check_in_card_view.dart';
 import '../shared/engagement_banner_view.dart';
 import '../shared/golden_pulse_view.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 import '../week/week_strip_view.dart';
 
 class TodayView extends StatefulWidget {
@@ -103,8 +103,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     // habits may be empty during initial load — guard before any .first access.
     if (habits.isEmpty) {
       return const Scaffold(
-        backgroundColor: TributeColor.charcoal,
-        body: Center(child: CircularProgressIndicator(color: TributeColor.golden)),
+        backgroundColor: MyWalkColor.charcoal,
+        body: Center(child: CircularProgressIndicator(color: MyWalkColor.golden)),
       );
     }
     final gratitudeHabit = habits.firstWhere(
@@ -119,12 +119,12 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     return Stack(
       children: [
         Scaffold(
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  backgroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.charcoal,
                   floating: true,
                   snap: true,
                   pinned: false,
@@ -220,7 +220,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       style: const TextStyle(
         fontSize: 17,
         fontWeight: FontWeight.w600,
-        color: TributeColor.warmWhite,
+        color: MyWalkColor.warmWhite,
       ),
     );
   }
@@ -232,26 +232,26 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
         margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
         padding: const EdgeInsets.fromLTRB(14, 10, 6, 10),
         decoration: BoxDecoration(
-          color: TributeColor.golden.withValues(alpha: 0.08),
+          color: MyWalkColor.golden.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
         ),
         child: Row(
           children: [
-            const Icon(Icons.check_circle_outline, color: TributeColor.golden, size: 16),
+            const Icon(Icons.check_circle_outline, color: MyWalkColor.golden, size: 16),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
                 'New week, same habits. You\'re already on Day ${DateTime.now().weekday % 7 + 1}. Let\'s keep going.',
                 style: TextStyle(
-                  color: TributeColor.softGold.withValues(alpha: 0.85),
+                  color: MyWalkColor.softGold.withValues(alpha: 0.85),
                   fontSize: 12,
                 ),
               ),
             ),
             GestureDetector(
               onTap: widget.onDismissAutoCarry,
-              child: Icon(Icons.close, size: 14, color: TributeColor.softGold.withValues(alpha: 0.4)),
+              child: Icon(Icons.close, size: 14, color: MyWalkColor.softGold.withValues(alpha: 0.4)),
             ),
           ],
         ),
@@ -264,19 +264,19 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: TributeColor.softGold.withValues(alpha: 0.08),
+        color: MyWalkColor.softGold.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: TributeColor.softGold.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: MyWalkColor.softGold.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Row(
         children: [
-          Icon(Icons.history, size: 14, color: TributeColor.softGold.withValues(alpha: 0.6)),
+          Icon(Icons.history, size: 14, color: MyWalkColor.softGold.withValues(alpha: 0.6)),
           const SizedBox(width: 6),
           Text(
             'Logging for $formatter',
             style: TextStyle(
               fontSize: 12,
-              color: TributeColor.softGold.withValues(alpha: 0.7),
+              color: MyWalkColor.softGold.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -301,26 +301,26 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: TributeColor.golden.withValues(alpha: 0.06),
+              color: MyWalkColor.golden.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+              border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
             ),
             child: Row(
               children: [
-                const Icon(Icons.workspace_premium, color: TributeColor.golden, size: 18),
+                const Icon(Icons.workspace_premium, color: MyWalkColor.golden, size: 18),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Unlock unlimited habits',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: TributeColor.warmWhite, fontSize: 13)),
+                          style: TextStyle(fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite, fontSize: 13)),
                       Text('Free plan includes $_freeHabitLimit habits. Upgrade to add more.',
-                          style: TextStyle(fontSize: 11, color: TributeColor.softGold.withValues(alpha: 0.6))),
+                          style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.6))),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right, color: TributeColor.golden.withValues(alpha: 0.5), size: 16),
+                Icon(Icons.chevron_right, color: MyWalkColor.golden.withValues(alpha: 0.5), size: 16),
               ],
             ),
           ),
@@ -332,10 +332,10 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: TextButton.icon(
         onPressed: () => _showAddHabit(context),
-        icon: const Icon(Icons.add_circle_outline, size: 18, color: TributeColor.softGold),
+        icon: const Icon(Icons.add_circle_outline, size: 18, color: MyWalkColor.softGold),
         label: Text(
           'Add a habit',
-          style: TextStyle(color: TributeColor.softGold.withValues(alpha: 0.6), fontSize: 13),
+          style: TextStyle(color: MyWalkColor.softGold.withValues(alpha: 0.6), fontSize: 13),
         ),
       ),
     );
@@ -344,8 +344,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
   Widget _sosButton(Habit habit) {
     return FloatingActionButton.extended(
       onPressed: () => _showSOS(context, habit),
-      backgroundColor: TributeColor.warmCoral.withValues(alpha: 0.15),
-      foregroundColor: TributeColor.warmCoral,
+      backgroundColor: MyWalkColor.warmCoral.withValues(alpha: 0.15),
+      foregroundColor: MyWalkColor.warmCoral,
       elevation: 0,
       icon: const Icon(Icons.shield_rounded, size: 18),
       label: const Text('SOS', style: TextStyle(fontWeight: FontWeight.w700)),
@@ -362,7 +362,7 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -381,8 +381,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
-      builder: (_) => const TributePaywallView(),
+      backgroundColor: MyWalkColor.charcoal,
+      builder: (_) => const MyWalkPaywallView(),
     );
   }
 
@@ -393,8 +393,8 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: TributeColor.charcoal,
-        builder: (_) => const TributePaywallView(
+        backgroundColor: MyWalkColor.charcoal,
+        builder: (_) => const MyWalkPaywallView(
           contextTitle: 'SOS Support',
           contextMessage: 'Tough moment? The SOS feature can help — it\'ll remind you why you started and connect you with your circle.',
         ),
@@ -562,7 +562,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
           child: Container(
             padding: const EdgeInsets.all(16),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -577,14 +577,14 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              TributeColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
-                              TributeColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
+                              MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.35 : 0.12),
+                              MyWalkColor.golden.withValues(alpha: _isCompleted ? 0.15 : 0.04),
                             ],
                           ),
                         ),
                         child: Icon(
                           Icons.auto_awesome,
-                          color: _isCompleted ? TributeColor.golden : TributeColor.softGold,
+                          color: _isCompleted ? MyWalkColor.golden : MyWalkColor.softGold,
                           size: 20,
                         ),
                       ),
@@ -594,22 +594,22 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Daily Gratitude',
-                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: TributeColor.warmWhite)),
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: MyWalkColor.warmWhite)),
                             if (_isCompleted)
                               Text('${widget.habit.totalCompletedDays()} days of gratitude',
-                                  style: const TextStyle(fontSize: 11, color: TributeColor.sage))
+                                  style: const TextStyle(fontSize: 11, color: MyWalkColor.sage))
                             else
                               Text(
                                 widget.isRetroactive
                                     ? 'Were you grateful that day?'
                                     : 'What\u2019s one thing you\u2019re grateful for?',
-                                style: TextStyle(fontSize: 11, color: TributeColor.softGold.withValues(alpha: 0.7)),
+                                style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
                               ),
                           ],
                         ),
                       ),
                       if (_isCompleted)
-                        const Icon(Icons.check_circle_rounded, color: TributeColor.golden, size: 24)
+                        const Icon(Icons.check_circle_rounded, color: MyWalkColor.golden, size: 24)
                       else
                         Icon(Icons.expand_more, color: Colors.white.withValues(alpha: 0.3), size: 18),
                     ],
@@ -621,12 +621,12 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     controller: _controller,
                     maxLines: 3,
                     minLines: 2,
-                    style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+                    style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
                     decoration: InputDecoration(
                       hintText: widget.isRetroactive ? 'What were you grateful for?' : 'Thank God for something today...',
                       hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
                       filled: true,
-                      fillColor: TributeColor.surfaceOverlay,
+                      fillColor: MyWalkColor.surfaceOverlay,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
@@ -641,8 +641,8 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       icon: const Icon(Icons.favorite, size: 14),
                       label: Text(_controller.text.isEmpty ? 'Thank you, Lord' : 'Give thanks'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: TributeColor.golden,
-                        foregroundColor: TributeColor.charcoal,
+                        backgroundColor: MyWalkColor.golden,
+                        foregroundColor: MyWalkColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -658,8 +658,8 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       icon: const Icon(Icons.favorite, size: 14),
                       label: const Text('Thank you, Lord'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: TributeColor.golden,
-                        foregroundColor: TributeColor.charcoal,
+                        backgroundColor: MyWalkColor.golden,
+                        foregroundColor: MyWalkColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -674,7 +674,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                     style: TextStyle(
                       fontSize: 11,
                       fontStyle: FontStyle.italic,
-                      color: TributeColor.softGold.withValues(alpha: 0.55),
+                      color: MyWalkColor.softGold.withValues(alpha: 0.55),
                       height: 1.5,
                     ),
                   ),
@@ -682,7 +682,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                   Center(
                     child: Text(
                       _verse!.reference,
-                      style: TextStyle(fontSize: 10, color: TributeColor.golden.withValues(alpha: 0.4)),
+                      style: TextStyle(fontSize: 10, color: MyWalkColor.golden.withValues(alpha: 0.4)),
                     ),
                   ),
                   if (_showSharePrompt && _userCircles != null) ...[
@@ -694,7 +694,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,
-                          backgroundColor: TributeColor.charcoal,
+                          backgroundColor: MyWalkColor.charcoal,
                           builder: (_) => ShareGratitudeSheet(
                             circles: _userCircles!,
                             gratitudeText: widget.habit.entryFor(widget.targetDate)?.gratitudeNote,
@@ -705,10 +705,10 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.share_outlined, size: 13, color: TributeColor.golden.withValues(alpha: 0.55)),
+                          Icon(Icons.share_outlined, size: 13, color: MyWalkColor.golden.withValues(alpha: 0.55)),
                           const SizedBox(width: 5),
                           Text('Share with your circle?',
-                              style: TextStyle(fontSize: 11, color: TributeColor.golden.withValues(alpha: 0.55))),
+                              style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.55))),
                         ],
                       ),
                     ),

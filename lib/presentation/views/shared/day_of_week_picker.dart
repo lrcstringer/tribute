@@ -39,7 +39,7 @@ class DayOfWeekPicker extends StatelessWidget {
         Text(
           isAbstain ? 'Which days are you committing to this?' : 'Which days will you do this?',
           style: TextStyle(
-            color: TributeColor.softGold.withValues(alpha: 0.6),
+            color: MyWalkColor.softGold.withValues(alpha: 0.6),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -65,13 +65,13 @@ class DayOfWeekPicker extends StatelessWidget {
                 height: 38,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? TributeColor.golden : TributeColor.surfaceOverlay,
+                  color: isSelected ? MyWalkColor.golden : MyWalkColor.surfaceOverlay,
                 ),
                 alignment: Alignment.center,
                 child: Text(
                   day.label,
                   style: TextStyle(
-                    color: isSelected ? TributeColor.charcoal : TributeColor.softGold.withValues(alpha: 0.5),
+                    color: isSelected ? MyWalkColor.charcoal : MyWalkColor.softGold.withValues(alpha: 0.5),
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -85,7 +85,7 @@ class DayOfWeekPicker extends StatelessWidget {
           Text(
             _description,
             style: TextStyle(
-              color: TributeColor.softGold.withValues(alpha: 0.4),
+              color: MyWalkColor.softGold.withValues(alpha: 0.4),
               fontSize: 10,
             ),
           ),

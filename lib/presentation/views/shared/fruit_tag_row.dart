@@ -36,7 +36,7 @@ class FruitTagRow extends StatelessWidget {
               '+$overflow',
               style: TextStyle(
                 fontSize: 10,
-                color: TributeColor.softGold.withValues(alpha: 0.55),
+                color: MyWalkColor.softGold.withValues(alpha: 0.55),
               ),
             ),
         ],
@@ -63,7 +63,7 @@ class FruitTagRow extends StatelessWidget {
       context: context,
       barrierColor: Colors.black45,
       builder: (ctx) => Dialog(
-        backgroundColor: TributeColor.cardBackground,
+        backgroundColor: MyWalkColor.cardBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -82,7 +82,7 @@ class FruitTagRow extends StatelessWidget {
                 purposeStatement!,
                 style: TextStyle(
                   fontSize: 14,
-                  color: TributeColor.warmWhite.withValues(alpha: 0.9),
+                  color: MyWalkColor.warmWhite.withValues(alpha: 0.9),
                   height: 1.5,
                   fontStyle: FontStyle.italic,
                 ),
@@ -93,7 +93,7 @@ class FruitTagRow extends StatelessWidget {
                 child: TextButton(
                   onPressed: () => Navigator.pop(ctx),
                   child: const Text('Close',
-                      style: TextStyle(color: TributeColor.softGold)),
+                      style: TextStyle(color: MyWalkColor.softGold)),
                 ),
               ),
             ],

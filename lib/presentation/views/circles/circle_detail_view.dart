@@ -9,6 +9,7 @@ import '../../providers/scripture_focus_provider.dart';
 import '../../providers/circle_habits_provider.dart';
 import '../../providers/encouragement_provider.dart';
 import '../../providers/milestone_share_provider.dart';
+import '../../providers/circle_habit_milestone_provider.dart';
 import '../../providers/weekly_pulse_provider.dart';
 import '../../providers/circle_events_provider.dart';
 import '../../../domain/repositories/circle_repository.dart';
@@ -17,7 +18,7 @@ import '../../theme/app_theme.dart';
 import 'circle_sunday_summary_view.dart';
 import 'gratitude_wall_view.dart' show GratitudeWallWidget;
 import 'sos_prayer_request_view.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 import 'prayer_list_tab.dart';
 import 'scripture_focus_tab.dart';
 import 'circle_habits_tab.dart';
@@ -78,6 +79,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
     context.read<CircleHabitsProvider>().load(widget.circleId);
     context.read<EncouragementProvider>().load(widget.circleId);
     context.read<MilestoneShareProvider>().load(widget.circleId);
+    context.read<CircleHabitMilestoneProvider>().load(widget.circleId);
     context.read<WeeklyPulseProvider>().load(widget.circleId, uid);
     context.read<CircleEventsProvider>().load(widget.circleId);
   }
@@ -125,14 +127,14 @@ class _CircleDetailViewState extends State<CircleDetailView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator(color: TributeColor.golden));
+      return const Center(child: CircularProgressIndicator(color: MyWalkColor.golden));
     }
     if (_detail == null) {
       return Center(
@@ -142,7 +144,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
           Text(_error ?? 'Failed to load', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
           const SizedBox(height: 16),
           TextButton(onPressed: _loadDetail,
-              child: const Text('Retry', style: TextStyle(color: TributeColor.golden))),
+              child: const Text('Retry', style: TextStyle(color: MyWalkColor.golden))),
         ]),
       );
     }
@@ -153,21 +155,21 @@ class _CircleDetailViewState extends State<CircleDetailView>
     return NestedScrollView(
       headerSliverBuilder: (context, _) => [
         SliverAppBar(
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           title: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(detail.name,
-                style: const TextStyle(color: TributeColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w700)),
+                style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 18, fontWeight: FontWeight.w700)),
             Text('${detail.memberCount} members',
                 style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
           ]),
           actions: [
             if (detail.members.any((m) => m.userId == AuthService.shared.userId && m.isAdmin))
               IconButton(
-                icon: const Icon(Icons.settings_rounded, size: 20, color: TributeColor.softGold),
+                icon: const Icon(Icons.settings_rounded, size: 20, color: MyWalkColor.softGold),
                 onPressed: () => _openSettings(detail),
               ),
             IconButton(
-              icon: const Icon(Icons.link_rounded, size: 20, color: TributeColor.golden),
+              icon: const Icon(Icons.link_rounded, size: 20, color: MyWalkColor.golden),
               onPressed: () => _shareInvite(detail),
             ),
           ],
@@ -177,9 +179,9 @@ class _CircleDetailViewState extends State<CircleDetailView>
             controller: _tabController,
             isScrollable: true,
             tabAlignment: TabAlignment.start,
-            labelColor: TributeColor.golden,
-            unselectedLabelColor: TributeColor.softGold,
-            indicatorColor: TributeColor.golden,
+            labelColor: MyWalkColor.golden,
+            unselectedLabelColor: MyWalkColor.softGold,
+            indicatorColor: MyWalkColor.golden,
             indicatorSize: TabBarIndicatorSize.label,
             labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             unselectedLabelStyle: const TextStyle(fontSize: 12),
@@ -207,6 +209,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
             onSummaryTap: () => _showSundaySummary(detail),
             onLeaveTap: _confirmLeave,
             isLeaving: _isLeaving,
+            onRoleChanged: _loadDetail,
           ),
           PrayerListTab(circleId: widget.circleId),
           ScriptureFocusTab(circleId: widget.circleId, settings: detail.settings),
@@ -225,8 +228,8 @@ class _CircleDetailViewState extends State<CircleDetailView>
     if (!isPremium) {
       showModalBottomSheet(
         context: context, isScrollControlled: true, useSafeArea: true,
-        backgroundColor: TributeColor.charcoal,
-        builder: (_) => const TributePaywallView(
+        backgroundColor: MyWalkColor.charcoal,
+        builder: (_) => const MyWalkPaywallView(
           contextTitle: 'SOS Support',
           contextMessage: "Tough moment? The SOS feature can help — it'll remind you why you started and connect you with your circle.",
         ),
@@ -235,7 +238,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
     }
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => SOSPrayerRequestView(circleId: widget.circleId, members: detail.members),
     );
   }
@@ -243,7 +246,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
   void _showSundaySummary(CircleDetails detail) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => CircleSundaySummaryView(circleId: widget.circleId, circleName: detail.name),
     );
   }
@@ -251,7 +254,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
   void _shareInvite(CircleDetails detail) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => _ShareInviteSheet(
         circleName: detail.name, inviteCode: detail.inviteCode),
     );
@@ -267,8 +270,8 @@ class _CircleDetailViewState extends State<CircleDetailView>
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: TributeColor.cardBackground,
-        title: const Text('Leave Circle', style: TextStyle(color: TributeColor.warmWhite)),
+        backgroundColor: MyWalkColor.cardBackground,
+        title: const Text('Leave Circle', style: TextStyle(color: MyWalkColor.warmWhite)),
         content: Text(
           "You'll no longer receive prayer requests or see this circle's progress.",
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
@@ -280,7 +283,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
           ),
           TextButton(
             onPressed: () { Navigator.pop(context); _leaveCircle(); },
-            child: const Text('Leave', style: TextStyle(color: TributeColor.warmCoral)),
+            child: const Text('Leave', style: TextStyle(color: MyWalkColor.warmCoral)),
           ),
         ],
       ),
@@ -301,6 +304,7 @@ class _OverviewTab extends StatelessWidget {
   final VoidCallback onSummaryTap;
   final VoidCallback onLeaveTap;
   final bool isLeaving;
+  final VoidCallback onRoleChanged;
 
   const _OverviewTab({
     required this.circleId,
@@ -313,6 +317,7 @@ class _OverviewTab extends StatelessWidget {
     required this.onSummaryTap,
     required this.onLeaveTap,
     required this.isLeaving,
+    required this.onRoleChanged,
   });
 
   @override
@@ -330,15 +335,15 @@ class _OverviewTab extends StatelessWidget {
         _sectionHeader('Actions'),
         const SizedBox(height: 8),
         _actionRow(
-          icon: Icons.bolt_rounded, iconColor: TributeColor.warmCoral,
-          iconBg: TributeColor.warmCoral.withValues(alpha: 0.12),
+          icon: Icons.bolt_rounded, iconColor: MyWalkColor.warmCoral,
+          iconBg: MyWalkColor.warmCoral.withValues(alpha: 0.12),
           title: 'SOS Prayer Request', subtitle: 'Ask your circle to pray for you now',
           onTap: onSOSTap,
         ),
         const SizedBox(height: 8),
         _actionRow(
-          icon: Icons.wb_sunny_rounded, iconColor: TributeColor.golden,
-          iconBg: TributeColor.golden.withValues(alpha: 0.12),
+          icon: Icons.wb_sunny_rounded, iconColor: MyWalkColor.golden,
+          iconBg: MyWalkColor.golden.withValues(alpha: 0.12),
           title: 'Weekly Summary', subtitle: "See your circle's faithfulness this week",
           onTap: onSummaryTap,
         ),
@@ -347,7 +352,7 @@ class _OverviewTab extends StatelessWidget {
         const SizedBox(height: 8),
         ...detail.members.map((m) => Padding(
           padding: const EdgeInsets.only(bottom: 8),
-          child: _memberRow(m),
+          child: _memberRow(context, m),
         )),
         const SizedBox(height: 16),
         _leaveButton(),
@@ -358,13 +363,13 @@ class _OverviewTab extends StatelessWidget {
   Widget _collaborativeHeatmapSection(bool isPremium) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.grid_view_rounded, size: 13, color: TributeColor.golden),
+          const Icon(Icons.grid_view_rounded, size: 13, color: MyWalkColor.golden),
           const SizedBox(width: 6),
           Text('Circle Activity',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const Spacer(),
           Text('${detail.memberCount} members',
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -381,13 +386,13 @@ class _OverviewTab extends StatelessWidget {
         else if (heatmap == null)
           const SizedBox(height: 32,
             child: Center(child: SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 1.5, color: TributeColor.golden))))
+              child: CircularProgressIndicator(strokeWidth: 1.5, color: MyWalkColor.golden))))
         else
           _CircleHeatmapGrid(heatmap: heatmap!, isPremium: isPremium),
         if (!isPremium) ...[
           const SizedBox(height: 8),
           Text('Upgrade to see your full 52-week circle history.',
-              style: TextStyle(fontSize: 11, color: TributeColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5))),
         ],
       ]),
     );
@@ -397,13 +402,13 @@ class _OverviewTab extends StatelessWidget {
     final ms = milestones;
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.star_rounded, size: 13, color: TributeColor.golden),
+          const Icon(Icons.star_rounded, size: 13, color: MyWalkColor.golden),
           const SizedBox(width: 6),
           Text('Circle Milestones',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
         ]),
         const SizedBox(height: 10),
         if (milestonesFailed)
@@ -412,7 +417,7 @@ class _OverviewTab extends StatelessWidget {
         else if (ms == null)
           const SizedBox(height: 32,
             child: Center(child: SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 1.5, color: TributeColor.golden))))
+              child: CircularProgressIndicator(strokeWidth: 1.5, color: MyWalkColor.golden))))
         else ...[
           if (ms.totalGivingDays > 0 || ms.totalHours > 0 || ms.totalGratitudeDays > 0)
             _milestoneTotalsRow(ms),
@@ -442,7 +447,7 @@ class _OverviewTab extends StatelessWidget {
       children: items.map((item) => Expanded(
         child: Column(children: [
           Text(item.value,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
           Text(item.label,
               style: TextStyle(fontSize: 10, color: Colors.white.withValues(alpha: 0.45))),
         ]),
@@ -454,16 +459,16 @@ class _OverviewTab extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: TributeColor.golden.withValues(alpha: 0.06),
+        color: MyWalkColor.golden.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.18), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.18), width: 0.5),
       ),
       child: Row(children: [
-        const Icon(Icons.star_rounded, size: 16, color: TributeColor.golden),
+        const Icon(Icons.star_rounded, size: 16, color: MyWalkColor.golden),
         const SizedBox(width: 10),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(m.title,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
           const SizedBox(height: 2),
           Text(m.message,
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.5), height: 1.4)),
@@ -497,7 +502,7 @@ class _OverviewTab extends StatelessWidget {
             child: Icon(icon, size: 18, color: iconColor)),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+            Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
             Text(subtitle, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
           ])),
           Icon(Icons.chevron_right, size: 14, color: Colors.white.withValues(alpha: 0.3)),
@@ -506,23 +511,67 @@ class _OverviewTab extends StatelessWidget {
     );
   }
 
-  Widget _memberRow(CircleMember m) {
+  Widget _memberRow(BuildContext context, CircleMember m) {
+    final currentUid = AuthService.shared.userId ?? '';
+    final currentUserIsAdmin = detail.members.any((x) => x.userId == currentUid && x.isAdmin);
+    final isSelf = m.userId == currentUid;
     final isAdmin = m.isAdmin;
-    final color = isAdmin ? TributeColor.golden : TributeColor.sage;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: TributeDecorations.card,
-      child: Row(children: [
-        Container(width: 36, height: 36,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: color.withValues(alpha: 0.12)),
-          child: Icon(Icons.person_rounded, size: 14, color: color)),
-        const SizedBox(width: 12),
-        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('Member', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmWhite)),
-          if (isAdmin)
-            const Text('Admin', style: TextStyle(fontSize: 11, color: TributeColor.golden)),
-        ])),
-      ]),
+    final color = isAdmin ? MyWalkColor.golden : MyWalkColor.sage;
+    return GestureDetector(
+      onTap: currentUserIsAdmin && !isSelf ? () => _showRoleDialog(context, m) : null,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: MyWalkDecorations.card,
+        child: Row(children: [
+          Container(width: 36, height: 36,
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color.withValues(alpha: 0.12)),
+            child: Icon(Icons.person_rounded, size: 14, color: color)),
+          const SizedBox(width: 12),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(isSelf ? 'You' : m.displayName,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
+            Text(isAdmin ? 'Admin' : 'Member',
+                style: TextStyle(fontSize: 11,
+                    color: isAdmin ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4))),
+          ])),
+          if (currentUserIsAdmin && !isSelf)
+            Icon(Icons.more_horiz_rounded, size: 16, color: Colors.white.withValues(alpha: 0.25)),
+        ]),
+      ),
+    );
+  }
+
+  void _showRoleDialog(BuildContext context, CircleMember m) {
+    final isAdmin = m.isAdmin;
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: MyWalkColor.cardBackground,
+        title: Text(isAdmin ? 'Remove Admin' : 'Make Admin',
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
+        content: Text(
+          isAdmin
+              ? 'Remove admin privileges from this member? They will become a regular member.'
+              : 'Give this member admin privileges? They will be able to manage habits, events, and circle settings.',
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.6), fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<CircleRepository>().updateMemberRole(
+                circleId, m.userId, isAdmin ? 'member' : 'admin',
+              ).then((_) => onRoleChanged());
+            },
+            child: Text(isAdmin ? 'Remove Admin' : 'Make Admin',
+                style: const TextStyle(color: MyWalkColor.golden)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -532,18 +581,18 @@ class _OverviewTab extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: TributeColor.warmCoral.withValues(alpha: 0.06),
+          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: TributeColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(children: [
-          const Icon(Icons.logout_rounded, size: 16, color: TributeColor.warmCoral),
+          const Icon(Icons.logout_rounded, size: 16, color: MyWalkColor.warmCoral),
           const SizedBox(width: 10),
           const Expanded(child: Text('Leave Circle',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmCoral))),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmCoral))),
           if (isLeaving)
             const SizedBox(width: 16, height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.warmCoral)),
+              child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.warmCoral)),
         ]),
       ),
     );
@@ -560,10 +609,10 @@ class _ShareInviteSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
-        title: const Text('Invite', style: TextStyle(color: TributeColor.warmWhite, fontSize: 17)),
+        backgroundColor: MyWalkColor.charcoal,
+        title: const Text('Invite', style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -578,26 +627,26 @@ class _ShareInviteSheet extends StatelessWidget {
           child: Column(children: [
             Container(width: 64, height: 64,
               decoration: BoxDecoration(shape: BoxShape.circle,
-                  color: TributeColor.golden.withValues(alpha: 0.1)),
-              child: const Icon(Icons.link_rounded, size: 28, color: TributeColor.golden)),
+                  color: MyWalkColor.golden.withValues(alpha: 0.1)),
+              child: const Icon(Icons.link_rounded, size: 28, color: MyWalkColor.golden)),
             const SizedBox(height: 12),
             Text('Invite to $circleName',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () {
-                  final text = 'Join my Prayer Circle "$circleName" on Tribute!\n\n'
-                    'Tap to join: https://tribute.app/join?code=$inviteCode\n\n'
+                  final text = 'Join my Prayer Circle "$circleName" on MyWalk!\n\n'
+                    'Tap to join: https://mywalk.faith/join?code=$inviteCode\n\n'
                     'Or enter invite code "$inviteCode" manually in the app.';
                   Share.share(text);
                 },
                 icon: const Icon(Icons.share_rounded, size: 18),
                 label: const Text('Share Invite', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -608,11 +657,11 @@ class _ShareInviteSheet extends StatelessWidget {
               width: double.infinity,
               child: TextButton.icon(
                 onPressed: () => Clipboard.setData(ClipboardData(text: inviteCode)),
-                icon: const Icon(Icons.copy_rounded, size: 16, color: TributeColor.golden),
+                icon: const Icon(Icons.copy_rounded, size: 16, color: MyWalkColor.golden),
                 label: Text('Copy Code: $inviteCode',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.golden)),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
                 style: TextButton.styleFrom(
-                  backgroundColor: TributeColor.golden.withValues(alpha: 0.1),
+                  backgroundColor: MyWalkColor.golden.withValues(alpha: 0.1),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -667,10 +716,10 @@ class _CircleHeatmapGrid extends StatelessWidget {
   }
 
   Color _cellColor(double intensity) {
-    if (intensity <= 0.0) return TributeColor.surfaceOverlay;
-    if (intensity <= 0.25) return TributeColor.golden.withValues(alpha: 0.15);
-    if (intensity <= 0.65) return TributeColor.golden.withValues(alpha: 0.50);
-    return TributeColor.golden.withValues(alpha: 0.85);
+    if (intensity <= 0.0) return MyWalkColor.surfaceOverlay;
+    if (intensity <= 0.25) return MyWalkColor.golden.withValues(alpha: 0.15);
+    if (intensity <= 0.65) return MyWalkColor.golden.withValues(alpha: 0.50);
+    return MyWalkColor.golden.withValues(alpha: 0.85);
   }
 
   @override
@@ -757,7 +806,7 @@ class _CircleHeatmapGrid extends StatelessWidget {
                           color: isFuture ? Colors.white.withValues(alpha: 0.02) : _cellColor(intensity),
                           borderRadius: BorderRadius.circular(2),
                           boxShadow: !isFuture && intensity > 0.65
-                              ? [BoxShadow(color: TributeColor.golden.withValues(alpha: 0.35), blurRadius: 3)]
+                              ? [BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.35), blurRadius: 3)]
                               : null,
                         ),
                       ),

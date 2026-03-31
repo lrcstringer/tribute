@@ -32,8 +32,8 @@ class FruitTagChip extends StatelessWidget {
       bgColor = fruitColor.withValues(alpha: 0.18);
       border = Border.all(color: fruitColor, width: 1.5);
     } else if (isSuggested) {
-      bgColor = TributeColor.golden.withValues(alpha: 0.06);
-      border = Border.all(color: TributeColor.golden.withValues(alpha: 0.45), width: 1);
+      bgColor = MyWalkColor.golden.withValues(alpha: 0.06);
+      border = Border.all(color: MyWalkColor.golden.withValues(alpha: 0.45), width: 1);
     } else {
       bgColor = Colors.transparent;
       border = Border.all(color: Colors.white.withValues(alpha: 0.15), width: 1);
@@ -54,7 +54,7 @@ class FruitTagChip extends StatelessWidget {
             Icon(
               fruit.icon,
               size: 11,
-              color: isSelected ? fruitColor : TributeColor.softGold.withValues(alpha: 0.6),
+              color: isSelected ? fruitColor : MyWalkColor.softGold.withValues(alpha: 0.6),
             ),
             const SizedBox(width: 5),
             Text(
@@ -62,7 +62,7 @@ class FruitTagChip extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                color: isSelected ? fruitColor : TributeColor.softGold.withValues(alpha: 0.75),
+                color: isSelected ? fruitColor : MyWalkColor.softGold.withValues(alpha: 0.75),
               ),
             ),
             if (isSuggested && !isSelected) ...[
@@ -70,14 +70,14 @@ class FruitTagChip extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                 decoration: BoxDecoration(
-                  color: TributeColor.golden.withValues(alpha: 0.2),
+                  color: MyWalkColor.golden.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   'suggested',
                   style: TextStyle(
                     fontSize: 8,
-                    color: TributeColor.golden.withValues(alpha: 0.9),
+                    color: MyWalkColor.golden.withValues(alpha: 0.9),
                   ),
                 ),
               ),

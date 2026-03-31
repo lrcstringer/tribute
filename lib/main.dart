@@ -27,6 +27,7 @@ import 'presentation/providers/scripture_focus_provider.dart';
 import 'presentation/providers/circle_habits_provider.dart';
 import 'presentation/providers/encouragement_provider.dart';
 import 'presentation/providers/milestone_share_provider.dart';
+import 'presentation/providers/circle_habit_milestone_provider.dart';
 import 'presentation/providers/weekly_pulse_provider.dart';
 import 'presentation/providers/circle_events_provider.dart';
 import 'presentation/providers/fruit_portfolio_provider.dart';
@@ -107,6 +108,9 @@ void main() async {
         ChangeNotifierProvider<MilestoneShareProvider>(
           create: (context) => MilestoneShareProvider(context.read<CircleRepository>()),
         ),
+        ChangeNotifierProvider<CircleHabitMilestoneProvider>(
+          create: (context) => CircleHabitMilestoneProvider(context.read<CircleRepository>()),
+        ),
         ChangeNotifierProvider<WeeklyPulseProvider>(
           create: (context) => WeeklyPulseProvider(context.read<CircleRepository>()),
         ),
@@ -114,7 +118,7 @@ void main() async {
           create: (context) => CircleEventsProvider(context.read<CircleRepository>()),
         ),
       ],
-      child: const TributeApp(),
+      child: const MyWalkApp(),
     ),
   );
 

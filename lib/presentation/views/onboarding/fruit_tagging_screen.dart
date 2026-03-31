@@ -53,7 +53,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
             style: TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.w700,
-              color: TributeColor.warmWhite,
+              color: MyWalkColor.warmWhite,
               height: 1.2,
             ),
           ),
@@ -62,7 +62,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
             'See which fruits your habits are cultivating. You can always change this later.',
             style: TextStyle(
               fontSize: 14,
-              color: TributeColor.warmWhite.withValues(alpha: 0.6),
+              color: MyWalkColor.warmWhite.withValues(alpha: 0.6),
               height: 1.5,
             ),
           ),
@@ -83,9 +83,9 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
             child: ElevatedButton(
               onPressed: _isSaving ? null : _onContinue,
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
-                disabledBackgroundColor: TributeColor.golden.withValues(alpha: 0.4),
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
+                disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.4),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
@@ -95,7 +95,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: TributeColor.charcoal),
+                          strokeWidth: 2, color: MyWalkColor.charcoal),
                     )
                   : const Text('Continue',
                       style:
@@ -112,7 +112,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
                   "I'll do this later",
                   style: TextStyle(
                     fontSize: 13,
-                    color: TributeColor.softGold.withValues(alpha: 0.55),
+                    color: MyWalkColor.softGold.withValues(alpha: 0.55),
                   ),
                 ),
               ),
@@ -130,7 +130,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -141,7 +141,7 @@ class _FruitTaggingScreenState extends State<FruitTaggingScreen> {
             style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
-              color: TributeColor.warmWhite,
+              color: MyWalkColor.warmWhite,
             ),
           ),
           const SizedBox(height: 10),

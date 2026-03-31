@@ -54,11 +54,11 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: Text(_sentSuccessfully ? '' : 'SOS Prayer',
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(_sentSuccessfully ? 'Done' : 'Cancel',
@@ -74,12 +74,12 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
         width: 88, height: 88,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: TributeColor.sage.withValues(alpha: 0.12)),
-        child: const Icon(Icons.back_hand_rounded, size: 36, color: TributeColor.sage),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.sage.withValues(alpha: 0.12)),
+        child: const Icon(Icons.back_hand_rounded, size: 36, color: MyWalkColor.sage),
       ),
       const SizedBox(height: 24),
       const Text('Prayer Request Sent',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
       const SizedBox(height: 8),
       Text(
         '$_recipientCount ${_recipientCount == 1 ? 'person has' : 'people have'} been asked to pray for you.',
@@ -92,12 +92,12 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
         child: Text(
           '"Bear one another\'s burdens, and so fulfill the law of Christ."',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: TributeColor.softGold),
+          style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: MyWalkColor.softGold),
         ),
       ),
       const SizedBox(height: 8),
       Text('Galatians 6:2',
-          style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.5))),
+          style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
     ]);
   }
 
@@ -115,12 +115,12 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
               width: 64, height: 64,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: TributeColor.warmCoral.withValues(alpha: 0.12)),
-              child: const Icon(Icons.campaign_rounded, size: 28, color: TributeColor.warmCoral),
+                  color: MyWalkColor.warmCoral.withValues(alpha: 0.12)),
+              child: const Icon(Icons.campaign_rounded, size: 28, color: MyWalkColor.warmCoral),
             ),
             const SizedBox(height: 12),
             const Text('Request Urgent Prayer',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
             const SizedBox(height: 4),
             Text('Select up to $_maxRecipients people who will be notified to pray for you.',
                 textAlign: TextAlign.center,
@@ -130,7 +130,7 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
         const SizedBox(height: 24),
         Row(children: [
           const Text('Message',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const Spacer(),
           Text('${_messageController.text.length}/500',
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.3))),
@@ -142,37 +142,37 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
           maxLines: 4,
           maxLength: 500,
           buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
-          style: const TextStyle(color: TributeColor.warmWhite),
+          style: const TextStyle(color: MyWalkColor.warmWhite),
           decoration: InputDecoration(
             hintText: 'Please pray for me...',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
-            filled: true, fillColor: TributeColor.cardBackground,
+            filled: true, fillColor: MyWalkColor.cardBackground,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: TributeColor.cardBorder, width: 0.5)),
+                borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5)),
             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: TributeColor.cardBorder, width: 0.5)),
+                borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5)),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: TributeColor.golden.withValues(alpha: 0.5), width: 1)),
+                borderSide: BorderSide(color: MyWalkColor.golden.withValues(alpha: 0.5), width: 1)),
             contentPadding: const EdgeInsets.all(12),
           ),
         ),
         const SizedBox(height: 20),
         Row(children: [
           const Text('Recipients',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const Spacer(),
           Text('${_selectedIds.length}/$_maxRecipients',
               style: TextStyle(
                   fontSize: 11, fontWeight: FontWeight.w500,
                   color: _selectedIds.length >= _maxRecipients
-                      ? TributeColor.warmCoral
+                      ? MyWalkColor.warmCoral
                       : Colors.white.withValues(alpha: 0.4))),
         ]),
         const SizedBox(height: 8),
         if (others.isEmpty)
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: TributeColor.cardBackground, borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(color: MyWalkColor.cardBackground, borderRadius: BorderRadius.circular(10)),
             child: Row(children: [
               Icon(Icons.person_off_rounded, size: 14, color: Colors.white.withValues(alpha: 0.4)),
               const SizedBox(width: 8),
@@ -193,13 +193,13 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
             child: Row(children: [
               Icon(allSelected ? Icons.check_circle_rounded : Icons.circle_outlined,
                   size: 18,
-                  color: allSelected ? TributeColor.golden : Colors.white.withValues(alpha: 0.4)),
+                  color: allSelected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4)),
               const SizedBox(width: 8),
               Text(
                 allSelected
                     ? 'Deselect All'
                     : 'Select All (${others.take(_maxRecipients).length})',
-                style: const TextStyle(fontSize: 13, color: TributeColor.warmWhite),
+                style: const TextStyle(fontSize: 13, color: MyWalkColor.warmWhite),
               ),
             ]),
           ),
@@ -211,9 +211,9 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
         if (_error != null) ...[
           const SizedBox(height: 12),
           Row(children: [
-            const Icon(Icons.warning_amber, size: 14, color: TributeColor.warmCoral),
+            const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
             const SizedBox(width: 6),
-            Expanded(child: Text(_error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral))),
+            Expanded(child: Text(_error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral))),
           ]),
         ],
         const SizedBox(height: 24),
@@ -225,13 +225,13 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
               onPressed: (_selectedIds.isEmpty || _isSending) ? null : _sendSOS,
               icon: _isSending
                   ? const SizedBox(width: 18, height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.charcoal))
+                      child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
                   : const Icon(Icons.bolt_rounded, size: 18),
               label: const Text('Send SOS Prayer Request',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.warmCoral,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.warmCoral,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -258,10 +258,10 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: isSelected ? TributeColor.golden.withValues(alpha: 0.04) : TributeColor.cardBackground,
+            color: isSelected ? MyWalkColor.golden.withValues(alpha: 0.04) : MyWalkColor.cardBackground,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: isSelected ? TributeColor.golden.withValues(alpha: 0.2) : TributeColor.cardBorder,
+              color: isSelected ? MyWalkColor.golden.withValues(alpha: 0.2) : MyWalkColor.cardBorder,
               width: 0.5,
             ),
           ),
@@ -270,20 +270,20 @@ class _SOSPrayerRequestViewState extends State<SOSPrayerRequestView> {
               width: 36, height: 36,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSelected ? TributeColor.golden.withValues(alpha: 0.15) : TributeColor.cardBackground),
+                  color: isSelected ? MyWalkColor.golden.withValues(alpha: 0.15) : MyWalkColor.cardBackground),
               child: Icon(Icons.person_rounded, size: 14,
-                  color: isSelected ? TributeColor.golden : Colors.white.withValues(alpha: 0.5)),
+                  color: isSelected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.5)),
             ),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text('Member',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmWhite)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
               if (m.role == 'admin')
-                const Text('Admin', style: TextStyle(fontSize: 11, color: TributeColor.golden)),
+                const Text('Admin', style: TextStyle(fontSize: 11, color: MyWalkColor.golden)),
             ])),
             Icon(isSelected ? Icons.check_circle_rounded : Icons.circle_outlined,
                 size: 22,
-                color: isSelected ? TributeColor.golden : Colors.white.withValues(alpha: 0.15)),
+                color: isSelected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.15)),
           ]),
         ),
       ),

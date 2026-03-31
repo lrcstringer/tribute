@@ -11,6 +11,7 @@ export {
   circleDeleteGratitude,
   circleSubmitHeatmapData,
   circleUpdateSettings,
+  circleUpdateMemberRole,
 } from './callables/circles';
 export {
   prayerRequestCreate,
@@ -27,6 +28,7 @@ export {
   circleCreateHabit,
   circleDeactivateHabit,
   circleCompleteHabitAggregation,
+  circleHabitMilestoneCheck,
 } from './callables/circle_habits';
 export {
   circleSendEncouragement,

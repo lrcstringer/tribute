@@ -47,11 +47,13 @@ class PrayerListProvider extends ChangeNotifier {
     required String circleId,
     required String text,
     required PrayerDuration duration,
+    bool anonymous = false,
   }) async {
     await _repo.createPrayerRequest(
       circleId: circleId,
       requestText: text,
       duration: duration,
+      anonymous: anonymous,
     );
     // Reload to reflect server-calculated expiresAt.
     await load(circleId);

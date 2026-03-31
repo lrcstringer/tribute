@@ -67,11 +67,13 @@ class CircleMember {
   final String userId;
   final String role;
   final String joinedAt;
+  final String displayName;
 
   const CircleMember({
     required this.userId,
     required this.role,
     required this.joinedAt,
+    this.displayName = 'Circle Member',
   });
 
   bool get isAdmin => role == 'admin';
@@ -544,6 +546,29 @@ class PulseResponse {
     required this.isAnonymous,
     required this.createdAt,
   });
+}
+
+// ── Circle Habit Milestones (auto-generated) ──────────────────────────────────
+
+class CircleHabitMilestone {
+  final String id;         // '{habitId}_completions_{value}'
+  final String circleId;
+  final String habitId;
+  final String habitName;
+  final int milestoneValue; // e.g. 100
+  final String createdAt;
+
+  const CircleHabitMilestone({
+    required this.id,
+    required this.circleId,
+    required this.habitId,
+    required this.habitName,
+    required this.milestoneValue,
+    required this.createdAt,
+  });
+
+  String get displayLabel =>
+      'Your circle hit $milestoneValue completions of $habitName!';
 }
 
 // ── Feature 7: Events ─────────────────────────────────────────────────────────

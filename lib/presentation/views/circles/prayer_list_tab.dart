@@ -19,18 +19,18 @@ class PrayerListTab extends StatelessWidget {
         final isLoading = provider.isLoading(circleId);
 
         return Scaffold(
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           floatingActionButton: FloatingActionButton.small(
             onPressed: () => _showAddSheet(context),
-            backgroundColor: TributeColor.golden,
-            foregroundColor: TributeColor.charcoal,
+            backgroundColor: MyWalkColor.golden,
+            foregroundColor: MyWalkColor.charcoal,
             child: const Icon(Icons.add),
           ),
           body: isLoading && active.isEmpty
-              ? const Center(child: CircularProgressIndicator(color: TributeColor.golden))
+              ? const Center(child: CircularProgressIndicator(color: MyWalkColor.golden))
               : RefreshIndicator(
-                  color: TributeColor.golden,
-                  backgroundColor: TributeColor.cardBackground,
+                  color: MyWalkColor.golden,
+                  backgroundColor: MyWalkColor.cardBackground,
                   onRefresh: () => provider.load(circleId),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
@@ -91,7 +91,7 @@ class PrayerListTab extends StatelessWidget {
   void _showAddSheet(BuildContext context) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => AddPrayerRequestSheet(circleId: circleId),
     );
   }
@@ -120,13 +120,13 @@ class _PrayerRequestCard extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: isAnswered
-            ? TributeColor.sage.withValues(alpha: 0.06)
-            : TributeColor.cardBackground,
+            ? MyWalkColor.sage.withValues(alpha: 0.06)
+            : MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isAnswered
-              ? TributeColor.sage.withValues(alpha: 0.2)
-              : TributeColor.cardBorder,
+              ? MyWalkColor.sage.withValues(alpha: 0.2)
+              : MyWalkColor.cardBorder,
           width: 0.5,
         ),
       ),
@@ -135,17 +135,17 @@ class _PrayerRequestCard extends StatelessWidget {
           Expanded(
             child: Text(request.authorDisplayName,
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600,
-                    color: isAuthor ? TributeColor.golden : TributeColor.softGold)),
+                    color: isAuthor ? MyWalkColor.golden : MyWalkColor.softGold)),
           ),
           if (isAnswered)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: TributeColor.sage.withValues(alpha: 0.15),
+                color: MyWalkColor.sage.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text('Answered',
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: TributeColor.sage)),
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: MyWalkColor.sage)),
             ),
           const SizedBox(width: 4),
           Text(_relativeTime(request.createdAt),
@@ -153,17 +153,17 @@ class _PrayerRequestCard extends StatelessWidget {
         ]),
         const SizedBox(height: 8),
         Text(request.requestText,
-            style: TextStyle(fontSize: 14, color: TributeColor.warmWhite.withValues(alpha: 0.9), height: 1.45)),
+            style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite.withValues(alpha: 0.9), height: 1.45)),
         if (isAnswered && request.answeredNote != null) ...[
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: TributeColor.sage.withValues(alpha: 0.08),
+              color: MyWalkColor.sage.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(request.answeredNote!,
-                style: TextStyle(fontSize: 13, color: TributeColor.sage.withValues(alpha: 0.85), height: 1.4)),
+                style: TextStyle(fontSize: 13, color: MyWalkColor.sage.withValues(alpha: 0.85), height: 1.4)),
           ),
         ],
         const SizedBox(height: 10),
@@ -186,24 +186,24 @@ class _PrayerRequestCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: hasPrayed
-              ? TributeColor.golden.withValues(alpha: 0.12)
-              : TributeColor.inputBackground,
+              ? MyWalkColor.golden.withValues(alpha: 0.12)
+              : MyWalkColor.inputBackground,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: hasPrayed
-                ? TributeColor.golden.withValues(alpha: 0.3)
+                ? MyWalkColor.golden.withValues(alpha: 0.3)
                 : Colors.transparent,
           ),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Icon(Icons.volunteer_activism_rounded, size: 13,
-              color: hasPrayed ? TributeColor.golden : Colors.white.withValues(alpha: 0.5)),
+              color: hasPrayed ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.5)),
           const SizedBox(width: 5),
           Text(
             hasPrayed ? 'Prayed (${request.prayerCount})' : 'Pray (${request.prayerCount})',
             style: TextStyle(
               fontSize: 12, fontWeight: FontWeight.w500,
-              color: hasPrayed ? TributeColor.golden : Colors.white.withValues(alpha: 0.5),
+              color: hasPrayed ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.5),
             ),
           ),
         ]),
@@ -216,7 +216,7 @@ class _PrayerRequestCard extends StatelessWidget {
       onTap: () => _showMarkAnsweredDialog(context),
       child: Text('Mark Answered',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.sage.withValues(alpha: 0.8))),
+              color: MyWalkColor.sage.withValues(alpha: 0.8))),
     );
   }
 
@@ -225,17 +225,17 @@ class _PrayerRequestCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        backgroundColor: TributeColor.cardBackground,
-        title: const Text('Mark as Answered', style: TextStyle(color: TributeColor.warmWhite, fontSize: 16)),
+        backgroundColor: MyWalkColor.cardBackground,
+        title: const Text('Mark as Answered', style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
         content: TextField(
           controller: noteController,
           maxLength: 200,
-          style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+          style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
           decoration: InputDecoration(
             hintText: 'Share how God answered this (optional)',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
             filled: true,
-            fillColor: TributeColor.inputBackground,
+            fillColor: MyWalkColor.inputBackground,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
             counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           ),
@@ -252,7 +252,7 @@ class _PrayerRequestCard extends StatelessWidget {
               Navigator.pop(dialogContext);
               context.read<PrayerListProvider>().markAnswered(circleId, request.id, answeredNote: note);
             },
-            child: const Text('Confirm', style: TextStyle(color: TributeColor.golden)),
+            child: const Text('Confirm', style: TextStyle(color: MyWalkColor.golden)),
           ),
         ],
       ),
@@ -284,6 +284,7 @@ class AddPrayerRequestSheet extends StatefulWidget {
 class _AddPrayerRequestSheetState extends State<AddPrayerRequestSheet> {
   final _textController = TextEditingController();
   PrayerDuration _duration = PrayerDuration.ongoing;
+  bool _anonymous = false;
   bool _submitting = false;
   String? _error;
 
@@ -305,25 +306,25 @@ class _AddPrayerRequestSheetState extends State<AddPrayerRequestSheet> {
                   borderRadius: BorderRadius.circular(2)))),
           const SizedBox(height: 16),
           const Text('Share a Prayer Request',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
           const SizedBox(height: 16),
           TextField(
             controller: _textController,
             maxLength: 500,
             maxLines: 4,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: InputDecoration(
               hintText: 'What would you like your circle to pray for?',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
               filled: true,
-              fillColor: TributeColor.inputBackground,
+              fillColor: MyWalkColor.inputBackground,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 11),
             ),
           ),
           const SizedBox(height: 12),
           const Text('Duration', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600,
-              color: TributeColor.softGold)),
+              color: MyWalkColor.softGold)),
           const SizedBox(height: 8),
           Row(children: PrayerDuration.values.map((d) {
             final selected = _duration == d;
@@ -334,21 +335,44 @@ class _AddPrayerRequestSheetState extends State<AddPrayerRequestSheet> {
                   margin: const EdgeInsets.only(right: 6),
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.golden.withValues(alpha: 0.12) : TributeColor.inputBackground,
+                    color: selected ? MyWalkColor.golden.withValues(alpha: 0.12) : MyWalkColor.inputBackground,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: selected ? TributeColor.golden.withValues(alpha: 0.4) : Colors.transparent),
+                      color: selected ? MyWalkColor.golden.withValues(alpha: 0.4) : Colors.transparent),
                   ),
                   child: Center(child: Text(_durationLabel(d),
                       style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500,
-                          color: selected ? TributeColor.golden : Colors.white.withValues(alpha: 0.5)))),
+                          color: selected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.5)))),
                 ),
               ),
             );
           }).toList()),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: () => setState(() => _anonymous = !_anonymous),
+            child: Row(children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                width: 20, height: 20,
+                decoration: BoxDecoration(
+                  color: _anonymous ? MyWalkColor.golden.withValues(alpha: 0.15) : Colors.transparent,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    color: _anonymous ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: _anonymous
+                    ? const Icon(Icons.check, size: 14, color: MyWalkColor.golden)
+                    : null,
+              ),
+              const SizedBox(width: 10),
+              Text('Post anonymously',
+                  style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.7))),
+            ]),
+          ),
           if (_error != null) ...[
             const SizedBox(height: 8),
-            Text(_error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+            Text(_error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
           ],
           const SizedBox(height: 16),
           SizedBox(
@@ -356,14 +380,14 @@ class _AddPrayerRequestSheetState extends State<AddPrayerRequestSheet> {
             child: ElevatedButton(
               onPressed: _submitting ? null : _submit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               child: _submitting
                   ? const SizedBox(width: 18, height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.charcoal))
+                      child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
                   : const Text('Share with Circle',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
             ),
@@ -390,7 +414,7 @@ class _AddPrayerRequestSheetState extends State<AddPrayerRequestSheet> {
     setState(() { _submitting = true; _error = null; });
     try {
       await context.read<PrayerListProvider>().createRequest(
-        circleId: widget.circleId, text: text, duration: _duration);
+        circleId: widget.circleId, text: text, duration: _duration, anonymous: _anonymous);
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) setState(() { _error = e.toString(); _submitting = false; });

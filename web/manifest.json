@@ -1,6 +1,6 @@
 {
-    "name": "tribute",
-    "short_name": "tribute",
+    "name": "MyWalk",
+    "short_name": "MyWalk",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,5 +1,5 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
-import { onDocumentCreated } from 'firebase-functions/v2/firestore';
+import { onDocumentCreated, onDocumentWritten } from 'firebase-functions/v2/firestore';
 import { FieldValue } from 'firebase-admin/firestore';
 import {
   db,
@@ -7,6 +7,7 @@ import {
   circlesCol,
   circleHabitsCol,
   habitDailySummaryCol,
+  circleHabitMilestonesCol,
   Timestamp,
 } from '../lib/firestore';
 import { sendPushToUsers } from '../lib/fcm';
@@ -174,5 +175,68 @@ export const circleCompleteHabitAggregation = onDocumentCreated(
         });
       }
     });
+
+    // Check for circle habit milestones after the summary is updated (non-fatal).
+    _checkCircleHabitMilestones(circleId, habitId).catch(() => { /* non-fatal */ });
   }
 );
+
+// ── circleHabitMilestoneCheck (Firestore trigger) ─────────────────────────────
+// Also fires when a daily_summary is written directly (e.g. backfill),
+// so milestones are never missed.
+
+export const circleHabitMilestoneCheck = onDocumentWritten(
+  {
+    document: 'circles/{circleId}/circle_habits/{habitId}/daily_summary/{date}',
+    region: 'us-central1',
+  },
+  async (event) => {
+    const { circleId, habitId } = event.params;
+    await _checkCircleHabitMilestones(circleId, habitId);
+  }
+);
+
+// ── Internal helpers ──────────────────────────────────────────────────────────
+
+const COMPLETION_THRESHOLDS = [10, 50, 100, 250, 500, 1000];
+
+async function _checkCircleHabitMilestones(
+  circleId: string,
+  habitId: string
+): Promise<void> {
+  // Sum total completions across all daily summaries for this habit.
+  const summariesSnap = await habitDailySummaryCol(circleId, habitId).get();
+  const totalCompletions = summariesSnap.docs.reduce(
+    (sum, d) => sum + ((d.data()['completedCount'] as number) ?? 0),
+    0
+  );
+
+  if (totalCompletions === 0) return;
+
+  // Fetch habit name once.
+  const habitSnap = await circleHabitsCol(circleId).doc(habitId).get();
+  if (!habitSnap.exists) return;
+  const habitName = (habitSnap.data()!['name'] as string) ?? 'habit';
+
+  const milestonesCol = circleHabitMilestonesCol(circleId);
+
+  // For each threshold already crossed, ensure a milestone doc exists (idempotent).
+  const crossed = COMPLETION_THRESHOLDS.filter((t) => totalCompletions >= t);
+  await Promise.all(
+    crossed.map(async (threshold) => {
+      const docId = `${habitId}_completions_${threshold}`;
+      const ref = milestonesCol.doc(docId);
+      const snap = await ref.get();
+      if (!snap.exists) {
+        await ref.set({
+          id: docId,
+          circleId,
+          habitId,
+          habitName,
+          milestoneValue: threshold,
+          createdAt: Timestamp.now(),
+        });
+      }
+    })
+  );
+}

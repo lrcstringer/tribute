@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "Tribute",
+      "name": "MyWalk",
       "path": "ios",
       "framework": "swift"
     }

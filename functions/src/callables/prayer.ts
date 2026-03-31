@@ -16,10 +16,11 @@ export const prayerRequestCreate = onCall(
   async (request) => {
     if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in required');
 
-    const { circleId, requestText, duration } = request.data as {
+    const { circleId, requestText, duration, anonymous } = request.data as {
       circleId: string;
       requestText: string;
       duration: 'THIS_WEEK' | 'ONGOING' | 'UNTIL_REMOVED';
+      anonymous?: boolean;
     };
 
     if (!circleId?.trim()) throw new HttpsError('invalid-argument', 'circleId required');
@@ -38,7 +39,9 @@ export const prayerRequestCreate = onCall(
     if (!memberSnap.exists) throw new HttpsError('permission-denied', 'Not a member of this circle');
 
     const memberData = memberSnap.data()!;
-    const displayName = (memberData['displayName'] as string | undefined) ?? 'Circle Member';
+    const displayName = anonymous
+      ? 'Anonymous'
+      : (memberData['displayName'] as string | undefined) ?? 'Circle Member';
 
     // Calculate expiry for THIS_WEEK requests: end of Saturday (23:59:59).
     let expiresAt: Timestamp | null = null;

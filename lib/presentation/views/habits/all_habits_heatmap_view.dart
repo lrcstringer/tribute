@@ -141,12 +141,12 @@ class AllHabitsHeatmapView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(2),
                           border: day.tier == DayTier.partial && !day.isFuture
                               ? Border.all(
-                                  color: TributeColor.golden.withValues(alpha: 0.5),
+                                  color: MyWalkColor.golden.withValues(alpha: 0.5),
                                   width: 0.5)
                               : null,
                           boxShadow: day.tier == DayTier.full && !day.isFuture
                               ? [BoxShadow(
-                                  color: TributeColor.golden.withValues(alpha: 0.35),
+                                  color: MyWalkColor.golden.withValues(alpha: 0.35),
                                   blurRadius: 3)]
                               : null,
                         ),
@@ -166,13 +166,13 @@ class AllHabitsHeatmapView extends StatelessWidget {
     if (day.isFuture) return Colors.white.withValues(alpha: 0.02);
     switch (day.tier) {
       case DayTier.nothing:
-        return TributeColor.surfaceOverlay;
+        return MyWalkColor.surfaceOverlay;
       case DayTier.partial:
-        return TributeColor.golden.withValues(alpha: 0.12);
+        return MyWalkColor.golden.withValues(alpha: 0.12);
       case DayTier.substantial:
-        return TributeColor.golden.withValues(alpha: 0.55);
+        return MyWalkColor.golden.withValues(alpha: 0.55);
       case DayTier.full:
-        return TributeColor.golden.withValues(alpha: 0.95);
+        return MyWalkColor.golden.withValues(alpha: 0.95);
     }
   }
 }

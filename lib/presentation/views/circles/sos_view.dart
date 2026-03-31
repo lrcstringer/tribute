@@ -144,7 +144,7 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
           context: context,
           isScrollControlled: true,
           useSafeArea: true,
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           builder: (_) => SOSCirclePickerView(circles: circles),
         );
       }
@@ -157,7 +157,7 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         child: Column(children: [
@@ -190,16 +190,16 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(colors: [
-              TributeColor.sage.withValues(alpha: 0.15 + _pulseAnim.value * 0.15),
-              TributeColor.sage.withValues(alpha: 0.02 + _pulseAnim.value * 0.06),
+              MyWalkColor.sage.withValues(alpha: 0.15 + _pulseAnim.value * 0.15),
+              MyWalkColor.sage.withValues(alpha: 0.02 + _pulseAnim.value * 0.06),
             ]),
           ),
-          child: const Icon(Icons.shield_rounded, size: 40, color: TributeColor.sage),
+          child: const Icon(Icons.shield_rounded, size: 40, color: MyWalkColor.sage),
         ),
         const SizedBox(height: 14),
         const Text('You reached out. That takes courage.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
         const SizedBox(height: 6),
         Text('Let\u2019s take this one moment at a time.',
             textAlign: TextAlign.center,
@@ -213,29 +213,29 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.favorite_rounded, size: 13, color: TributeColor.golden),
+          const Icon(Icons.favorite_rounded, size: 13, color: MyWalkColor.golden),
           const SizedBox(width: 6),
           const Text('Your Why',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
         ]),
         const SizedBox(height: 12),
         Text(widget.habit.purposeStatement,
-            style: const TextStyle(fontSize: 15, height: 1.6, color: TributeColor.warmWhite)),
+            style: const TextStyle(fontSize: 15, height: 1.6, color: MyWalkColor.warmWhite)),
         const SizedBox(height: 12),
         Text('\u201C${verse.text}\u201D',
             style: TextStyle(fontSize: 13, fontStyle: FontStyle.italic,
-                color: TributeColor.softGold.withValues(alpha: 0.7), height: 1.5)),
+                color: MyWalkColor.softGold.withValues(alpha: 0.7), height: 1.5)),
         const SizedBox(height: 4),
         Align(
           alignment: Alignment.centerRight,
           child: Text(verse.reference,
-              style: TextStyle(fontSize: 11, color: TributeColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5))),
         ),
       ]),
     );
@@ -245,20 +245,20 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: TributeColor.warmCoral.withValues(alpha: 0.06),
+        color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TributeColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.shield_outlined, size: 13, color: TributeColor.warmCoral),
+          const Icon(Icons.shield_outlined, size: 13, color: MyWalkColor.warmCoral),
           const SizedBox(width: 6),
           const Text('Your Plan for Moments Like This',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.warmCoral)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.warmCoral)),
         ]),
         const SizedBox(height: 12),
         Text(widget.habit.copingPlan,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, height: 1.5, color: TributeColor.warmWhite)),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, height: 1.5, color: MyWalkColor.warmWhite)),
         const SizedBox(height: 8),
         Text('You wrote this when you were strong. Trust that version of yourself.',
             style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -270,27 +270,27 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: TributeColor.sage.withValues(alpha: 0.06),
+        color: MyWalkColor.sage.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TributeColor.sage.withValues(alpha: 0.15), width: 0.5),
+        border: Border.all(color: MyWalkColor.sage.withValues(alpha: 0.15), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.directions_walk_rounded, size: 13, color: TributeColor.sage),
+          const Icon(Icons.directions_walk_rounded, size: 13, color: MyWalkColor.sage),
           const SizedBox(width: 6),
           const Text('A Small Step Right Now',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.sage)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.sage)),
         ]),
         const SizedBox(height: 12),
         Text(_selectedMicroAction,
-            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, height: 1.5, color: TributeColor.warmWhite)),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500, height: 1.5, color: MyWalkColor.warmWhite)),
         const SizedBox(height: 12),
         if (_microActionCompleted)
           Row(children: [
-            const Icon(Icons.check_circle_rounded, size: 18, color: TributeColor.sage),
+            const Icon(Icons.check_circle_rounded, size: 18, color: MyWalkColor.sage),
             const SizedBox(width: 8),
             const Text('You did it. That moment of strength matters.',
-                style: TextStyle(fontSize: 14, color: TributeColor.sage)),
+                style: TextStyle(fontSize: 14, color: MyWalkColor.sage)),
           ])
         else
           SizedBox(
@@ -300,8 +300,8 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
               icon: const Icon(Icons.check_circle_outline_rounded, size: 16),
               label: const Text('Did it', style: TextStyle(fontWeight: FontWeight.w600)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.sage,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.sage,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
@@ -317,26 +317,26 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [TributeColor.golden.withValues(alpha: 0.06), TributeColor.golden.withValues(alpha: 0.02)],
+          colors: [MyWalkColor.golden.withValues(alpha: 0.06), MyWalkColor.golden.withValues(alpha: 0.02)],
           begin: Alignment.topLeft, end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.shield_rounded, size: 13, color: TributeColor.golden),
+          const Icon(Icons.shield_rounded, size: 13, color: MyWalkColor.golden),
           const SizedBox(width: 6),
           const Text('What You\'re Protecting',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
         ]),
         const SizedBox(height: 12),
         Row(children: [
           Text(stat.primaryValue,
-              style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w800, color: TributeColor.golden)),
+              style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w800, color: MyWalkColor.golden)),
           const SizedBox(width: 14),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(stat.description, style: const TextStyle(fontSize: 14, color: TributeColor.softGold)),
+            Text(stat.description, style: const TextStyle(fontSize: 14, color: MyWalkColor.softGold)),
             if (stat.detail != null)
               Text(stat.detail!, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
           ])),
@@ -359,14 +359,14 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
               onPressed: _isLoadingCircles ? null : _loadCirclesAndShow,
               icon: _isLoadingCircles
                   ? const SizedBox(width: 16, height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.warmCoral))
-                  : const Icon(Icons.bolt_rounded, size: 16, color: TributeColor.warmCoral),
+                      child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.warmCoral))
+                  : const Icon(Icons.bolt_rounded, size: 16, color: MyWalkColor.warmCoral),
               label: const Text('Send SOS prayer request',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmCoral)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmCoral)),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                side: BorderSide(color: TributeColor.warmCoral.withValues(alpha: 0.3), width: 0.5),
-                backgroundColor: TributeColor.warmCoral.withValues(alpha: 0.08),
+                side: BorderSide(color: MyWalkColor.warmCoral.withValues(alpha: 0.3), width: 0.5),
+                backgroundColor: MyWalkColor.warmCoral.withValues(alpha: 0.08),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
@@ -392,12 +392,12 @@ class _SOSViewState extends State<SOSView> with SingleTickerProviderStateMixin {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: () => setState(() => _showPrayerCircleMessage = true),
-            icon: const Icon(Icons.group_rounded, size: 16, color: TributeColor.softGold),
+            icon: const Icon(Icons.group_rounded, size: 16, color: MyWalkColor.softGold),
             label: const Text('Send a prayer request',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.softGold)),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.softGold)),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
-              side: BorderSide(color: TributeColor.cardBorder, width: 0.5),
+              side: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
           ),

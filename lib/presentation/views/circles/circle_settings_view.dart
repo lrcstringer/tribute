@@ -37,15 +37,15 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: const Text('Circle Settings',
             style: TextStyle(
-                color: TributeColor.warmWhite,
+                color: MyWalkColor.warmWhite,
                 fontSize: 17,
                 fontWeight: FontWeight.w600)),
-        iconTheme: const IconThemeData(color: TributeColor.warmWhite),
+        iconTheme: const IconThemeData(color: MyWalkColor.warmWhite),
         actions: [
           if (_dirty)
             TextButton(
@@ -55,10 +55,10 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                       width: 16,
                       height: 16,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: TributeColor.golden))
+                          strokeWidth: 2, color: MyWalkColor.golden))
                   : const Text('Save',
                       style: TextStyle(
-                          color: TributeColor.golden,
+                          color: MyWalkColor.golden,
                           fontWeight: FontWeight.w600)),
             ),
         ],
@@ -90,7 +90,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
           const SizedBox(height: 8),
           _switchCard(
             icon: Icons.event_rounded,
-            iconColor: TributeColor.sage,
+            iconColor: MyWalkColor.sage,
             title: 'Events',
             subtitle: 'Schedule events for your circle.',
             value: _eventsEnabled,
@@ -99,7 +99,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
           const SizedBox(height: 8),
           _switchCard(
             icon: Icons.check_circle_outline_rounded,
-            iconColor: TributeColor.golden,
+            iconColor: MyWalkColor.golden,
             title: 'Circle Habits',
             subtitle: 'Create shared habits for your circle.',
             value: _habitsEnabled,
@@ -108,7 +108,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
           const SizedBox(height: 8),
           _switchCard(
             icon: Icons.favorite_rounded,
-            iconColor: TributeColor.warmCoral,
+            iconColor: MyWalkColor.warmCoral,
             title: 'Encouragement Prompts',
             subtitle: 'Sunday nudge to encourage a circle member.',
             value: _encouragementsEnabled,
@@ -118,12 +118,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
             const SizedBox(height: 16),
             Row(children: [
               const Icon(Icons.warning_amber_rounded,
-                  size: 14, color: TributeColor.warmCoral),
+                  size: 14, color: MyWalkColor.warmCoral),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(_error!,
                     style: const TextStyle(
-                        fontSize: 12, color: TributeColor.warmCoral)),
+                        fontSize: 12, color: MyWalkColor.warmCoral)),
               ),
             ]),
           ],
@@ -155,13 +155,13 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   }) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(title,
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: TributeColor.warmWhite)),
+                color: MyWalkColor.warmWhite)),
         const SizedBox(height: 3),
         Text(subtitle,
             style: TextStyle(
@@ -182,7 +182,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Row(children: [
         Container(
           width: 36,
@@ -199,7 +199,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: TributeColor.warmWhite)),
+                    color: MyWalkColor.warmWhite)),
             Text(subtitle,
                 style: TextStyle(
                     fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
@@ -208,9 +208,9 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeThumbColor: TributeColor.golden,
-          activeTrackColor: TributeColor.golden.withValues(alpha: 0.4),
-          inactiveThumbColor: TributeColor.softGold,
+          activeThumbColor: MyWalkColor.golden,
+          activeTrackColor: MyWalkColor.golden.withValues(alpha: 0.4),
+          inactiveThumbColor: MyWalkColor.softGold,
           inactiveTrackColor: Colors.white.withValues(alpha: 0.1),
         ),
       ]),
@@ -241,12 +241,12 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: selected
-              ? TributeColor.golden.withValues(alpha: 0.12)
-              : TributeColor.inputBackground,
+              ? MyWalkColor.golden.withValues(alpha: 0.12)
+              : MyWalkColor.inputBackground,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: selected
-                ? TributeColor.golden.withValues(alpha: 0.4)
+                ? MyWalkColor.golden.withValues(alpha: 0.4)
                 : Colors.transparent,
           ),
         ),
@@ -255,7 +255,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
                 color: selected
-                    ? TributeColor.golden
+                    ? MyWalkColor.golden
                     : Colors.white.withValues(alpha: 0.5))),
       ),
     );
@@ -275,7 +275,7 @@ class _CircleSettingsViewState extends State<CircleSettingsView> {
         setState(() { _saving = false; _dirty = false; });
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Settings saved'),
-          backgroundColor: TributeColor.cardBackground,
+          backgroundColor: MyWalkColor.cardBackground,
         ));
       }
     } catch (e) {

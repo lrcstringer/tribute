@@ -9,7 +9,7 @@ import '../../providers/store_provider.dart';
 import '../../theme/app_theme.dart';
 import '../shared/day_of_week_picker.dart';
 import '../shared/fruit_tag_chip.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 
 class AddHabitView extends StatefulWidget {
   final ScrollController? scrollController;
@@ -51,27 +51,27 @@ class _AddHabitViewState extends State<AddHabitView> {
     final isPremium = context.watch<StoreProvider>().isPremium;
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: Text(
           _step == 1 ? 'Choose a Habit' : 'Set It Up',
-          style: const TextStyle(color: TributeColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+          style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
         ),
         leading: _step == 2
             ? IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: TributeColor.warmWhite, size: 18),
+                icon: const Icon(Icons.arrow_back_ios, color: MyWalkColor.warmWhite, size: 18),
                 onPressed: () => setState(() => _step = 1),
               )
             : IconButton(
-                icon: const Icon(Icons.close, color: TributeColor.warmWhite),
+                icon: const Icon(Icons.close, color: MyWalkColor.warmWhite),
                 onPressed: () => Navigator.pop(context),
               ),
         actions: [
           if (_step == 1)
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: TextStyle(color: TributeColor.softGold.withValues(alpha: 0.8))),
+              child: Text('Cancel', style: TextStyle(color: MyWalkColor.softGold.withValues(alpha: 0.8))),
             ),
         ],
       ),
@@ -89,7 +89,7 @@ class _AddHabitViewState extends State<AddHabitView> {
       children: [
         const Text(
           'What do you want to give to God this season?',
-          style: TextStyle(fontSize: 18, color: TributeColor.warmWhite, height: 1.4),
+          style: TextStyle(fontSize: 18, color: MyWalkColor.warmWhite, height: 1.4),
         ),
         const SizedBox(height: 20),
         GridView.count(
@@ -105,20 +105,20 @@ class _AddHabitViewState extends State<AddHabitView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
-                  color: TributeColor.cardBackground,
+                  color: MyWalkColor.cardBackground,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+                  border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(_categoryIcon(category), color: TributeColor.golden, size: 24),
+                    Icon(_categoryIcon(category), color: MyWalkColor.golden, size: 24),
                     const SizedBox(height: 8),
                     Text(
                       _categoryLabel(category),
                       textAlign: TextAlign.center,
                       maxLines: 2,
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: TributeColor.warmWhite),
+                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite),
                     ),
                   ],
                 ),
@@ -129,19 +129,19 @@ class _AddHabitViewState extends State<AddHabitView> {
         const SizedBox(height: 12),
         _specialCategoryTile(
           icon: Icons.shield_rounded,
-          iconColor: TributeColor.warmCoral,
+          iconColor: MyWalkColor.warmCoral,
           title: "I'm letting go of something",
           subtitle: "Break a bad habit with God's help",
-          borderColor: TributeColor.warmCoral.withValues(alpha: 0.2),
+          borderColor: MyWalkColor.warmCoral.withValues(alpha: 0.2),
           onTap: () => _selectCategory(HabitCategory.abstain),
         ),
         const SizedBox(height: 12),
         _specialCategoryTile(
           icon: Icons.auto_awesome,
-          iconColor: TributeColor.golden,
+          iconColor: MyWalkColor.golden,
           title: 'Something else entirely',
           subtitle: 'Create a fully custom habit',
-          borderColor: TributeColor.golden.withValues(alpha: 0.15),
+          borderColor: MyWalkColor.golden.withValues(alpha: 0.15),
           onTap: () => _selectCategory(HabitCategory.custom),
         ),
       ],
@@ -161,7 +161,7 @@ class _AddHabitViewState extends State<AddHabitView> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: TributeColor.cardBackground,
+          color: MyWalkColor.cardBackground,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(color: borderColor, width: 0.5),
         ),
@@ -174,7 +174,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmWhite)),
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
                   Text(subtitle,
                       style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
                 ],
@@ -196,11 +196,11 @@ class _AddHabitViewState extends State<AddHabitView> {
         if (_selectedCategory != null) ...[
           Row(
             children: [
-              Icon(_categoryIcon(_selectedCategory!), size: 18, color: TributeColor.golden),
+              Icon(_categoryIcon(_selectedCategory!), size: 18, color: MyWalkColor.golden),
               const SizedBox(width: 8),
               Text(
                 _categoryLabel(_selectedCategory!),
-                style: TextStyle(fontSize: 14, color: TributeColor.softGold.withValues(alpha: 0.7)),
+                style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
               ),
             ],
           ),
@@ -228,15 +228,15 @@ class _AddHabitViewState extends State<AddHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: TributeColor.golden.withValues(alpha: 0.12),
+                    color: MyWalkColor.golden.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.workspace_premium, size: 10, color: TributeColor.golden),
+                      Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden),
                       const SizedBox(width: 3),
                       Text('Customise',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: TributeColor.golden)),
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
                     ],
                   ),
                 ),
@@ -257,12 +257,12 @@ class _AddHabitViewState extends State<AddHabitView> {
             width: double.infinity,
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: TributeColor.surfaceOverlay,
+              color: MyWalkColor.surfaceOverlay,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
               _purposeStatement,
-              style: TextStyle(fontSize: 14, color: TributeColor.softGold.withValues(alpha: 0.7)),
+              style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
             ),
           ),
         const SizedBox(height: 20),
@@ -286,7 +286,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color: selected ? TributeColor.golden : TributeColor.surfaceOverlay,
+                        color: selected ? MyWalkColor.golden : MyWalkColor.surfaceOverlay,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -295,7 +295,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                            color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                           ),
                         ),
                       ),
@@ -323,7 +323,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color: selected ? TributeColor.golden : TributeColor.surfaceOverlay,
+                        color: selected ? MyWalkColor.golden : MyWalkColor.surfaceOverlay,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
@@ -332,7 +332,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                            color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                           ),
                         ),
                       ),
@@ -354,22 +354,22 @@ class _AddHabitViewState extends State<AddHabitView> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 decoration: BoxDecoration(
-                  color: TributeColor.surfaceOverlay,
+                  color: MyWalkColor.surfaceOverlay,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   children: [
                     IconButton(
                       onPressed: _dailyTarget > 1 ? () => setState(() => _dailyTarget--) : null,
-                      icon: const Icon(Icons.remove, size: 18, color: TributeColor.softGold),
+                      icon: const Icon(Icons.remove, size: 18, color: MyWalkColor.softGold),
                     ),
                     Text(
                       '${_dailyTarget.toInt()}',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.golden),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.golden),
                     ),
                     IconButton(
                       onPressed: () => setState(() => _dailyTarget++),
-                      icon: const Icon(Icons.add, size: 18, color: TributeColor.softGold),
+                      icon: const Icon(Icons.add, size: 18, color: MyWalkColor.softGold),
                     ),
                   ],
                 ),
@@ -401,7 +401,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.warmCoral : TributeColor.surfaceOverlay,
+                    color: selected ? MyWalkColor.warmCoral : MyWalkColor.surfaceOverlay,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -409,7 +409,7 @@ class _AddHabitViewState extends State<AddHabitView> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                      color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                     ),
                   ),
                 ),
@@ -437,9 +437,9 @@ class _AddHabitViewState extends State<AddHabitView> {
           child: ElevatedButton(
             onPressed: _habitName.trim().isEmpty ? null : _saveHabit,
             style: ElevatedButton.styleFrom(
-              backgroundColor: TributeColor.golden,
-              foregroundColor: TributeColor.charcoal,
-              disabledBackgroundColor: TributeColor.golden.withValues(alpha: 0.4),
+              backgroundColor: MyWalkColor.golden,
+              foregroundColor: MyWalkColor.charcoal,
+              disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.4),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -461,7 +461,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: ['Pray first', 'Call a friend', 'Go for a walk', 'Read my verse', 'Journal it out']
-                  .map((s) => _chipButton(s, _copingPlan == s, TributeColor.warmCoral,
+                  .map((s) => _chipButton(s, _copingPlan == s, MyWalkColor.warmCoral,
                       () => setState(() => _copingPlan = s)))
                   .toList(),
             ),
@@ -486,7 +486,7 @@ class _AddHabitViewState extends State<AddHabitView> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: chips
-                .map((s) => _chipButton(s, _trigger == s, TributeColor.golden,
+                .map((s) => _chipButton(s, _trigger == s, MyWalkColor.golden,
                     () => setState(() => _trigger = s)))
                 .toList(),
           ),
@@ -509,7 +509,7 @@ class _AddHabitViewState extends State<AddHabitView> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: selected ? activeColor : TributeColor.surfaceOverlay,
+            color: selected ? activeColor : MyWalkColor.surfaceOverlay,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
@@ -517,7 +517,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: selected ? TributeColor.charcoal : TributeColor.softGold,
+              color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
             ),
           ),
         ),
@@ -582,9 +582,9 @@ class _AddHabitViewState extends State<AddHabitView> {
               "I'll decide later",
               style: TextStyle(
                 fontSize: 11,
-                color: TributeColor.softGold.withValues(alpha: 0.45),
+                color: MyWalkColor.softGold.withValues(alpha: 0.45),
                 decoration: TextDecoration.underline,
-                decorationColor: TributeColor.softGold.withValues(alpha: 0.3),
+                decorationColor: MyWalkColor.softGold.withValues(alpha: 0.3),
               ),
             ),
           ),
@@ -599,7 +599,7 @@ class _AddHabitViewState extends State<AddHabitView> {
       style: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        color: TributeColor.softGold.withValues(alpha: 0.6),
+        color: MyWalkColor.softGold.withValues(alpha: 0.6),
       ),
     );
   }
@@ -614,12 +614,12 @@ class _AddHabitViewState extends State<AddHabitView> {
       controller: TextEditingController(text: value)..selection = TextSelection.collapsed(offset: value.length),
       onChanged: onChanged,
       maxLines: maxLines,
-      style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+      style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
         filled: true,
-        fillColor: TributeColor.surfaceOverlay,
+        fillColor: MyWalkColor.surfaceOverlay,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
@@ -693,8 +693,8 @@ class _AddHabitViewState extends State<AddHabitView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
-      builder: (_) => const TributePaywallView(),
+      backgroundColor: MyWalkColor.charcoal,
+      builder: (_) => const MyWalkPaywallView(),
     );
   }
 

@@ -46,7 +46,7 @@ export const inviteRouter = createTRPCRouter({
       const circle = await dbGet<Circle>(`circle:${input.circleId}`);
       const inviteCode = circle?.inviteCode ?? "";
       return {
-        shareUrl: `https://tribute.app/join/${inviteCode}`,
+        shareUrl: `https://mywalk.faith/join/${inviteCode}`,
         inviteCode,
       };
     }),

@@ -64,7 +64,7 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
               'Every journey starts\nwith gratitude.',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: TributeColor.warmWhite, height: 1.3),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 10),
             Text(
@@ -94,8 +94,8 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
                 label: const Text('Continue',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -110,7 +110,7 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Text(
         'Let\u2019s do your first one right now.',
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.softGold),
+        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.softGold),
       ),
       const SizedBox(height: 12),
       Text(
@@ -122,12 +122,12 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
         controller: _controller,
         maxLines: 4,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: TributeColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Something you\u2019re thankful for...',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 15),
           filled: true,
-          fillColor: TributeColor.cardBackground,
+          fillColor: MyWalkColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -143,8 +143,8 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: TributeColor.golden,
-            foregroundColor: TributeColor.charcoal,
+            backgroundColor: MyWalkColor.golden,
+            foregroundColor: MyWalkColor.charcoal,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           ),
@@ -168,8 +168,8 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(colors: [
-                      TributeColor.golden.withValues(alpha: 0.35),
-                      TributeColor.golden.withValues(alpha: 0.08),
+                      MyWalkColor.golden.withValues(alpha: 0.35),
+                      MyWalkColor.golden.withValues(alpha: 0.08),
                       Colors.transparent,
                     ]),
                   ),
@@ -189,17 +189,17 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(colors: [
-                    TributeColor.golden.withValues(alpha: 0.3),
-                    TributeColor.golden.withValues(alpha: 0.08),
+                    MyWalkColor.golden.withValues(alpha: 0.3),
+                    MyWalkColor.golden.withValues(alpha: 0.08),
                   ]),
                 ),
-                child: const Icon(Icons.volunteer_activism, size: 32, color: TributeColor.golden),
+                child: const Icon(Icons.volunteer_activism, size: 32, color: MyWalkColor.golden),
               ),
               const SizedBox(height: 12),
               const Text('1',
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
               const Text('day of gratitude',
-                  style: TextStyle(fontSize: 15, color: TributeColor.softGold)),
+                  style: TextStyle(fontSize: 15, color: MyWalkColor.softGold)),
             ]),
           ),
         ),
@@ -209,9 +209,9 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
         opacity: _showResult ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 600),
         child: const Text(
-          'That\u2019s your first tribute. It\u2019s received.',
+          'That\u2019s your first check-in. It\u2019s received.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.warmWhite),
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite),
         ),
       ),
       const SizedBox(height: 20),
@@ -224,12 +224,12 @@ class _FirstGratitudeScreenState extends State<FirstGratitudeScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-              color: TributeColor.softGold.withValues(alpha: 0.6),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 6),
           Text('1 Thessalonians 5:18',
-              style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
         ]),
       ),
     ]);

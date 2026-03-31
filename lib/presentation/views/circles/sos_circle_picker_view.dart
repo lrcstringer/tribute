@@ -29,7 +29,7 @@ class _SOSCirclePickerViewState extends State<SOSCirclePickerView> {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         builder: (_) => SOSPrayerRequestView(circleId: detail.id, members: detail.members),
       );
     } catch (_) {
@@ -40,11 +40,11 @@ class _SOSCirclePickerViewState extends State<SOSCirclePickerView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: const Text('Send SOS',
-            style: TextStyle(color: TributeColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
+            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
@@ -58,10 +58,10 @@ class _SOSCirclePickerViewState extends State<SOSCirclePickerView> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Row(children: [
-                const Icon(Icons.warning_amber, size: 14, color: TributeColor.warmCoral),
+                const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
                 const SizedBox(width: 8),
                 Expanded(child: Text(_detailError!,
-                    style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral))),
+                    style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral))),
               ]),
             ),
         ]),
@@ -117,29 +117,29 @@ class _SOSCirclePickerViewState extends State<SOSCirclePickerView> {
       onTap: isLoading ? null : () => _selectCircle(circle),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: TributeDecorations.card,
+        decoration: MyWalkDecorations.card,
         child: Row(children: [
           Container(
             width: 40, height: 40,
             decoration: BoxDecoration(
-                shape: BoxShape.circle, color: TributeColor.golden.withValues(alpha: 0.1)),
+                shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.1)),
             child: Center(
               child: Text(
                 circle.name.isNotEmpty ? circle.name[0].toUpperCase() : '?',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: TributeColor.golden),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: MyWalkColor.golden),
               ),
             ),
           ),
           const SizedBox(width: 14),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(circle.name,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
             Text('${circle.memberCount} members',
                 style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
           ])),
           if (isLoading)
             const SizedBox(width: 18, height: 18,
-                child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.golden))
+                child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden))
           else
             Icon(Icons.chevron_right, size: 16, color: Colors.white.withValues(alpha: 0.3)),
         ]),

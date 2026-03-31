@@ -15,22 +15,22 @@ class FruitPortfolioView extends StatelessWidget {
     final portfolio = provider.portfolio;
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: TributeColor.charcoal,
+            backgroundColor: MyWalkColor.charcoal,
             floating: true,
             title: const Text(
               'The Fruit Growing in You',
               style: TextStyle(
-                  fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.warmWhite),
+                  fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite),
             ),
             centerTitle: false,
           ),
           if (provider.isLoading && portfolio == null)
             const SliverFillRemaining(
-              child: Center(child: CircularProgressIndicator(color: TributeColor.golden)),
+              child: Center(child: CircularProgressIndicator(color: MyWalkColor.golden)),
             )
           else if (portfolio == null)
             const SliverFillRemaining(child: Center(child: _EmptyState()))
@@ -44,7 +44,7 @@ class FruitPortfolioView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
-                    color: TributeColor.softGold.withValues(alpha: 0.5),
+                    color: MyWalkColor.softGold.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -128,7 +128,7 @@ class _FruitTile extends StatelessWidget {
       border = Border.all(color: fruit.color, width: 1.5);
       iconOpacity = 1.0;
     } else if (isDormant) {
-      bgColor = TributeColor.warmWhite.withValues(alpha: 0.04);
+      bgColor = MyWalkColor.warmWhite.withValues(alpha: 0.04);
       border = Border.all(color: Colors.white.withValues(alpha: 0.12));
       iconOpacity = 0.7;
     } else {
@@ -155,7 +155,7 @@ class _FruitTile extends StatelessWidget {
           children: [
             Opacity(
               opacity: iconOpacity,
-              child: Icon(fruit.icon, size: 24, color: isActive ? fruit.color : TributeColor.softGold),
+              child: Icon(fruit.icon, size: 24, color: isActive ? fruit.color : MyWalkColor.softGold),
             ),
             const SizedBox(height: 6),
             Text(
@@ -168,7 +168,7 @@ class _FruitTile extends StatelessWidget {
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
                 color: isActive
                     ? fruit.color
-                    : TributeColor.warmWhite.withValues(alpha: iconOpacity * 0.8),
+                    : MyWalkColor.warmWhite.withValues(alpha: iconOpacity * 0.8),
               ),
             ),
             if (entry.weeklyCompletions > 0) ...[
@@ -202,7 +202,7 @@ class _WeeklySummary extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -210,7 +210,7 @@ class _WeeklySummary extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 13,
-          color: TributeColor.softGold.withValues(alpha: 0.65),
+          color: MyWalkColor.softGold.withValues(alpha: 0.65),
         ),
       ),
     );
@@ -238,7 +238,7 @@ class _NeglectedSection extends StatelessWidget {
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.8,
-              color: TributeColor.softGold.withValues(alpha: 0.5),
+              color: MyWalkColor.softGold.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(height: 6),
@@ -311,7 +311,7 @@ class _EmptyState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.eco_outlined,
-              size: 48, color: TributeColor.sage.withValues(alpha: 0.4)),
+              size: 48, color: MyWalkColor.sage.withValues(alpha: 0.4)),
           const SizedBox(height: 20),
           const Text(
             "Your habits aren't connected to the fruit yet.",
@@ -319,14 +319,14 @@ class _EmptyState extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: TributeColor.warmWhite),
+                color: MyWalkColor.warmWhite),
           ),
           const SizedBox(height: 8),
           Text(
             'Want to add some purpose?',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 13, color: TributeColor.softGold.withValues(alpha: 0.6)),
+                fontSize: 13, color: MyWalkColor.softGold.withValues(alpha: 0.6)),
           ),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -335,8 +335,8 @@ class _EmptyState extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const FruitLibraryView()),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: TributeColor.golden,
-              foregroundColor: TributeColor.charcoal,
+              backgroundColor: MyWalkColor.golden,
+              foregroundColor: MyWalkColor.charcoal,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
             ),

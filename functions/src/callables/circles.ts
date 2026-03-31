@@ -340,6 +340,42 @@ export const circleUpdateSettings = onCall(
   }
 );
 
+// ── circleUpdateMemberRole ────────────────────────────────────────────────────
+
+export const circleUpdateMemberRole = onCall(
+  { region: 'us-central1' },
+  async (request) => {
+    if (!request.auth) throw new HttpsError('unauthenticated', 'Sign in required');
+
+    const { circleId, targetUserId, role } = request.data as {
+      circleId: string;
+      targetUserId: string;
+      role: 'admin' | 'member';
+    };
+
+    if (!circleId?.trim()) throw new HttpsError('invalid-argument', 'circleId required');
+    if (!targetUserId?.trim()) throw new HttpsError('invalid-argument', 'targetUserId required');
+    if (!['admin', 'member'].includes(role)) throw new HttpsError('invalid-argument', 'role must be admin or member');
+
+    const uid = request.auth.uid;
+    if (uid === targetUserId) throw new HttpsError('invalid-argument', 'You cannot change your own role');
+
+    // Verify caller is admin.
+    const callerSnap = await membersCol(circleId).doc(uid).get();
+    if (!callerSnap.exists || callerSnap.data()!['role'] !== 'admin') {
+      throw new HttpsError('permission-denied', 'Only admins can change member roles');
+    }
+
+    // Verify target is a member.
+    const targetSnap = await membersCol(circleId).doc(targetUserId).get();
+    if (!targetSnap.exists) throw new HttpsError('not-found', 'Member not found in this circle');
+
+    await membersCol(circleId).doc(targetUserId).update({ role });
+
+    return { success: true };
+  }
+);
+
 // ── Internal helpers ──────────────────────────────────────────────────────────
 
 async function _incrementGratitudeMilestones(circleId: string): Promise<void> {

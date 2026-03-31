@@ -132,10 +132,10 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
               Icon(_categoryIcon(), size: 20,
-                  color: isAbstain ? TributeColor.warmCoral : TributeColor.golden),
+                  color: isAbstain ? MyWalkColor.warmCoral : MyWalkColor.golden),
               const SizedBox(width: 10),
               Text(widget.category.rawValue,
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
             ]),
             const SizedBox(height: 24),
             if (isAbstain) _abstainNameSection() else _nameSection(),
@@ -169,8 +169,8 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
               label: const Text('Set this habit',
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -198,17 +198,17 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Habit Name',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       TextField(
         controller: _nameController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 16, color: TributeColor.warmWhite),
+        style: const TextStyle(fontSize: 16, color: MyWalkColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'e.g. Morning run',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: TributeColor.cardBackground,
+          fillColor: MyWalkColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -221,7 +221,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('What are you letting go of?',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 10),
       Wrap(
         spacing: 8, runSpacing: 8,
@@ -232,13 +232,13 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
               decoration: BoxDecoration(
-                color: selected ? TributeColor.warmCoral : TributeColor.cardBackground,
+                color: selected ? MyWalkColor.warmCoral : MyWalkColor.cardBackground,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(preset,
                   style: TextStyle(
                     fontSize: 12, fontWeight: FontWeight.w500,
-                    color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                    color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                   )),
             ),
           );
@@ -248,12 +248,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
       TextField(
         controller: _nameController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: TributeColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Or type your own...',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: TributeColor.cardBackground,
+          fillColor: MyWalkColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -267,17 +267,17 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
       Row(children: [
         Text('Your Why',
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-                color: TributeColor.softGold.withValues(alpha: 0.6))),
+                color: MyWalkColor.softGold.withValues(alpha: 0.6))),
         if (!isPremium) ...[
           const SizedBox(width: 6),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: TributeColor.golden.withValues(alpha: 0.15),
+              color: MyWalkColor.golden.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text('PRO',
-                style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+                style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
           ),
         ],
       ]),
@@ -289,12 +289,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
         controller: _purposeController,
         maxLines: 4,
         readOnly: !isPremium,
-        style: TextStyle(fontSize: 15, color: isPremium ? TributeColor.warmWhite : TributeColor.warmWhite.withValues(alpha: 0.5)),
+        style: TextStyle(fontSize: 15, color: isPremium ? MyWalkColor.warmWhite : MyWalkColor.warmWhite.withValues(alpha: 0.5)),
         decoration: InputDecoration(
           hintText: 'Your purpose for this habit...',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: isPremium ? TributeColor.cardBackground : TributeColor.cardBackground.withValues(alpha: 0.5),
+          fillColor: isPremium ? MyWalkColor.cardBackground : MyWalkColor.cardBackground.withValues(alpha: 0.5),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -306,25 +306,25 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Your Anchor Verse',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Container(
         width: double.infinity,
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: TributeColor.golden.withValues(alpha: 0.04),
+          color: MyWalkColor.golden.withValues(alpha: 0.04),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: TributeColor.golden.withValues(alpha: 0.12), width: 0.5),
+          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('\u201C${verse.text}\u201D',
               style: TextStyle(
                 fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-                color: TributeColor.softGold.withValues(alpha: 0.7),
+                color: MyWalkColor.softGold.withValues(alpha: 0.7),
               )),
           const SizedBox(height: 6),
           Text('- ${verse.reference}',
-              style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
         ]),
       ),
     ]);
@@ -340,7 +340,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('How do you want to track this?',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(
         children: types.map((type) {
@@ -362,14 +362,14 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.golden : TributeColor.cardBackground,
+                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Text(labels[type]!,
                         style: TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w500,
-                          color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                          color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                         )),
                   ),
                 ),
@@ -386,7 +386,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Daily Goal (minutes)',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(
         children: minuteOptions.map((mins) {
@@ -399,14 +399,14 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.golden : TributeColor.cardBackground,
+                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
                     child: Text('${mins.toInt()}',
                         style: TextStyle(
                           fontSize: 15, fontWeight: FontWeight.w500,
-                          color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                          color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                         )),
                   ),
                 ),
@@ -422,20 +422,20 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Daily Goal',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(children: [
         Text('${_dailyTarget.toInt()}',
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
         const SizedBox(width: 12),
         Column(children: [
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget + 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_up, color: TributeColor.golden),
+            child: const Icon(Icons.keyboard_arrow_up, color: MyWalkColor.golden),
           ),
           GestureDetector(
             onTap: () => setState(() => _dailyTarget = (_dailyTarget - 1).clamp(1, 100)),
-            child: const Icon(Icons.keyboard_arrow_down, color: TributeColor.golden),
+            child: const Icon(Icons.keyboard_arrow_down, color: MyWalkColor.golden),
           ),
         ]),
         const SizedBox(width: 12),
@@ -444,12 +444,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
             controller: TextEditingController(text: _targetUnit)
               ..selection = TextSelection.collapsed(offset: _targetUnit.length),
             onChanged: (v) => _targetUnit = v,
-            style: const TextStyle(fontSize: 15, color: TributeColor.warmWhite),
+            style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
             decoration: InputDecoration(
               hintText: 'Unit (e.g. glasses)',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
               filled: true,
-              fillColor: TributeColor.cardBackground,
+              fillColor: MyWalkColor.cardBackground,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
               contentPadding: const EdgeInsets.all(10),
             ),
@@ -464,7 +464,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Active days',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -483,14 +483,14 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
               width: 36, height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: selected ? TributeColor.golden : TributeColor.cardBackground,
-                border: Border.all(color: selected ? TributeColor.golden : TributeColor.cardBorder, width: 0.5),
+                color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
+                border: Border.all(color: selected ? MyWalkColor.golden : MyWalkColor.cardBorder, width: 0.5),
               ),
               child: Center(
                 child: Text(dayLabels[i],
                     style: TextStyle(
                       fontSize: 12, fontWeight: FontWeight.w600,
-                      color: selected ? TributeColor.charcoal : Colors.white.withValues(alpha: 0.4),
+                      color: selected ? MyWalkColor.charcoal : Colors.white.withValues(alpha: 0.4),
                     )),
               ),
             ),
@@ -505,7 +505,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('When will you do this?',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 4),
       Text('Anchor it to something you already do.',
           style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -522,13 +522,13 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.golden : TributeColor.cardBackground,
+                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(chip,
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w500,
-                        color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                       )),
                 ),
               ),
@@ -540,12 +540,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
       TextField(
         controller: _triggerController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: TributeColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Or type your own trigger\u2026',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: TributeColor.cardBackground,
+          fillColor: MyWalkColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),
@@ -557,7 +557,7 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('When I feel tempted, I will\u2026',
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500,
-              color: TributeColor.softGold.withValues(alpha: 0.6))),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6))),
       const SizedBox(height: 8),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -571,13 +571,13 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.warmCoral : TributeColor.cardBackground,
+                    color: selected ? MyWalkColor.warmCoral : MyWalkColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(s,
                       style: TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w500,
-                        color: selected ? TributeColor.charcoal : TributeColor.softGold,
+                        color: selected ? MyWalkColor.charcoal : MyWalkColor.softGold,
                       )),
                 ),
               ),
@@ -589,12 +589,12 @@ class _HabitSetupScreenState extends State<HabitSetupScreen> {
       TextField(
         controller: _copingController,
         onChanged: (_) => setState(() {}),
-        style: const TextStyle(fontSize: 15, color: TributeColor.warmWhite),
+        style: const TextStyle(fontSize: 15, color: MyWalkColor.warmWhite),
         decoration: InputDecoration(
           hintText: 'Or write your own plan\u2026',
           hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
           filled: true,
-          fillColor: TributeColor.cardBackground,
+          fillColor: MyWalkColor.cardBackground,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           contentPadding: const EdgeInsets.all(14),
         ),

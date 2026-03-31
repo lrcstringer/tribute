@@ -29,6 +29,7 @@ abstract class CircleRepository {
 
   // ── Circle Settings ─────────────────────────────────────────────────────────
   Future<void> updateCircleSettings(String circleId, CircleSettings settings);
+  Future<void> updateMemberRole(String circleId, String targetUserId, String role);
 
   // ── Feature 1: Prayer List ──────────────────────────────────────────────────
   Future<List<PrayerRequest>> getPrayerRequests(String circleId);
@@ -36,6 +37,7 @@ abstract class CircleRepository {
     required String circleId,
     required String requestText,
     required PrayerDuration duration,
+    bool anonymous = false,
   });
   Future<void> prayForRequest(String circleId, String requestId);
   Future<void> markPrayerAnswered(
@@ -121,6 +123,9 @@ abstract class CircleRepository {
     String? note,
     required bool isAnonymous,
   });
+
+  // ── Circle Habit Milestones ─────────────────────────────────────────────────
+  Future<List<CircleHabitMilestone>> getCircleHabitMilestones(String circleId);
 
   // ── Feature 7: Events ───────────────────────────────────────────────────────
   Future<List<CircleEvent>> getUpcomingEvents(String circleId);

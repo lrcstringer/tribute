@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TributeColor {
+class MyWalkColor {
   static const charcoal = Color(0xFF1E1E2E);
   static const warmWhite = Color(0xFFFAF7F2);
   static const golden = Color(0xFFD4A843);
@@ -45,26 +45,26 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: TributeColor.charcoal,
+      scaffoldBackgroundColor: MyWalkColor.charcoal,
       colorScheme: const ColorScheme.dark(
-        primary: TributeColor.golden,
-        secondary: TributeColor.sage,
-        surface: TributeColor.cardBackground,
-        onPrimary: TributeColor.charcoal,
-        onSurface: TributeColor.warmWhite,
+        primary: MyWalkColor.golden,
+        secondary: MyWalkColor.sage,
+        surface: MyWalkColor.cardBackground,
+        onPrimary: MyWalkColor.charcoal,
+        onSurface: MyWalkColor.warmWhite,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: TributeColor.charcoal,
-        selectedItemColor: TributeColor.golden,
+        backgroundColor: MyWalkColor.charcoal,
+        selectedItemColor: MyWalkColor.golden,
         unselectedItemColor: Colors.white38,
         type: BottomNavigationBarType.fixed,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: TributeColor.charcoal,
-        foregroundColor: TributeColor.warmWhite,
+        backgroundColor: MyWalkColor.charcoal,
+        foregroundColor: MyWalkColor.warmWhite,
         elevation: 0,
       ),
-      textTheme: _buildTextTheme(TributeColor.warmWhite),
+      textTheme: _buildTextTheme(MyWalkColor.warmWhite),
     );
   }
 
@@ -72,50 +72,50 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: TributeColor.warmWhite,
+      scaffoldBackgroundColor: MyWalkColor.warmWhite,
       colorScheme: ColorScheme.light(
-        primary: TributeColor.golden,
-        secondary: TributeColor.sage,
+        primary: MyWalkColor.golden,
+        secondary: MyWalkColor.sage,
         surface: const Color(0xFFF0EDE8),
-        onPrimary: TributeColor.charcoal,
-        onSurface: TributeColor.charcoal,
+        onPrimary: MyWalkColor.charcoal,
+        onSurface: MyWalkColor.charcoal,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: TributeColor.warmWhite,
-        selectedItemColor: TributeColor.golden,
-        unselectedItemColor: TributeColor.charcoal.withValues(alpha: 0.4),
+        backgroundColor: MyWalkColor.warmWhite,
+        selectedItemColor: MyWalkColor.golden,
+        unselectedItemColor: MyWalkColor.charcoal.withValues(alpha: 0.4),
         type: BottomNavigationBarType.fixed,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: TributeColor.warmWhite,
-        foregroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.warmWhite,
+        foregroundColor: MyWalkColor.charcoal,
         elevation: 0,
       ),
-      textTheme: _buildTextTheme(TributeColor.charcoal),
+      textTheme: _buildTextTheme(MyWalkColor.charcoal),
     );
   }
 }
 
 // Reusable decoration helpers
-class TributeDecorations {
+class MyWalkDecorations {
   static BoxDecoration get card => BoxDecoration(
-    color: TributeColor.cardBackground,
+    color: MyWalkColor.cardBackground,
     borderRadius: BorderRadius.circular(16),
-    border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+    border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
   );
 
   static BoxDecoration get inputField => BoxDecoration(
-    color: TributeColor.inputBackground,
+    color: MyWalkColor.inputBackground,
     borderRadius: BorderRadius.circular(12),
   );
 }
 
 // Reusable button style
-class TributeButtonStyle {
-  static ButtonStyle primary({Color color = TributeColor.golden}) =>
+class MyWalkButtonStyle {
+  static ButtonStyle primary({Color color = MyWalkColor.golden}) =>
       ElevatedButton.styleFrom(
         backgroundColor: color,
-        foregroundColor: TributeColor.charcoal,
+        foregroundColor: MyWalkColor.charcoal,
         minimumSize: const Size(double.infinity, 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),

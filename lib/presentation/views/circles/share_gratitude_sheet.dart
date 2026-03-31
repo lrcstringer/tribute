@@ -59,17 +59,17 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
     final firstName = auth.displayName?.split(' ').first ?? 'You';
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Center(
               child: Column(children: [
-                const Icon(Icons.favorite_rounded, size: 28, color: TributeColor.golden),
+                const Icon(Icons.favorite_rounded, size: 28, color: MyWalkColor.golden),
                 const SizedBox(height: 8),
                 const Text('Share Your Gratitude',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
               ]),
             ),
             const SizedBox(height: 24),
@@ -87,12 +87,12 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
                 onPressed: (_isSharing || (_hasMultipleCircles && _selectedIds.isEmpty)) ? null : _share,
                 icon: _isSharing
                     ? const SizedBox(width: 18, height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.charcoal))
+                        child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
                     : const Icon(Icons.arrow_forward_rounded, size: 18),
                 label: const Text('Share', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -135,15 +135,15 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
-                    color: selected ? TributeColor.golden : TributeColor.cardBackground,
+                    color: selected ? MyWalkColor.golden : MyWalkColor.cardBackground,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        color: selected ? Colors.transparent : TributeColor.cardBorder, width: 0.5),
+                        color: selected ? Colors.transparent : MyWalkColor.cardBorder, width: 0.5),
                   ),
                   child: Text(circle.name,
                       style: TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500,
-                          color: selected ? TributeColor.charcoal : TributeColor.warmWhite)),
+                          color: selected ? MyWalkColor.charcoal : MyWalkColor.warmWhite)),
                 ),
               ),
             );
@@ -175,17 +175,17 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: selected ? TributeColor.golden.withValues(alpha: 0.06) : Colors.transparent,
+          color: selected ? MyWalkColor.golden.withValues(alpha: 0.06) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-              color: selected ? TributeColor.golden.withValues(alpha: 0.2) : TributeColor.cardBorder,
+              color: selected ? MyWalkColor.golden.withValues(alpha: 0.2) : MyWalkColor.cardBorder,
               width: 0.5),
         ),
         child: Row(children: [
           Icon(selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-              size: 20, color: selected ? TributeColor.golden : Colors.white.withValues(alpha: 0.4)),
+              size: 20, color: selected ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.4)),
           const SizedBox(width: 10),
-          Text(label, style: const TextStyle(fontSize: 14, color: TributeColor.warmWhite)),
+          Text(label, style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
         ]),
       ),
     );
@@ -207,7 +207,7 @@ class _ShareGratitudeSheetState extends State<ShareGratitudeSheet> {
         ),
         child: Text(text,
             style: TextStyle(fontSize: 14, height: 1.5,
-                color: TributeColor.warmWhite.withValues(alpha: 0.8))),
+                color: MyWalkColor.warmWhite.withValues(alpha: 0.8))),
       ),
     ]);
   }

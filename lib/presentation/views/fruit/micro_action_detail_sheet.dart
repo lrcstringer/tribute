@@ -18,7 +18,7 @@ class MicroActionDetailSheet extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -69,7 +69,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("You're now practising \"${_action.name}\"."),
-            backgroundColor: TributeColor.cardBackground,
+            backgroundColor: MyWalkColor.cardBackground,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -132,11 +132,11 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                   decoration: BoxDecoration(
-                    color: TributeColor.surfaceOverlay,
+                    color: MyWalkColor.surfaceOverlay,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(trackingLabel,
-                      style: TextStyle(fontSize: 11, color: TributeColor.softGold.withValues(alpha: 0.7))),
+                      style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
                 ),
               ],
             ),
@@ -148,7 +148,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
-                color: TributeColor.warmWhite,
+                color: MyWalkColor.warmWhite,
                 height: 1.3,
               ),
             ),
@@ -159,7 +159,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
               _action.description,
               style: TextStyle(
                 fontSize: 15,
-                color: TributeColor.warmWhite.withValues(alpha: 0.8),
+                color: MyWalkColor.warmWhite.withValues(alpha: 0.8),
                 height: 1.6,
               ),
             ),
@@ -169,10 +169,10 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
             Container(
               padding: const EdgeInsets.fromLTRB(14, 12, 12, 12),
               decoration: BoxDecoration(
-                color: TributeColor.golden.withValues(alpha: 0.06),
+                color: MyWalkColor.golden.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(10),
                 border: Border(
-                  left: BorderSide(color: TributeColor.golden.withValues(alpha: 0.6), width: 3),
+                  left: BorderSide(color: MyWalkColor.golden.withValues(alpha: 0.6), width: 3),
                 ),
               ),
               child: Text(
@@ -180,7 +180,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
                 style: TextStyle(
                   fontSize: 14,
                   fontStyle: FontStyle.italic,
-                  color: TributeColor.softGold.withValues(alpha: 0.9),
+                  color: MyWalkColor.softGold.withValues(alpha: 0.9),
                   height: 1.5,
                 ),
               ),
@@ -192,13 +192,13 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
               Row(
                 children: [
                   Icon(Icons.menu_book_outlined,
-                      size: 12, color: TributeColor.softGold.withValues(alpha: 0.45)),
+                      size: 12, color: MyWalkColor.softGold.withValues(alpha: 0.45)),
                   const SizedBox(width: 6),
                   Text(
                     _action.anchorVerse!,
                     style: TextStyle(
                       fontSize: 12,
-                      color: TributeColor.softGold.withValues(alpha: 0.5),
+                      color: MyWalkColor.softGold.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -212,9 +212,9 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
               child: ElevatedButton(
                 onPressed: _adding ? null : _addHabit,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
-                  disabledBackgroundColor: TributeColor.golden.withValues(alpha: 0.4),
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
+                  disabledBackgroundColor: MyWalkColor.golden.withValues(alpha: 0.4),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -224,7 +224,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
                         width: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(TributeColor.charcoal),
+                          valueColor: AlwaysStoppedAnimation(MyWalkColor.charcoal),
                         ),
                       )
                     : const Text('Add this habit',
@@ -237,7 +237,7 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
                 onPressed: () => Navigator.pop(context),
                 child: Text(
                   'Not for me',
-                  style: TextStyle(color: TributeColor.softGold.withValues(alpha: 0.5), fontSize: 14),
+                  style: TextStyle(color: MyWalkColor.softGold.withValues(alpha: 0.5), fontSize: 14),
                 ),
               ),
             ),

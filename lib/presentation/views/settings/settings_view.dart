@@ -8,7 +8,7 @@ import '../../../data/datasources/remote/auth_service.dart';
 import '../../../domain/services/milestone_service.dart';
 import '../../../data/datasources/local/notification_service.dart';
 import '../../theme/app_theme.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -74,8 +74,8 @@ class _SettingsViewState extends State<SettingsView> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: TributeColor.cardBackground,
-        title: const Text('Reset All Data', style: TextStyle(color: TributeColor.warmWhite)),
+        backgroundColor: MyWalkColor.cardBackground,
+        title: const Text('Reset All Data', style: TextStyle(color: MyWalkColor.warmWhite)),
         content: Text(
           'This will permanently delete all your habits, entries, and progress. This cannot be undone.',
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
@@ -90,7 +90,7 @@ class _SettingsViewState extends State<SettingsView> {
               Navigator.pop(context);
               await _resetAllData();
             },
-            child: const Text('Reset Everything', style: TextStyle(color: TributeColor.warmCoral)),
+            child: const Text('Reset Everything', style: TextStyle(color: MyWalkColor.warmCoral)),
           ),
         ],
       ),
@@ -113,14 +113,14 @@ class _SettingsViewState extends State<SettingsView> {
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          backgroundColor: TributeColor.cardBackground,
-          title: const Text('Data Reset', style: TextStyle(color: TributeColor.warmWhite)),
+          backgroundColor: MyWalkColor.cardBackground,
+          title: const Text('Data Reset', style: TextStyle(color: MyWalkColor.warmWhite)),
           content: Text('All data has been cleared. Your subscription status is unchanged.',
               style: TextStyle(color: Colors.white.withValues(alpha: 0.6))),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK', style: TextStyle(color: TributeColor.golden)),
+              child: const Text('OK', style: TextStyle(color: MyWalkColor.golden)),
             ),
           ],
         ),
@@ -149,13 +149,13 @@ class _SettingsViewState extends State<SettingsView> {
         .length;
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: TributeColor.charcoal,
+            backgroundColor: MyWalkColor.charcoal,
             title: const Text('Settings',
-                style: TextStyle(color: TributeColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
+                style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
             floating: true, snap: true,
           ),
           SliverPadding(
@@ -165,12 +165,12 @@ class _SettingsViewState extends State<SettingsView> {
                 // Brand header
                 Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: TributeDecorations.card,
+                  decoration: MyWalkDecorations.card,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('TRIBUTE',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+                    const Text('MY WALK',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
                     Text('Track your habits. Give them to God.',
-                        style: TextStyle(fontSize: 14, color: TributeColor.softGold.withValues(alpha: 0.7))),
+                        style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
                   ]),
                 ),
                 const SizedBox(height: 20),
@@ -218,20 +218,20 @@ class _SettingsViewState extends State<SettingsView> {
       return Column(children: [
         Container(
           padding: const EdgeInsets.all(14),
-          decoration: TributeDecorations.card,
+          decoration: MyWalkDecorations.card,
           child: Row(children: [
             Container(
               width: 40, height: 40,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: TributeColor.sage.withValues(alpha: 0.15)),
-              child: const Icon(Icons.person_rounded, size: 18, color: TributeColor.sage),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.sage.withValues(alpha: 0.15)),
+              child: const Icon(Icons.person_rounded, size: 18, color: MyWalkColor.sage),
             ),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(auth.displayName ?? 'Signed In',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
               Text('Apple Account', style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
             ])),
-            const Icon(Icons.check_circle_rounded, color: TributeColor.sage, size: 18),
+            const Icon(Icons.check_circle_rounded, color: MyWalkColor.sage, size: 18),
           ]),
         ),
         const SizedBox(height: 8),
@@ -239,20 +239,20 @@ class _SettingsViewState extends State<SettingsView> {
           onTap: () => auth.signOut(),
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Row(children: [
-              const Icon(Icons.logout_rounded, size: 16, color: TributeColor.warmCoral),
+              const Icon(Icons.logout_rounded, size: 16, color: MyWalkColor.warmCoral),
               const SizedBox(width: 10),
-              const Text('Sign Out', style: TextStyle(fontSize: 14, color: TributeColor.warmCoral)),
+              const Text('Sign Out', style: TextStyle(fontSize: 14, color: MyWalkColor.warmCoral)),
             ]),
           ),
         ),
         if (auth.error != null) ...[
           const SizedBox(height: 8),
           Row(children: [
-            const Icon(Icons.warning_amber, size: 14, color: TributeColor.warmCoral),
+            const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
             const SizedBox(width: 6),
-            Text(auth.error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+            Text(auth.error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
           ]),
         ],
       ]);
@@ -260,7 +260,7 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Row(children: [
         Container(
           width: 40, height: 40,
@@ -270,13 +270,13 @@ class _SettingsViewState extends State<SettingsView> {
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Sign in with Apple',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
           Text('Required for Prayer Circles & backup',
               style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
         ])),
         auth.isLoading
             ? const SizedBox(width: 16, height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.golden))
+                child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden))
             : Icon(Icons.chevron_right, size: 16, color: Colors.white.withValues(alpha: 0.3)),
       ]),
     );
@@ -288,44 +288,44 @@ class _SettingsViewState extends State<SettingsView> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: TributeColor.golden.withValues(alpha: 0.06),
+            color: MyWalkColor.golden.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+            border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
           ),
           child: Row(children: [
             Container(
               width: 40, height: 40,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: TributeColor.golden.withValues(alpha: 0.15)),
-              child: const Icon(Icons.workspace_premium_rounded, size: 18, color: TributeColor.golden),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.15)),
+              child: const Icon(Icons.workspace_premium_rounded, size: 18, color: MyWalkColor.golden),
             ),
             const SizedBox(width: 12),
             const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Tribute Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+              Text('MyWalk Pro', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
               Text('All premium features unlocked',
-                  style: TextStyle(fontSize: 12, color: TributeColor.softGold)),
+                  style: TextStyle(fontSize: 12, color: MyWalkColor.softGold)),
             ])),
-            const Icon(Icons.verified_rounded, color: TributeColor.golden, size: 18),
+            const Icon(Icons.verified_rounded, color: MyWalkColor.golden, size: 18),
           ]),
         )
       else
         GestureDetector(
           onTap: () => showModalBottomSheet(
-            context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
-            builder: (_) => const TributePaywallView(),
+            context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
+            builder: (_) => const MyWalkPaywallView(),
           ),
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Row(children: [
               Container(
                 width: 40, height: 40,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: TributeColor.golden.withValues(alpha: 0.1)),
-                child: Icon(Icons.workspace_premium_outlined, size: 18, color: TributeColor.golden.withValues(alpha: 0.6)),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.1)),
+                child: Icon(Icons.workspace_premium_outlined, size: 18, color: MyWalkColor.golden.withValues(alpha: 0.6)),
               ),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text('Upgrade to Pro',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
                 Text('Unlimited habits, SOS, analytics & more',
                     style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
               ])),
@@ -338,21 +338,21 @@ class _SettingsViewState extends State<SettingsView> {
         onTap: store.isLoading ? null : () => store.restore(),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: TributeDecorations.card,
+          decoration: MyWalkDecorations.card,
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Icon(Icons.refresh_rounded, size: 16, color: TributeColor.softGold),
+              const Icon(Icons.refresh_rounded, size: 16, color: MyWalkColor.softGold),
               const SizedBox(width: 10),
               Text('Restore Purchases', style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.6))),
               const Spacer(),
               if (store.isLoading)
                 const SizedBox(width: 16, height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.golden)),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden)),
             ]),
             if (store.error != null) ...[
               const SizedBox(height: 6),
               Text(store.error!,
-                  style: const TextStyle(fontSize: 11, color: TributeColor.warmCoral)),
+                  style: const TextStyle(fontSize: 11, color: MyWalkColor.warmCoral)),
             ],
           ]),
         ),
@@ -364,16 +364,16 @@ class _SettingsViewState extends State<SettingsView> {
     return Column(children: [
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        decoration: TributeDecorations.card,
+        decoration: MyWalkDecorations.card,
         child: Row(children: [
-          const Icon(Icons.notifications_rounded, size: 16, color: TributeColor.golden),
+          const Icon(Icons.notifications_rounded, size: 16, color: MyWalkColor.golden),
           const SizedBox(width: 10),
           const Expanded(child: Text('Daily Reminders',
-              style: TextStyle(fontSize: 14, color: TributeColor.warmWhite))),
+              style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite))),
           Switch(
             value: _remindersEnabled,
             onChanged: (v) { setState(() => _remindersEnabled = v); _savePrefs(); },
-            activeThumbColor: TributeColor.golden,
+            activeThumbColor: MyWalkColor.golden,
           ),
         ]),
       ),
@@ -383,14 +383,14 @@ class _SettingsViewState extends State<SettingsView> {
           onTap: _pickTime,
           child: Container(
             padding: const EdgeInsets.all(14),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Row(children: [
-              const Icon(Icons.access_time_rounded, size: 16, color: TributeColor.softGold),
+              const Icon(Icons.access_time_rounded, size: 16, color: MyWalkColor.softGold),
               const SizedBox(width: 10),
               const Expanded(child: Text('Reminder Time',
-                  style: TextStyle(fontSize: 14, color: TributeColor.warmWhite))),
+                  style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite))),
               Text(_reminderTime.format(context),
-                  style: const TextStyle(fontSize: 14, color: TributeColor.golden)),
+                  style: const TextStyle(fontSize: 14, color: MyWalkColor.golden)),
             ]),
           ),
         ),
@@ -400,15 +400,15 @@ class _SettingsViewState extends State<SettingsView> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: TributeColor.warmCoral.withValues(alpha: 0.06),
+            color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(children: [
-            const Icon(Icons.warning_amber, size: 14, color: TributeColor.warmCoral),
+            const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
             const SizedBox(width: 8),
             const Expanded(
               child: Text('Notifications disabled — enable in Settings',
-                  style: TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+                  style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
             ),
           ]),
         ),
@@ -420,7 +420,7 @@ class _SettingsViewState extends State<SettingsView> {
     if (habits.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(16),
-        decoration: TributeDecorations.card,
+        decoration: MyWalkDecorations.card,
         child: Center(
           child: Text('No habits yet',
               style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.4))),
@@ -432,25 +432,25 @@ class _SettingsViewState extends State<SettingsView> {
         padding: const EdgeInsets.only(bottom: 8),
         child: Container(
           padding: const EdgeInsets.all(14),
-          decoration: TributeDecorations.card,
+          decoration: MyWalkDecorations.card,
           child: Row(children: [
             Icon(_habitIcon(habit), size: 16,
-                color: habit.isBuiltIn ? TributeColor.golden : TributeColor.sage),
+                color: habit.isBuiltIn ? MyWalkColor.golden : MyWalkColor.sage),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 Text(habit.name,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.warmWhite)),
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.warmWhite)),
                 if (habit.isBuiltIn) ...[
                   const SizedBox(width: 6),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: TributeColor.golden.withValues(alpha: 0.15),
+                      color: MyWalkColor.golden.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Text('Built-in',
-                        style: TextStyle(fontSize: 10, color: TributeColor.golden)),
+                        style: TextStyle(fontSize: 10, color: MyWalkColor.golden)),
                   ),
                 ],
               ]),
@@ -464,7 +464,7 @@ class _SettingsViewState extends State<SettingsView> {
             ])),
             Text(_milestoneService.lifetimeStat(habit).primaryValue,
                 style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600,
-                    color: TributeColor.softGold.withValues(alpha: 0.6))),
+                    color: MyWalkColor.softGold.withValues(alpha: 0.6))),
           ]),
         ),
       )).toList(),
@@ -478,26 +478,26 @@ class _SettingsViewState extends State<SettingsView> {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(children: [
-        _statRow(Icons.check_circle_rounded, 'Total check-ins', '$checkIns', TributeColor.golden),
+        _statRow(Icons.check_circle_rounded, 'Total check-ins', '$checkIns', MyWalkColor.golden),
         if (minutes > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.access_time_rounded, 'Time given', timeStr, TributeColor.golden),
+          _statRow(Icons.access_time_rounded, 'Time given', timeStr, MyWalkColor.golden),
         ],
         if (cleanDays > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.shield_rounded, 'Clean days', '$cleanDays', TributeColor.sage),
+          _statRow(Icons.shield_rounded, 'Clean days', '$cleanDays', MyWalkColor.sage),
         ],
         if (count > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.tag_rounded, 'Total counted', '${count.toInt()}', TributeColor.golden),
+          _statRow(Icons.tag_rounded, 'Total counted', '${count.toInt()}', MyWalkColor.golden),
         ],
         const SizedBox(height: 12),
-        _statRow(Icons.list_rounded, 'Active habits', '$habitCount', TributeColor.golden),
+        _statRow(Icons.list_rounded, 'Active habits', '$habitCount', MyWalkColor.golden),
         if (milestones > 0) ...[
           const SizedBox(height: 12),
-          _statRow(Icons.star_rounded, 'Milestones reached', '$milestones', TributeColor.golden),
+          _statRow(Icons.star_rounded, 'Milestones reached', '$milestones', MyWalkColor.golden),
         ],
       ]),
     );
@@ -515,7 +515,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget _infoRow(String label, String value) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Row(children: [
         Expanded(child: Text(label, style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.7)))),
         Text(value, style: TextStyle(fontSize: 14, color: Colors.white.withValues(alpha: 0.4))),
@@ -529,15 +529,15 @@ class _SettingsViewState extends State<SettingsView> {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: TributeColor.warmCoral.withValues(alpha: 0.06),
+          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: TributeColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
         ),
         child: Row(children: [
-          const Icon(Icons.delete_rounded, size: 16, color: TributeColor.warmCoral),
+          const Icon(Icons.delete_rounded, size: 16, color: MyWalkColor.warmCoral),
           const SizedBox(width: 10),
           const Expanded(child: Text('Reset All Data',
-              style: TextStyle(fontSize: 14, color: TributeColor.warmCoral))),
+              style: TextStyle(fontSize: 14, color: MyWalkColor.warmCoral))),
         ]),
       ),
     );

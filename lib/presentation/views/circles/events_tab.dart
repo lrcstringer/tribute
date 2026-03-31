@@ -19,20 +19,20 @@ class EventsTab extends StatelessWidget {
         final isLoading = provider.isLoading(circleId);
 
         return Scaffold(
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           floatingActionButton: isAdmin
               ? FloatingActionButton.small(
                   onPressed: () => _showCreateSheet(context),
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   child: const Icon(Icons.add),
                 )
               : null,
           body: isLoading && events.isEmpty
-              ? const Center(child: CircularProgressIndicator(color: TributeColor.golden))
+              ? const Center(child: CircularProgressIndicator(color: MyWalkColor.golden))
               : RefreshIndicator(
-                  color: TributeColor.golden,
-                  backgroundColor: TributeColor.cardBackground,
+                  color: MyWalkColor.golden,
+                  backgroundColor: MyWalkColor.cardBackground,
                   onRefresh: () => provider.load(circleId),
                   child: events.isEmpty
                       ? _emptyState()
@@ -78,7 +78,7 @@ class EventsTab extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => CreateEventSheet(circleId: circleId),
     );
   }
@@ -107,22 +107,22 @@ class _EventCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: TributeColor.sage.withValues(alpha: 0.1),
+              color: MyWalkColor.sage.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               _formatDateShort(eventDt),
               style: const TextStyle(
-                  fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.sage),
+                  fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.sage),
             ),
           ),
           const Spacer(),
@@ -136,7 +136,7 @@ class _EventCard extends StatelessWidget {
         const SizedBox(height: 10),
         Text(event.title,
             style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+                fontSize: 16, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
         if (event.description != null && event.description!.isNotEmpty) ...[
           const SizedBox(height: 6),
           Text(event.description!,
@@ -145,13 +145,13 @@ class _EventCard extends StatelessWidget {
         ],
         const SizedBox(height: 12),
         Row(children: [
-          Icon(Icons.access_time_rounded, size: 13, color: TributeColor.softGold),
+          Icon(Icons.access_time_rounded, size: 13, color: MyWalkColor.softGold),
           const SizedBox(width: 5),
           Text(_formatTime(eventDt),
               style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.55))),
           if (event.location != null) ...[
             const SizedBox(width: 12),
-            const Icon(Icons.place_rounded, size: 13, color: TributeColor.softGold),
+            const Icon(Icons.place_rounded, size: 13, color: MyWalkColor.softGold),
             const SizedBox(width: 5),
             Expanded(
               child: Text(event.location!,
@@ -165,13 +165,13 @@ class _EventCard extends StatelessWidget {
           GestureDetector(
             onTap: () => _openLink(context, event.meetingLink!),
             child: Row(children: [
-              const Icon(Icons.video_call_rounded, size: 14, color: TributeColor.golden),
+              const Icon(Icons.video_call_rounded, size: 14, color: MyWalkColor.golden),
               const SizedBox(width: 5),
               const Text('Join Meeting',
                   style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
-                      color: TributeColor.golden)),
+                      color: MyWalkColor.golden)),
             ]),
           ),
         ],
@@ -183,9 +183,9 @@ class _EventCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: TributeColor.cardBackground,
+        backgroundColor: MyWalkColor.cardBackground,
         title: const Text('Delete Event',
-            style: TextStyle(color: TributeColor.warmWhite, fontSize: 16)),
+            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
         content: Text('Remove "${event.title}"?',
             style: TextStyle(color: Colors.white.withValues(alpha: 0.6))),
         actions: [
@@ -198,7 +198,7 @@ class _EventCard extends StatelessWidget {
               Navigator.pop(context);
               context.read<CircleEventsProvider>().deleteEvent(circleId, event.id);
             },
-            child: const Text('Delete', style: TextStyle(color: TributeColor.warmCoral)),
+            child: const Text('Delete', style: TextStyle(color: MyWalkColor.warmCoral)),
           ),
         ],
       ),
@@ -211,10 +211,10 @@ class _EventCard extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(url, overflow: TextOverflow.ellipsis),
-        backgroundColor: TributeColor.cardBackground,
+        backgroundColor: MyWalkColor.cardBackground,
         action: SnackBarAction(
           label: 'Copy',
-          textColor: TributeColor.golden,
+          textColor: MyWalkColor.golden,
           onPressed: () {
             // Clipboard access without url_launcher.
             ScaffoldMessenger.of(context).showSnackBar(
@@ -274,11 +274,11 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: const Text('New Event',
-            style: TextStyle(color: TributeColor.warmWhite, fontSize: 17)),
+            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
@@ -291,10 +291,10 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: TributeColor.golden))
+                        strokeWidth: 2, color: MyWalkColor.golden))
                 : const Text('Create',
                     style: TextStyle(
-                        color: TributeColor.golden, fontWeight: FontWeight.w600)),
+                        color: MyWalkColor.golden, fontWeight: FontWeight.w600)),
           ),
         ],
       ),
@@ -306,7 +306,7 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
           const SizedBox(height: 6),
           TextField(
             controller: _titleController,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec('e.g. Friday Prayer Night'),
           ),
           const SizedBox(height: 14),
@@ -318,12 +318,12 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
               decoration: BoxDecoration(
-                color: TributeColor.inputBackground,
+                color: MyWalkColor.inputBackground,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(children: [
                 const Icon(Icons.calendar_today_rounded,
-                    size: 16, color: TributeColor.softGold),
+                    size: 16, color: MyWalkColor.softGold),
                 const SizedBox(width: 10),
                 Text(
                   _eventDate == null
@@ -333,7 +333,7 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
                     fontSize: 14,
                     color: _eventDate == null
                         ? Colors.white.withValues(alpha: 0.3)
-                        : TributeColor.warmWhite,
+                        : MyWalkColor.warmWhite,
                   ),
                 ),
               ]),
@@ -345,7 +345,7 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
           TextField(
             controller: _descController,
             maxLines: 3,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec("What's happening at this event?"),
           ),
           const SizedBox(height: 14),
@@ -353,7 +353,7 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
           const SizedBox(height: 6),
           TextField(
             controller: _locationController,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec('Address or venue name'),
           ),
           const SizedBox(height: 14),
@@ -362,13 +362,13 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
           TextField(
             controller: _linkController,
             keyboardType: TextInputType.url,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec('https://zoom.us/…'),
           ),
           if (_error != null) ...[
             const SizedBox(height: 10),
             Text(_error!,
-                style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+                style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
           ],
         ]),
       ),
@@ -386,7 +386,7 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
         hintStyle:
             TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
         filled: true,
-        fillColor: TributeColor.inputBackground,
+        fillColor: MyWalkColor.inputBackground,
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       );
@@ -401,8 +401,8 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.dark(
-            primary: TributeColor.golden,
-            surface: TributeColor.cardBackground,
+            primary: MyWalkColor.golden,
+            surface: MyWalkColor.cardBackground,
           ),
         ),
         child: child!,
@@ -416,8 +416,8 @@ class _CreateEventSheetState extends State<CreateEventSheet> {
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
           colorScheme: const ColorScheme.dark(
-            primary: TributeColor.golden,
-            surface: TributeColor.cardBackground,
+            primary: MyWalkColor.golden,
+            surface: MyWalkColor.cardBackground,
           ),
         ),
         child: child!,

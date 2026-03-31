@@ -46,8 +46,8 @@ class _ReframeScreenState extends State<ReframeScreen> {
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text(
-              'Tribute works\na bit differently.',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: TributeColor.warmWhite, height: 1.3),
+              'MyWalk works\na bit differently.',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
             ),
             const SizedBox(height: 28),
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -68,24 +68,24 @@ class _ReframeScreenState extends State<ReframeScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
-                          color: TributeColor.warmCoral.withValues(alpha: 0.06),
+                          color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: TributeColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
+                          border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.15), width: 0.5),
                         ),
                         child: Column(children: [
                           Text('Day 47',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: TributeColor.warmCoral,
+                                color: MyWalkColor.warmCoral,
                                 decoration: TextDecoration.lineThrough,
-                                decorationColor: TributeColor.warmCoral,
+                                decorationColor: MyWalkColor.warmCoral,
                               )),
                           const SizedBox(height: 6),
                           Text('Streak broken.',
-                              style: TextStyle(fontSize: 12, color: TributeColor.warmCoral.withValues(alpha: 0.8))),
+                              style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral.withValues(alpha: 0.8))),
                           const SizedBox(height: 8),
-                          Icon(Icons.cancel_rounded, size: 28, color: TributeColor.warmCoral.withValues(alpha: 0.6)),
+                          Icon(Icons.cancel_rounded, size: 28, color: MyWalkColor.warmCoral.withValues(alpha: 0.6)),
                         ]),
                       ),
                     ]),
@@ -101,15 +101,15 @@ class _ReframeScreenState extends State<ReframeScreen> {
                     offset: _showRight ? Offset.zero : const Offset(0.3, 0),
                     duration: const Duration(milliseconds: 500),
                     child: Column(children: [
-                      const Text('Tribute',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+                      const Text('MyWalk',
+                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
                       const SizedBox(height: 12),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
-                          color: TributeColor.golden.withValues(alpha: 0.06),
+                          color: MyWalkColor.golden.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+                          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
                         ),
                         child: Column(children: [
                           Row(
@@ -121,7 +121,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: i < 5
-                                      ? TributeColor.golden
+                                      ? MyWalkColor.golden
                                       : Colors.white.withValues(alpha: 0.08),
                                 ),
                               ),
@@ -129,9 +129,9 @@ class _ReframeScreenState extends State<ReframeScreen> {
                           ),
                           const SizedBox(height: 6),
                           const Text('5 out of 7',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
                           const SizedBox(height: 4),
-                          const Text('Great week.', style: TextStyle(fontSize: 12, color: TributeColor.sage)),
+                          const Text('Great week.', style: TextStyle(fontSize: 12, color: MyWalkColor.sage)),
                         ]),
                       ),
                     ]),
@@ -147,7 +147,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
                 offset: _showPoints ? Offset.zero : const Offset(0, 0.2),
                 duration: const Duration(milliseconds: 500),
                 child: Column(children: [
-                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. Tribute tracks what you\u2019re giving to God.'),
+                  _reframePoint(Icons.favorite_rounded, 'Most apps track your performance. MyWalk tracks what you\u2019re giving to God.'),
                   _reframePoint(Icons.refresh_rounded, 'No streaks. Every week is a fresh start. 5 out of 7 is still a gift.'),
                   _reframePoint(Icons.back_hand_rounded, 'We\u2019ll never tell you that you failed. We\u2019ll meet you wherever you are.'),
                 ]),
@@ -160,12 +160,12 @@ class _ReframeScreenState extends State<ReframeScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-                  color: TributeColor.softGold.withValues(alpha: 0.6),
+                  color: MyWalkColor.softGold.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 6),
               Text('Lamentations 3:22-23',
-                  style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.5))),
+                  style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
             ]),
           ]),
         ),
@@ -180,8 +180,8 @@ class _ReframeScreenState extends State<ReframeScreen> {
             label: const Text("Got it. Let\u2019s set up my habits",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
             style: ElevatedButton.styleFrom(
-              backgroundColor: TributeColor.golden,
-              foregroundColor: TributeColor.charcoal,
+              backgroundColor: MyWalkColor.golden,
+              foregroundColor: MyWalkColor.charcoal,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
@@ -206,7 +206,7 @@ class _ReframeScreenState extends State<ReframeScreen> {
           width: 20,
           child: Padding(
             padding: const EdgeInsets.only(top: 2),
-            child: Icon(icon, size: 14, color: TributeColor.golden),
+            child: Icon(icon, size: 14, color: MyWalkColor.golden),
           ),
         ),
         const SizedBox(width: 12),

@@ -35,7 +35,7 @@ class _CirclesAuthGateView extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthService>();
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
@@ -45,20 +45,20 @@ class _CirclesAuthGateView extends StatelessWidget {
               Stack(alignment: Alignment.center, children: [
                 Container(width: 100, height: 100,
                     decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: TributeColor.golden.withValues(alpha: 0.08))),
+                        color: MyWalkColor.golden.withValues(alpha: 0.08))),
                 Container(width: 72, height: 72,
                     decoration: BoxDecoration(shape: BoxShape.circle,
-                        color: TributeColor.golden.withValues(alpha: 0.12))),
-                const Icon(Icons.group_rounded, size: 32, color: TributeColor.golden),
+                        color: MyWalkColor.golden.withValues(alpha: 0.12))),
+                const Icon(Icons.group_rounded, size: 32, color: MyWalkColor.golden),
               ]),
               const SizedBox(height: 20),
               const Text('Prayer Circles',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
               const SizedBox(height: 12),
               Text(
                 'Walk together in faith with your community.\nCreate or join circles to share your journey.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: TributeColor.softGold.withValues(alpha: 0.7), height: 1.6),
+                style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7), height: 1.6),
               ),
               const SizedBox(height: 32),
               ..._features.map((f) => Padding(
@@ -67,7 +67,7 @@ class _CirclesAuthGateView extends StatelessWidget {
                   )),
               const SizedBox(height: 32),
               if (auth.error != null) ...[
-                Text(auth.error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+                Text(auth.error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
                 const SizedBox(height: 12),
               ],
               SizedBox(
@@ -76,13 +76,13 @@ class _CirclesAuthGateView extends StatelessWidget {
                   onPressed: auth.isLoading ? null : auth.signIn,
                   icon: auth.isLoading
                       ? const SizedBox(width: 18, height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.charcoal))
+                          child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
                       : Icon(AuthService.isApplePlatform ? Icons.apple : Icons.g_mobiledata, size: 20),
                   label: Text(AuthService.isApplePlatform ? 'Sign in with Apple' : 'Sign in with Google',
                       style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: TributeColor.golden,
-                    foregroundColor: TributeColor.charcoal,
+                    backgroundColor: MyWalkColor.golden,
+                    foregroundColor: MyWalkColor.charcoal,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
@@ -104,21 +104,21 @@ class _CirclesAuthGateView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+        border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
       ),
       child: Row(children: [
         Container(
           width: 40, height: 40,
           decoration: BoxDecoration(
-              color: TributeColor.golden.withValues(alpha: 0.08),
+              color: MyWalkColor.golden.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(10)),
-          child: Icon(icon, size: 18, color: TributeColor.golden),
+          child: Icon(icon, size: 18, color: MyWalkColor.golden),
         ),
         const SizedBox(width: 14),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
           Text(description, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.45))),
         ])),
       ]),
@@ -159,7 +159,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
   }
 
   void _openJoin() => showModalBottomSheet(
-    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
+    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
     builder: (_) => JoinCircleView(
       initialCode: _joinCode,
       onJoined: () async { _joinCode = ''; await _loadCircles(); },
@@ -167,7 +167,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
   );
 
   void _openCreate() => showModalBottomSheet(
-    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: TributeColor.charcoal,
+    context: context, isScrollControlled: true, useSafeArea: true, backgroundColor: MyWalkColor.charcoal,
     builder: (_) => CreateCircleView(
       onCreated: (c) => setState(() => _circles.insert(0, Circle(
         id: c.id, name: c.name, description: '', memberCount: 1, role: 'admin', inviteCode: c.inviteCode,
@@ -178,33 +178,33 @@ class _CirclesListViewState extends State<_CirclesListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: TributeColor.charcoal,
+              backgroundColor: MyWalkColor.charcoal,
               title: const Text('Circles',
-                  style: TextStyle(color: TributeColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
+                  style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
               floating: true, snap: true,
               actions: [
                 if (_circles.isNotEmpty)
                   PopupMenuButton<String>(
-                    icon: const Icon(Icons.add, color: TributeColor.golden),
-                    color: TributeColor.cardBackground,
+                    icon: const Icon(Icons.add, color: MyWalkColor.golden),
+                    color: MyWalkColor.cardBackground,
                     onSelected: (v) => v == 'create' ? _openCreate() : _openJoin(),
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'create',
-                          child: Text('Create Circle', style: TextStyle(color: TributeColor.warmWhite))),
+                          child: Text('Create Circle', style: TextStyle(color: MyWalkColor.warmWhite))),
                       PopupMenuItem(value: 'join',
-                          child: Text('Join Circle', style: TextStyle(color: TributeColor.warmWhite))),
+                          child: Text('Join Circle', style: TextStyle(color: MyWalkColor.warmWhite))),
                     ],
                   ),
               ],
             ),
             if (_isLoading)
               const SliverFillRemaining(
-                  child: Center(child: CircularProgressIndicator(color: TributeColor.golden)))
+                  child: Center(child: CircularProgressIndicator(color: MyWalkColor.golden)))
             else if (_error != null && _circles.isEmpty)
               SliverFillRemaining(child: _errorState())
             else if (_circles.isEmpty)
@@ -218,14 +218,14 @@ class _CirclesListViewState extends State<_CirclesListView> {
                     leading: Container(
                       width: 44, height: 44,
                       decoration: BoxDecoration(shape: BoxShape.circle,
-                          color: TributeColor.golden.withValues(alpha: 0.1)),
+                          color: MyWalkColor.golden.withValues(alpha: 0.1)),
                       child: Center(child: Text(
                         circle.name.isNotEmpty ? circle.name[0].toUpperCase() : '?',
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.golden),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.golden),
                       )),
                     ),
                     title: Text(circle.name,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
                     subtitle: Row(children: [
                       Icon(Icons.group, size: 12, color: Colors.white.withValues(alpha: 0.4)),
                       const SizedBox(width: 4),
@@ -233,7 +233,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                           style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
                     ]),
                     trailing: circle.role == 'admin'
-                        ? Icon(Icons.workspace_premium, size: 14, color: TributeColor.golden.withValues(alpha: 0.5))
+                        ? Icon(Icons.workspace_premium, size: 14, color: MyWalkColor.golden.withValues(alpha: 0.5))
                         : null,
                     onTap: () => Navigator.push(context,
                         MaterialPageRoute(builder: (_) => CircleDetailView(circleId: circle.id))),
@@ -245,10 +245,10 @@ class _CirclesListViewState extends State<_CirclesListView> {
               SliverToBoxAdapter(child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(children: [
-                  const Icon(Icons.warning_amber, size: 14, color: TributeColor.warmCoral),
+                  const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
                   const SizedBox(width: 8),
                   Expanded(child: Text("Couldn't refresh. Check your connection.",
-                      style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral))),
+                      style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral))),
                 ]),
               )),
           ],
@@ -262,7 +262,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
       Icon(Icons.wifi_off_rounded, size: 48, color: Colors.white.withValues(alpha: 0.2)),
       const SizedBox(height: 16),
       const Text("Couldn't load circles",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
       const SizedBox(height: 8),
       Text('Check your connection and try again.',
           textAlign: TextAlign.center,
@@ -270,7 +270,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
       const SizedBox(height: 24),
       TextButton(
         onPressed: _loadCircles,
-        child: const Text('Retry', style: TextStyle(fontSize: 14, color: TributeColor.golden)),
+        child: const Text('Retry', style: TextStyle(fontSize: 14, color: MyWalkColor.golden)),
       ),
     ]);
   }
@@ -279,12 +279,12 @@ class _CirclesListViewState extends State<_CirclesListView> {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
         width: 88, height: 88,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: TributeColor.golden.withValues(alpha: 0.08)),
-        child: Icon(Icons.group_rounded, size: 36, color: TributeColor.golden.withValues(alpha: 0.6)),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden.withValues(alpha: 0.08)),
+        child: Icon(Icons.group_rounded, size: 36, color: MyWalkColor.golden.withValues(alpha: 0.6)),
       ),
       const SizedBox(height: 20),
       const Text('No Circles Yet',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
       const SizedBox(height: 8),
       Text('Create a circle to pray with friends,\nor join one with an invite code.',
           textAlign: TextAlign.center,
@@ -298,7 +298,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
             child: ElevatedButton(
               onPressed: _openCreate,
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden, foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden, foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
@@ -309,7 +309,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
           TextButton(
             onPressed: _openJoin,
             child: const Text('Join with Code',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: TributeColor.golden)),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
           ),
         ]),
       ),

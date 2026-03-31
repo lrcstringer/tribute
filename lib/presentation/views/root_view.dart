@@ -68,8 +68,8 @@ class _RootViewState extends State<RootView> {
 
   void _handleLink(Uri uri, PendingInviteService inviteService) {
     // Accepts both:
-    //   tribute://join?code=XXXX
-    //   https://tribute.app/join?code=XXXX
+    //   mywalk://join?code=XXXX
+    //   https://mywalk.faith/join?code=XXXX
     final code = uri.queryParameters['code'];
     if (code != null && code.isNotEmpty) {
       inviteService.save(code);

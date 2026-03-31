@@ -91,7 +91,7 @@ class EngagementService extends ChangeNotifier {
 
     switch (day) {
       case 1:
-        message = const EngagementMessage(icon: 'sun.max.fill', title: 'Day 1', body: 'Your second day of gratitude plus your first custom habit check-in. Two tributes in one day. Nice.', accent: EngagementAccent.golden);
+        message = const EngagementMessage(icon: 'sun.max.fill', title: 'Day 1', body: 'Your second day of gratitude plus your first custom habit check-in. Two check-ins in one day. Nice.', accent: EngagementAccent.golden);
       case 2:
         if (firstCustom != null) {
           message = EngagementMessage(icon: 'quote.opening', title: 'Remember why', body: 'You said: "${firstCustom.purposeStatement}" That\'s still true today.', accent: EngagementAccent.golden);
@@ -103,7 +103,7 @@ class EngagementService extends ChangeNotifier {
           final stat = _statDescription(firstCustom);
           message = EngagementMessage(icon: 'chart.line.uptrend.xyaxis', title: 'It\'s adding up', body: 'You\'ve given God $stat through ${firstCustom.name.toLowerCase()} this week. That\'s more than most people give to any habit.', accent: EngagementAccent.golden);
         } else {
-          message = const EngagementMessage(icon: 'chart.line.uptrend.xyaxis', title: 'Day 3', body: 'Three days in. Your tribute is building.', accent: EngagementAccent.golden);
+          message = const EngagementMessage(icon: 'chart.line.uptrend.xyaxis', title: 'Day 3', body: 'Three days in. Your walk is building.', accent: EngagementAccent.golden);
         }
       case 4:
         message = EngagementMessage(icon: 'hand.raised.fill', title: 'The hard part', body: "You're in the hardest days of any new habit. But you've thanked God $gratitudeDays days straight — He sees your faithfulness.", accent: EngagementAccent.sage);

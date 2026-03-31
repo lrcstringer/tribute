@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = tribute
+PRODUCT_NAME = MyWalk
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.tributeapp.tribute
+PRODUCT_BUNDLE_IDENTIFIER = com.mywalk.faith
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.tributeapp. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 com.mywalk. All rights reserved.

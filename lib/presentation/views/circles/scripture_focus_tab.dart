@@ -24,21 +24,21 @@ class ScriptureFocusTab extends StatelessWidget {
             uid.isNotEmpty; // admin check handled server-side; UI shows button to all and server rejects non-admins
 
         return Scaffold(
-          backgroundColor: TributeColor.charcoal,
+          backgroundColor: MyWalkColor.charcoal,
           floatingActionButton: canSet
               ? FloatingActionButton.small(
                   onPressed: () => _showSetFocusSheet(context),
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   tooltip: 'Set Scripture Focus',
                   child: const Icon(Icons.edit_rounded),
                 )
               : null,
           body: isLoading && focus == null
-              ? const Center(child: CircularProgressIndicator(color: TributeColor.golden))
+              ? const Center(child: CircularProgressIndicator(color: MyWalkColor.golden))
               : RefreshIndicator(
-                  color: TributeColor.golden,
-                  backgroundColor: TributeColor.cardBackground,
+                  color: MyWalkColor.golden,
+                  backgroundColor: MyWalkColor.cardBackground,
                   onRefresh: () => provider.load(circleId, uid),
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
@@ -92,11 +92,11 @@ class ScriptureFocusTab extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: TributeColor.golden.withValues(alpha: 0.1),
+                color: MyWalkColor.golden.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text('Add Reflection',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: TributeColor.golden)),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: MyWalkColor.golden)),
             ),
           ),
       ]),
@@ -115,7 +115,7 @@ class ScriptureFocusTab extends StatelessWidget {
   void _showSetFocusSheet(BuildContext context) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => SetScriptureFocusSheet(circleId: circleId),
     );
   }
@@ -123,7 +123,7 @@ class ScriptureFocusTab extends StatelessWidget {
   void _showSubmitReflectionSheet(BuildContext context, String weekId, String uid) {
     showModalBottomSheet(
       context: context, isScrollControlled: true, useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       builder: (_) => _SubmitReflectionSheet(
         circleId: circleId, weekId: weekId, uid: uid),
     );
@@ -141,16 +141,16 @@ class _FocusCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: TributeColor.golden.withValues(alpha: 0.06),
+        color: MyWalkColor.golden.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.2), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.2), width: 0.5),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          const Icon(Icons.menu_book_rounded, size: 14, color: TributeColor.golden),
+          const Icon(Icons.menu_book_rounded, size: 14, color: MyWalkColor.golden),
           const SizedBox(width: 6),
           Text('${focus.reference}  •  ${focus.translation}',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
           const Spacer(),
           Text('Set by ${focus.setByDisplayName}',
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.35))),
@@ -159,7 +159,7 @@ class _FocusCard extends StatelessWidget {
         Text(focus.text,
             style: TextStyle(
               fontSize: 15,
-              color: TributeColor.warmWhite.withValues(alpha: 0.9),
+              color: MyWalkColor.warmWhite.withValues(alpha: 0.9),
               height: 1.6,
               fontStyle: FontStyle.italic,
             )),
@@ -168,15 +168,15 @@ class _FocusCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: TributeColor.inputBackground,
+              color: MyWalkColor.inputBackground,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Icon(Icons.help_outline_rounded, size: 14,
-                  color: TributeColor.softGold.withValues(alpha: 0.6)),
+                  color: MyWalkColor.softGold.withValues(alpha: 0.6)),
               const SizedBox(width: 8),
               Expanded(child: Text(focus.reflectionPrompt!,
-                  style: TextStyle(fontSize: 13, color: TributeColor.softGold.withValues(alpha: 0.8), height: 1.45))),
+                  style: TextStyle(fontSize: 13, color: MyWalkColor.softGold.withValues(alpha: 0.8), height: 1.45))),
             ]),
           ),
         ],
@@ -197,19 +197,19 @@ class _ReflectionCard extends StatelessWidget {
     final isMe = reflection.isAuthor(uid);
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           Text(isMe ? 'You' : reflection.authorDisplayName,
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600,
-                  color: isMe ? TributeColor.golden : TributeColor.softGold)),
+                  color: isMe ? MyWalkColor.golden : MyWalkColor.softGold)),
           const Spacer(),
           Text(_relativeTime(reflection.createdAt),
               style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.3))),
         ]),
         const SizedBox(height: 6),
         Text(reflection.reflectionText,
-            style: TextStyle(fontSize: 14, color: TributeColor.warmWhite.withValues(alpha: 0.9), height: 1.45)),
+            style: TextStyle(fontSize: 14, color: MyWalkColor.warmWhite.withValues(alpha: 0.9), height: 1.45)),
       ]),
     );
   }
@@ -260,7 +260,7 @@ class _SubmitReflectionSheetState extends State<_SubmitReflectionSheet> {
                   borderRadius: BorderRadius.circular(2)))),
           const SizedBox(height: 16),
           const Text('Share Your Reflection',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
           const SizedBox(height: 4),
           Text('What spoke to you from this passage?',
               style: TextStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.45))),
@@ -269,30 +269,30 @@ class _SubmitReflectionSheetState extends State<_SubmitReflectionSheet> {
             controller: _controller,
             maxLength: 300,
             maxLines: 4,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: InputDecoration(
               hintText: 'Write your reflection…',
               hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
-              filled: true, fillColor: TributeColor.inputBackground,
+              filled: true, fillColor: MyWalkColor.inputBackground,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 11),
             ),
           ),
           if (_error != null)
-            Text(_error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+            Text(_error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: _submitting ? null : _submit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden, foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden, foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               child: _submitting
                   ? const SizedBox(width: 18, height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.charcoal))
+                      child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.charcoal))
                   : const Text('Share Reflection',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
             ),
@@ -351,11 +351,11 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: const Text('Set Scripture Focus',
-            style: TextStyle(color: TributeColor.warmWhite, fontSize: 17)),
+            style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17)),
         leading: TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text('Cancel', style: TextStyle(color: Colors.white.withValues(alpha: 0.5))),
@@ -365,8 +365,8 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
             onPressed: _submitting ? null : _submit,
             child: _submitting
                 ? const SizedBox(width: 16, height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: TributeColor.golden))
-                : const Text('Set', style: TextStyle(color: TributeColor.golden, fontWeight: FontWeight.w600)),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: MyWalkColor.golden))
+                : const Text('Set', style: TextStyle(color: MyWalkColor.golden, fontWeight: FontWeight.w600)),
           ),
         ],
       ),
@@ -380,15 +380,15 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
             Expanded(
               child: TextField(
                 controller: _refController,
-                style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+                style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
                 decoration: _inputDec('e.g. John 3:16'),
               ),
             ),
             const SizedBox(width: 8),
             DropdownButton<String>(
               value: _translation,
-              dropdownColor: TributeColor.cardBackground,
-              style: const TextStyle(color: TributeColor.warmWhite, fontSize: 13),
+              dropdownColor: MyWalkColor.cardBackground,
+              style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 13),
               underline: const SizedBox(),
               items: _translations.map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
               onChanged: (v) => setState(() => _translation = v ?? 'NIV'),
@@ -399,13 +399,13 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
-                  color: TributeColor.golden.withValues(alpha: 0.1),
+                  color: MyWalkColor.golden.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: _fetching
                     ? const SizedBox(width: 14, height: 14,
-                        child: CircularProgressIndicator(strokeWidth: 1.5, color: TributeColor.golden))
-                    : const Text('Fetch', style: TextStyle(fontSize: 13, color: TributeColor.golden)),
+                        child: CircularProgressIndicator(strokeWidth: 1.5, color: MyWalkColor.golden))
+                    : const Text('Fetch', style: TextStyle(fontSize: 13, color: MyWalkColor.golden)),
               ),
             ),
           ]),
@@ -415,7 +415,7 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
           TextField(
             controller: _textController,
             maxLines: 6,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec('Paste or type the passage text…'),
           ),
           const SizedBox(height: 14),
@@ -424,12 +424,12 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
           TextField(
             controller: _promptController,
             maxLength: 200,
-            style: const TextStyle(color: TributeColor.warmWhite, fontSize: 14),
+            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
             decoration: _inputDec('e.g. What does this verse mean for your week?'),
           ),
           if (_error != null) ...[
             const SizedBox(height: 8),
-            Text(_error!, style: const TextStyle(fontSize: 12, color: TributeColor.warmCoral)),
+            Text(_error!, style: const TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
           ],
         ]),
       ),
@@ -445,7 +445,7 @@ class _SetScriptureFocusSheetState extends State<SetScriptureFocusSheet> {
   InputDecoration _inputDec(String hint) => InputDecoration(
     hintText: hint,
     hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 14),
-    filled: true, fillColor: TributeColor.inputBackground,
+    filled: true, fillColor: MyWalkColor.inputBackground,
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
     counterStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 11),
   );

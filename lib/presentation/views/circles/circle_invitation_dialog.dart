@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../domain/repositories/circle_repository.dart';
 import '../../../presentation/theme/app_theme.dart';
 
-/// Bottom-sheet dialog shown when the user opens a `tribute://join?code=XXXX`
+/// Bottom-sheet dialog shown when the user opens a `mywalk://join?code=XXXX`
 /// deep link. Lets them accept or decline the Prayer Circle invitation without
 /// having to navigate anywhere manually.
 class CircleInvitationDialog extends StatefulWidget {
@@ -18,7 +18,7 @@ class CircleInvitationDialog extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -98,11 +98,11 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: TributeColor.golden.withAlpha(30),
+              color: MyWalkColor.golden.withAlpha(30),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.group_add_rounded,
-                color: TributeColor.golden, size: 28),
+                color: MyWalkColor.golden, size: 28),
           ),
         ),
         const SizedBox(height: 20),
@@ -111,7 +111,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
           'You\'ve been invited to a Prayer Circle',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: TributeColor.warmWhite,
+                color: MyWalkColor.warmWhite,
                 height: 1.3,
               ),
         ),
@@ -120,7 +120,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
           'Join to walk together, share gratitude, and support each other.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: TributeColor.softGold,
+                color: MyWalkColor.softGold,
                 height: 1.5,
               ),
         ),
@@ -129,8 +129,8 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
         FilledButton(
           onPressed: _accept,
           style: FilledButton.styleFrom(
-            backgroundColor: TributeColor.golden,
-            foregroundColor: TributeColor.charcoal,
+            backgroundColor: MyWalkColor.golden,
+            foregroundColor: MyWalkColor.charcoal,
             minimumSize: const Size.fromHeight(52),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12)),
@@ -143,7 +143,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
           style: TextButton.styleFrom(
-            foregroundColor: TributeColor.softGold,
+            foregroundColor: MyWalkColor.softGold,
             minimumSize: const Size.fromHeight(48),
           ),
           child: const Text('Not right now'),
@@ -157,7 +157,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
       key: ValueKey('loading'),
       height: 160,
       child: Center(
-        child: CircularProgressIndicator(color: TributeColor.golden),
+        child: CircularProgressIndicator(color: MyWalkColor.golden),
       ),
     );
   }
@@ -169,7 +169,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
       children: [
         const SizedBox(height: 16),
         const Icon(Icons.check_circle_rounded,
-            color: TributeColor.sage, size: 56),
+            color: MyWalkColor.sage, size: 56),
         const SizedBox(height: 16),
         Text(
           _circleName != null
@@ -177,7 +177,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
               : 'You\'ve joined the circle!',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: TributeColor.warmWhite,
+                color: MyWalkColor.warmWhite,
               ),
         ),
         const SizedBox(height: 8),
@@ -185,7 +185,7 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
           'Walk together in faith.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: TributeColor.softGold,
+                color: MyWalkColor.softGold,
               ),
         ),
         const SizedBox(height: 32),
@@ -202,21 +202,21 @@ class _CircleInvitationDialogState extends State<CircleInvitationDialog> {
         const SizedBox(height: 16),
         const Center(
           child: Icon(Icons.error_outline_rounded,
-              color: TributeColor.warmCoral, size: 48),
+              color: MyWalkColor.warmCoral, size: 48),
         ),
         const SizedBox(height: 16),
         Text(
           _errorMessage ?? 'Something went wrong.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: TributeColor.softGold,
+                color: MyWalkColor.softGold,
                 height: 1.5,
               ),
         ),
         const SizedBox(height: 24),
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          style: TextButton.styleFrom(foregroundColor: TributeColor.softGold),
+          style: TextButton.styleFrom(foregroundColor: MyWalkColor.softGold),
           child: const Text('Close'),
         ),
         const SizedBox(height: 8),

@@ -41,15 +41,15 @@ class WeekView extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              backgroundColor: TributeColor.charcoal,
+              backgroundColor: MyWalkColor.charcoal,
               title: const Text('This Week',
                   style: TextStyle(
-                      color: TributeColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
+                      color: MyWalkColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
               floating: true,
               snap: true,
               pinned: false,
@@ -84,7 +84,7 @@ class WeekView extends StatelessWidget {
         const SizedBox(height: 8),
         Text('Your Week So Far',
             style: TextStyle(
-                fontSize: 15, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                fontSize: 15, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
         const SizedBox(height: 14),
         Row(
           children: [
@@ -97,11 +97,11 @@ class WeekView extends StatelessWidget {
                   Text(
                     _tierLabel(tier),
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.warmWhite),
+                        fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite),
                   ),
                   Text(
                     weekCycleManager.graceMessage(completed, possible),
-                    style: const TextStyle(fontSize: 12, color: TributeColor.sage),
+                    style: const TextStyle(fontSize: 12, color: MyWalkColor.sage),
                   ),
                 ],
               ),
@@ -125,16 +125,16 @@ class WeekView extends StatelessWidget {
         return Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: TributeColor.golden.withValues(alpha: 0.6), width: 2),
+            border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.6), width: 2),
           ),
           child: Center(
-            child: Icon(Icons.check, size: 16, color: TributeColor.golden.withValues(alpha: 0.7)),
+            child: Icon(Icons.check, size: 16, color: MyWalkColor.golden.withValues(alpha: 0.7)),
           ),
         );
       case DayTier.substantial:
         return Container(
-          decoration: const BoxDecoration(shape: BoxShape.circle, color: TributeColor.golden),
-          child: const Center(child: Icon(Icons.check, size: 18, color: TributeColor.charcoal)),
+          decoration: const BoxDecoration(shape: BoxShape.circle, color: MyWalkColor.golden),
+          child: const Center(child: Icon(Icons.check, size: 18, color: MyWalkColor.charcoal)),
         );
       case DayTier.full:
         return Stack(
@@ -145,7 +145,7 @@ class WeekView extends StatelessWidget {
               height: 64,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: TributeColor.golden.withValues(alpha: 0.45), width: 1.5),
+                border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.45), width: 1.5),
               ),
             ),
             Container(
@@ -153,13 +153,13 @@ class WeekView extends StatelessWidget {
               height: 52,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: TributeColor.golden,
+                color: MyWalkColor.golden,
                 boxShadow: [
-                  BoxShadow(color: TributeColor.golden.withValues(alpha: 0.7), blurRadius: 14),
-                  BoxShadow(color: TributeColor.golden.withValues(alpha: 0.35), blurRadius: 5),
+                  BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.7), blurRadius: 14),
+                  BoxShadow(color: MyWalkColor.golden.withValues(alpha: 0.35), blurRadius: 5),
                 ],
               ),
-              child: const Center(child: Icon(Icons.check, size: 18, color: TributeColor.charcoal)),
+              child: const Center(child: Icon(Icons.check, size: 18, color: MyWalkColor.charcoal)),
             ),
           ],
         );
@@ -179,9 +179,9 @@ class WeekView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: TributeColor.golden.withValues(alpha: 0.04),
+        color: MyWalkColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class WeekView extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.auto_awesome, size: 11, color: TributeColor.golden),
+                const Icon(Icons.auto_awesome, size: 11, color: MyWalkColor.golden),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -202,11 +202,11 @@ class WeekView extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: TributeColor.warmWhite)),
+                              color: MyWalkColor.warmWhite)),
                       Text(preview,
                           style: TextStyle(
                               fontSize: 11,
-                              color: TributeColor.softGold.withValues(alpha: 0.7))),
+                              color: MyWalkColor.softGold.withValues(alpha: 0.7))),
                     ],
                   ),
                 ),
@@ -220,13 +220,13 @@ class WeekView extends StatelessWidget {
 
   Widget _habitWeekCard(Habit habit, List<DateTime> weekDates, DateTime todayStart) {
     final isAbstain = habit.trackingType == HabitTrackingType.abstain;
-    final accent = isAbstain ? TributeColor.sage : TributeColor.golden;
+    final accent = isAbstain ? MyWalkColor.sage : MyWalkColor.golden;
     final daysElapsed = weekDates.where((d) => !d.isAfter(todayStart)).toList();
     final milestone = weekCycleManager.microMilestonePreview(habit);
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -239,13 +239,13 @@ class WeekView extends StatelessWidget {
                     style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: TributeColor.warmWhite)),
+                        color: MyWalkColor.warmWhite)),
               ),
               Text(_weekSummaryText(habit, daysElapsed),
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: TributeColor.softGold.withValues(alpha: 0.7))),
+                      color: MyWalkColor.softGold.withValues(alpha: 0.7))),
             ],
           ),
           const SizedBox(height: 14),
@@ -269,7 +269,7 @@ class WeekView extends StatelessWidget {
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                             color: isToday
-                                ? TributeColor.softGold
+                                ? MyWalkColor.softGold
                                 : Colors.white.withValues(alpha: 0.4))),
                     const SizedBox(height: 6),
                     _habitDayTile(habit, isActive, isFuture, isToday, tileTier, accent),
@@ -282,13 +282,13 @@ class WeekView extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.auto_awesome, size: 11, color: TributeColor.golden),
+                const Icon(Icons.auto_awesome, size: 11, color: MyWalkColor.golden),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(milestone,
                       style: TextStyle(
                           fontSize: 11,
-                          color: TributeColor.softGold.withValues(alpha: 0.6))),
+                          color: MyWalkColor.softGold.withValues(alpha: 0.6))),
                 ),
               ],
             ),
@@ -330,7 +330,7 @@ class WeekView extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: isToday
-                  ? TributeColor.golden.withValues(alpha: 0.4)
+                  ? MyWalkColor.golden.withValues(alpha: 0.4)
                   : Colors.white.withValues(alpha: 0.08),
               width: isToday ? 1.5 : 1,
             ),
@@ -351,7 +351,7 @@ class WeekView extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(shape: BoxShape.circle, color: accent),
-          child: Center(child: Icon(icon, size: 14, color: TributeColor.charcoal)),
+          child: Center(child: Icon(icon, size: 14, color: MyWalkColor.charcoal)),
         );
       case DayTier.full:
         return Stack(
@@ -373,7 +373,7 @@ class WeekView extends StatelessWidget {
                 color: accent,
                 boxShadow: [BoxShadow(color: accent.withValues(alpha: 0.7), blurRadius: 10)],
               ),
-              child: Center(child: Icon(icon, size: 14, color: TributeColor.charcoal)),
+              child: Center(child: Icon(icon, size: 14, color: MyWalkColor.charcoal)),
             ),
           ],
         );

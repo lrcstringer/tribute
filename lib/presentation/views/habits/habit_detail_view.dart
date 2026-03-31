@@ -6,7 +6,7 @@ import '../../../domain/entities/scripture.dart';
 import '../../providers/store_provider.dart';
 import '../../../domain/services/milestone_service.dart';
 import '../../theme/app_theme.dart';
-import '../shared/tribute_paywall_view.dart';
+import '../shared/mywalk_paywall_view.dart';
 import 'edit_habit_view.dart';
 import 'heatmap_view.dart';
 
@@ -27,8 +27,8 @@ class _HabitDetailViewState extends State<HabitDetailView> {
 
   Color _accentColor() =>
       _habit.trackingType == HabitTrackingType.abstain
-          ? TributeColor.sage
-          : TributeColor.golden;
+          ? MyWalkColor.sage
+          : MyWalkColor.golden;
 
   List<DateTime> _currentWeekDates() {
     final today = DateTime.now();
@@ -50,20 +50,20 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     final verse = ScriptureLibrary.completionVerse(_habit.category, DateTime.now(), isPremium: isPremium);
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
+        backgroundColor: MyWalkColor.charcoal,
         title: Text(
           _habit.name,
-          style: const TextStyle(color: TributeColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+          style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.close, color: TributeColor.warmWhite),
+          icon: const Icon(Icons.close, color: MyWalkColor.warmWhite),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: TributeColor.softGold.withValues(alpha: 0.8)),
+            icon: Icon(Icons.edit_outlined, color: MyWalkColor.softGold.withValues(alpha: 0.8)),
             onPressed: () => _showEdit(context),
           ),
         ],
@@ -122,7 +122,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
         Text(
           stat.description,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, color: TributeColor.softGold),
+          style: TextStyle(fontSize: 16, color: MyWalkColor.softGold),
         ),
         if (stat.detail != null) ...[
           const SizedBox(height: 4),
@@ -130,7 +130,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (_habit.trackingType == HabitTrackingType.abstain)
-                Icon(Icons.shield_outlined, size: 13, color: TributeColor.sage.withValues(alpha: 0.6)),
+                Icon(Icons.shield_outlined, size: 13, color: MyWalkColor.sage.withValues(alpha: 0.6)),
               if (_habit.trackingType == HabitTrackingType.abstain)
                 const SizedBox(width: 4),
               Text(
@@ -150,7 +150,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -158,7 +158,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
               style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: TributeColor.softGold)),
+                  color: MyWalkColor.softGold)),
           const SizedBox(height: 12),
           Row(
             children: dates.asMap().entries.map((e) {
@@ -174,7 +174,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: isToday ? FontWeight.w700 : FontWeight.w400,
-                        color: isToday ? TributeColor.golden : Colors.white.withValues(alpha: 0.5),
+                        color: isToday ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.5),
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -231,7 +231,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                 width: 16,
                 height: (40 * ratio).clamp(2.0, 40.0).toDouble(),
                 decoration: BoxDecoration(
-                  color: completed ? TributeColor.golden : TributeColor.mutedSage,
+                  color: completed ? MyWalkColor.golden : MyWalkColor.mutedSage,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -243,7 +243,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
           style: TextStyle(
             fontSize: 9,
             fontWeight: FontWeight.w500,
-            color: completed ? TributeColor.golden : Colors.white.withValues(alpha: 0.3),
+            color: completed ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.3),
           ),
         ),
       ],
@@ -263,7 +263,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             shape: BoxShape.circle,
             color: (!isFuture && isActive && value > 0)
                 ? (completed
-                    ? TributeColor.golden.withValues(alpha: 0.15)
+                    ? MyWalkColor.golden.withValues(alpha: 0.15)
                     : Colors.white.withValues(alpha: 0.04))
                 : Colors.white.withValues(alpha: isFuture || !isActive ? 0.02 : 0.04),
           ),
@@ -275,8 +275,8 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       color: completed
-                          ? TributeColor.golden
-                          : TributeColor.softGold.withValues(alpha: 0.6),
+                          ? MyWalkColor.golden
+                          : MyWalkColor.softGold.withValues(alpha: 0.6),
                     ),
                   ),
                 )
@@ -299,11 +299,11 @@ class _HabitDetailViewState extends State<HabitDetailView> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: completed
-                ? TributeColor.golden
+                ? MyWalkColor.golden
                 : Colors.white.withValues(alpha: isFuture || !isActive ? 0.02 : 0.04),
           ),
           child: completed
-              ? const Icon(Icons.check, size: 14, color: TributeColor.charcoal)
+              ? const Icon(Icons.check, size: 14, color: MyWalkColor.charcoal)
               : null,
         ),
         const SizedBox(height: 4),
@@ -321,7 +321,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
           confirmed ? Icons.shield_rounded : Icons.shield_outlined,
           size: 24,
           color: confirmed
-              ? TributeColor.sage
+              ? MyWalkColor.sage
               : Colors.white.withValues(alpha: isFuture || !isActive ? 0.08 : 0.2),
         ),
         const SizedBox(height: 4),
@@ -335,7 +335,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: TributeDecorations.card,
+          decoration: MyWalkDecorations.card,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -343,7 +343,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                 children: [
                   Text('Activity',
                       style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                          fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
                   const Spacer(),
                   Text(isPremium ? 'Last 12 weeks' : 'Current week',
                       style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -358,15 +358,15 @@ class _HabitDetailViewState extends State<HabitDetailView> {
           const SizedBox(height: 20),
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: TributeDecorations.card,
+            decoration: MyWalkDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text('Year in Tribute',
+                    Text('Year in MyWalk',
                         style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.golden)),
+                            fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.golden)),
                     const Spacer(),
                     Text('52 weeks',
                         style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.4))),
@@ -383,33 +383,33 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             onTap: () => _showPaywall(context),
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: TributeDecorations.card,
+              decoration: MyWalkDecorations.card,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Text('Year in Tribute',
+                      Text('Year in MyWalk',
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: TributeColor.softGold)),
+                              color: MyWalkColor.softGold)),
                       const Spacer(),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: TributeColor.golden.withValues(alpha: 0.15),
+                          color: MyWalkColor.golden.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.workspace_premium, size: 10, color: TributeColor.golden),
+                            Icon(Icons.workspace_premium, size: 10, color: MyWalkColor.golden),
                             const SizedBox(width: 3),
                             Text('PRO',
                                 style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
-                                    color: TributeColor.golden)),
+                                    color: MyWalkColor.golden)),
                           ],
                         ),
                       ),
@@ -428,11 +428,11 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(Icons.lock_outline, size: 13, color: TributeColor.golden),
+                      Icon(Icons.lock_outline, size: 13, color: MyWalkColor.golden),
                       const SizedBox(width: 6),
-                      Text('Unlock with Tribute Pro',
+                      Text('Unlock with MyWalk Pro',
                           style: TextStyle(
-                              fontSize: 12, color: TributeColor.softGold)),
+                              fontSize: 12, color: MyWalkColor.softGold)),
                       const Spacer(),
                       Icon(Icons.chevron_right,
                           size: 13, color: Colors.white.withValues(alpha: 0.3)),
@@ -450,13 +450,13 @@ class _HabitDetailViewState extends State<HabitDetailView> {
   Widget _milestoneSection(List<Milestone> milestones, Color accent) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Milestones',
               style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                  fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const SizedBox(height: 14),
           ...milestones.map((m) => Padding(
             padding: const EdgeInsets.only(bottom: 12),
@@ -469,7 +469,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                     shape: BoxShape.circle,
                     color: m.isReached
                         ? accent.withValues(alpha: 0.2)
-                        : TributeColor.surfaceOverlay,
+                        : MyWalkColor.surfaceOverlay,
                   ),
                   child: Icon(
                     m.isReached ? Icons.star_rounded : Icons.star_outline_rounded,
@@ -487,7 +487,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                         style: TextStyle(
                           fontSize: 14,
                           color: m.isReached
-                              ? TributeColor.warmWhite
+                              ? MyWalkColor.warmWhite
                               : Colors.white.withValues(alpha: 0.35),
                         ),
                       ),
@@ -520,41 +520,41 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (_habit.trigger.isNotEmpty) ...[
             Row(children: [
               Icon(Icons.access_time,
-                  size: 13, color: TributeColor.golden.withValues(alpha: 0.7)),
+                  size: 13, color: MyWalkColor.golden.withValues(alpha: 0.7)),
               const SizedBox(width: 5),
               Text('Trigger',
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: TributeColor.golden.withValues(alpha: 0.7))),
+                      color: MyWalkColor.golden.withValues(alpha: 0.7))),
             ]),
             const SizedBox(height: 4),
             Text(_habit.trigger,
-                style: const TextStyle(fontSize: 14, color: TributeColor.warmWhite)),
+                style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
           ],
           if (_habit.trigger.isNotEmpty && _habit.copingPlan.isNotEmpty)
             const SizedBox(height: 10),
           if (_habit.copingPlan.isNotEmpty) ...[
             Row(children: [
               Icon(Icons.shield_outlined,
-                  size: 13, color: TributeColor.warmCoral.withValues(alpha: 0.7)),
+                  size: 13, color: MyWalkColor.warmCoral.withValues(alpha: 0.7)),
               const SizedBox(width: 5),
               Text('Coping Plan',
                   style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: TributeColor.warmCoral.withValues(alpha: 0.7))),
+                      color: MyWalkColor.warmCoral.withValues(alpha: 0.7))),
             ]),
             const SizedBox(height: 4),
             Text(_habit.copingPlan,
-                style: const TextStyle(fontSize: 14, color: TributeColor.warmWhite)),
+                style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
           ],
         ],
       ),
@@ -565,18 +565,18 @@ class _HabitDetailViewState extends State<HabitDetailView> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Your Why',
               style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                  fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const SizedBox(height: 8),
           Text(
             _habit.purposeStatement,
             style: TextStyle(
-                fontSize: 15, color: TributeColor.warmWhite, height: 1.5),
+                fontSize: 15, color: MyWalkColor.warmWhite, height: 1.5),
           ),
         ],
       ),
@@ -594,14 +594,14 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             style: TextStyle(
               fontSize: 13,
               fontStyle: FontStyle.italic,
-              color: TributeColor.softGold.withValues(alpha: 0.6),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6),
               height: 1.6,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             verse.reference,
-            style: TextStyle(fontSize: 11, color: TributeColor.golden.withValues(alpha: 0.5)),
+            style: TextStyle(fontSize: 11, color: MyWalkColor.golden.withValues(alpha: 0.5)),
           ),
         ],
       ),
@@ -615,7 +615,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
 
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: TributeDecorations.card,
+      decoration: MyWalkDecorations.card,
       child: Column(
         children: [
           _infoRow('Tracking type', _habit.trackingType.name[0].toUpperCase() + _habit.trackingType.name.substring(1)),
@@ -642,7 +642,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: TributeColor.softGold)),
+                color: MyWalkColor.softGold)),
       ],
     );
   }
@@ -669,8 +669,8 @@ class _HabitDetailViewState extends State<HabitDetailView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
-      builder: (_) => const TributePaywallView(),
+      backgroundColor: MyWalkColor.charcoal,
+      builder: (_) => const MyWalkPaywallView(),
     );
   }
 
@@ -679,7 +679,7 @@ class _HabitDetailViewState extends State<HabitDetailView> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

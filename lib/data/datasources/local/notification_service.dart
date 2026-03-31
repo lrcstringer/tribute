@@ -13,7 +13,7 @@ class NotificationService {
   bool isAuthorized = false;
 
   static const _reminderMessages = [
-    'Your tribute is waiting. Just a moment with God today.',
+    'Your walk is waiting. Just a moment with God today.',
     'A few minutes. A small gift. God sees it all.',
     "Today's offering is ready whenever you are.",
     'Even a single check-in changes the shape of your day.',
@@ -22,7 +22,7 @@ class NotificationService {
     'Start with gratitude. Everything else follows.',
     'God meets you in the effort and in the rest.',
     'One small step today. He\'s already walking with you.',
-    'Your tribute matters — even on the hard days.',
+    'Your walk matters — even on the hard days.',
   ];
 
   static const _timeMilestones = [
@@ -96,7 +96,7 @@ class NotificationService {
       final body = _reminderMessages[i % _reminderMessages.length];
       await _plugin.zonedSchedule(
         100 + i,
-        'Tribute',
+        'MyWalk',
         body,
         _nextWeekday(i + 1, hour, minute),
         NotificationDetails(
@@ -181,7 +181,7 @@ class NotificationService {
     final body = messages[messageIdx];
 
     await _plugin.zonedSchedule(
-      99999, 'Tribute', body,
+      99999, 'MyWalk', body,
       _toTZDateTime(scheduled),
       NotificationDetails(
         android: const AndroidNotificationDetails('encouragement', 'Encouragement', importance: Importance.defaultImportance),

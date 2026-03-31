@@ -72,11 +72,11 @@ class _IdentityScreenState extends State<IdentityScreen> {
                   child: Text(
                     greeting,
                     style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.w700, color: TributeColor.warmWhite, height: 1.3),
+                        fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite, height: 1.3),
                   ),
                 ),
                 Icon(Icons.edit_rounded,
-                    size: 16, color: TributeColor.golden.withValues(alpha: 0.5)),
+                    size: 16, color: MyWalkColor.golden.withValues(alpha: 0.5)),
               ]),
             ),
             const SizedBox(height: 10),
@@ -103,13 +103,13 @@ class _IdentityScreenState extends State<IdentityScreen> {
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? TributeColor.golden.withValues(alpha: 0.08)
-                            : TributeColor.cardBackground,
+                            ? MyWalkColor.golden.withValues(alpha: 0.08)
+                            : MyWalkColor.cardBackground,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isSelected
-                              ? TributeColor.golden.withValues(alpha: 0.3)
-                              : TributeColor.cardBorder,
+                              ? MyWalkColor.golden.withValues(alpha: 0.3)
+                              : MyWalkColor.cardBorder,
                           width: 0.5,
                         ),
                       ),
@@ -118,8 +118,8 @@ class _IdentityScreenState extends State<IdentityScreen> {
                           width: 24,
                           child: Icon(opt.$3, size: 18,
                               color: isSelected
-                                  ? TributeColor.golden
-                                  : TributeColor.softGold.withValues(alpha: 0.6)),
+                                  ? MyWalkColor.golden
+                                  : MyWalkColor.softGold.withValues(alpha: 0.6)),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
@@ -128,7 +128,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                                 color: isSelected
-                                    ? TributeColor.warmWhite
+                                    ? MyWalkColor.warmWhite
                                     : Colors.white.withValues(alpha: 0.5),
                               )),
                         ),
@@ -139,7 +139,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isSelected
-                                  ? TributeColor.golden
+                                  ? MyWalkColor.golden
                                   : Colors.white.withValues(alpha: 0.15),
                               width: 1.5,
                             ),
@@ -150,7 +150,7 @@ class _IdentityScreenState extends State<IdentityScreen> {
                                     width: 14,
                                     height: 14,
                                     decoration: const BoxDecoration(
-                                        shape: BoxShape.circle, color: TributeColor.golden),
+                                        shape: BoxShape.circle, color: MyWalkColor.golden),
                                   ),
                                 )
                               : null,
@@ -179,8 +179,8 @@ class _IdentityScreenState extends State<IdentityScreen> {
                 label: const Text("That's me",
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: TributeColor.golden,
-                  foregroundColor: TributeColor.charcoal,
+                  backgroundColor: MyWalkColor.golden,
+                  foregroundColor: MyWalkColor.charcoal,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 ),
@@ -250,7 +250,7 @@ class _NameBottomSheetState extends State<_NameBottomSheet> {
         const SizedBox(height: 20),
         const Text(
           "What should we call you?",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.warmWhite),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite),
         ),
         const SizedBox(height: 6),
         Text(
@@ -262,23 +262,23 @@ class _NameBottomSheetState extends State<_NameBottomSheet> {
           controller: _ctrl,
           autofocus: true,
           textCapitalization: TextCapitalization.words,
-          style: const TextStyle(color: TributeColor.warmWhite, fontSize: 17),
+          style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 17),
           decoration: InputDecoration(
             hintText: 'Your first name',
             hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
             filled: true,
-            fillColor: TributeColor.cardBackground,
+            fillColor: MyWalkColor.cardBackground,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: TributeColor.cardBorder, width: 0.5),
+              borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: TributeColor.cardBorder, width: 0.5),
+              borderSide: BorderSide(color: MyWalkColor.cardBorder, width: 0.5),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: TributeColor.golden.withValues(alpha: 0.4), width: 1),
+              borderSide: BorderSide(color: MyWalkColor.golden.withValues(alpha: 0.4), width: 1),
             ),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
@@ -290,8 +290,8 @@ class _NameBottomSheetState extends State<_NameBottomSheet> {
           child: ElevatedButton(
             onPressed: _save,
             style: ElevatedButton.styleFrom(
-              backgroundColor: TributeColor.golden,
-              foregroundColor: TributeColor.charcoal,
+              backgroundColor: MyWalkColor.golden,
+              foregroundColor: MyWalkColor.charcoal,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),

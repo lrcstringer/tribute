@@ -101,7 +101,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
   }
 
   Color get _accentColor =>
-      widget.habitCategory == HabitCategory.abstain ? TributeColor.warmCoral : TributeColor.golden;
+      widget.habitCategory == HabitCategory.abstain ? MyWalkColor.warmCoral : MyWalkColor.golden;
 
   IconData _categoryIcon() {
     switch (widget.habitCategory) {
@@ -131,8 +131,8 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
-                    TributeColor.golden.withValues(alpha: _glowOpacity),
-                    TributeColor.softGold.withValues(alpha: _glowOpacity * 0.4),
+                    MyWalkColor.golden.withValues(alpha: _glowOpacity),
+                    MyWalkColor.softGold.withValues(alpha: _glowOpacity * 0.4),
                     Colors.transparent,
                   ],
                   radius: 1.5,
@@ -156,11 +156,11 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                     child: ElevatedButton.icon(
                       onPressed: _performDedication,
                       icon: const Icon(Icons.volunteer_activism, size: 16),
-                      label: const Text('Offer My Tribute',
+                      label: const Text('Begin My Walk',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: TributeColor.golden,
-                        foregroundColor: TributeColor.charcoal,
+                        backgroundColor: MyWalkColor.golden,
+                        foregroundColor: MyWalkColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
@@ -175,11 +175,11 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                     child: ElevatedButton.icon(
                       onPressed: widget.onComplete,
                       icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-                      label: const Text('Enter Tribute',
+                      label: const Text('Enter MyWalk',
                           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: TributeColor.golden,
-                        foregroundColor: TributeColor.charcoal,
+                        backgroundColor: MyWalkColor.golden,
+                        foregroundColor: MyWalkColor.charcoal,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                       ),
@@ -199,8 +199,8 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         opacity: _showVerse ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 600),
         child: Column(children: [
-          const Text('Your Tribute',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+          const Text('Your Walk',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
           const SizedBox(height: 8),
           Text('Everything you\u2019ve set \u2014 offered to God.',
               textAlign: TextAlign.center,
@@ -212,7 +212,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
         icon: Icons.volunteer_activism,
         name: 'Daily Gratitude',
         detail: HabitCategory.gratitude.defaultPurpose,
-        accent: TributeColor.golden,
+        accent: MyWalkColor.golden,
         isShowing: _showGratitudeTile,
         isGlowing: _tilesGlow,
       ),
@@ -243,20 +243,20 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-              color: TributeColor.softGold.withValues(alpha: 0.6),
+              color: MyWalkColor.softGold.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 6),
           Text('Romans 12:1',
-              style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.5))),
           if (DateTime.now().weekday != 7) ...[
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: TributeColor.golden.withValues(alpha: 0.06),
+                color: MyWalkColor.golden.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: TributeColor.golden.withValues(alpha: 0.15), width: 0.5),
+                border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.15), width: 0.5),
               ),
               child: Text(
                 'Starting mid-week? No problem. Your first full Sunday cycle begins this coming Sunday.',
@@ -289,24 +289,24 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(colors: [
-                    TributeColor.golden.withValues(alpha: 0.4),
-                    TributeColor.golden.withValues(alpha: 0.1),
+                    MyWalkColor.golden.withValues(alpha: 0.4),
+                    MyWalkColor.golden.withValues(alpha: 0.1),
                   ]),
                 ),
                 child: Transform.scale(
                   scale: 1.0 + b * 0.08,
-                  child: const Icon(Icons.volunteer_activism, size: 38, color: TributeColor.golden),
+                  child: const Icon(Icons.volunteer_activism, size: 38, color: MyWalkColor.golden),
                 ),
               ),
               const SizedBox(height: 20),
-              const Text('Your tribute is set.',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: TributeColor.warmWhite)),
+              const Text('Your walk is set.',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: MyWalkColor.warmWhite)),
               const SizedBox(height: 8),
               Text(
                   widget.givenName != null
                       ? 'Remain steadfast in all you do, ${widget.givenName}.'
                       : 'Remain steadfast in all you do.',
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
             ]),
           ),
         ),
@@ -321,28 +321,28 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14, fontStyle: FontStyle.italic, height: 1.6,
-              color: TributeColor.softGold.withValues(alpha: 0.5),
+              color: MyWalkColor.softGold.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(height: 6),
           Text('Lamentations 3:22\u201323',
-              style: TextStyle(fontSize: 12, color: TributeColor.golden.withValues(alpha: 0.4))),
+              style: TextStyle(fontSize: 12, color: MyWalkColor.golden.withValues(alpha: 0.4))),
           const SizedBox(height: 24),
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: TributeColor.cardBackground,
+              color: MyWalkColor.cardBackground,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+              border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
             ),
             child: Column(children: [
-              const Icon(Icons.groups_rounded, size: 28, color: TributeColor.golden),
+              const Icon(Icons.groups_rounded, size: 28, color: MyWalkColor.golden),
               const SizedBox(height: 10),
               const Text('Want to invite a few people to walk with you?',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
               const SizedBox(height: 4),
-              Text('In Tribute you can start a Prayer Circle and do this together.',
+              Text('In MyWalk you can start a Prayer Circle and do this together.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
             ]),
@@ -378,15 +378,15 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: TributeColor.golden.withValues(alpha: 0.04),
+        color: MyWalkColor.golden.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: TributeColor.golden.withValues(alpha: 0.12), width: 0.5),
+        border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.12), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('If you hit your targets this week:',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: TributeColor.softGold)),
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold)),
           const SizedBox(height: 10),
           _milestoneLine(gratitudeLine),
           if (widget.habitName.isNotEmpty) _milestoneLine(customLine),
@@ -399,7 +399,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Icon(Icons.auto_awesome, size: 11, color: TributeColor.golden),
+        const Icon(Icons.auto_awesome, size: 11, color: MyWalkColor.golden),
         const SizedBox(width: 8),
         Expanded(
           child: Text(text,
@@ -427,10 +427,10 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
           duration: const Duration(milliseconds: 400),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: isGlowing ? accent.withValues(alpha: 0.08) : TributeColor.cardBackground,
+            color: isGlowing ? accent.withValues(alpha: 0.08) : MyWalkColor.cardBackground,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isGlowing ? accent.withValues(alpha: 0.3) : TributeColor.cardBorder,
+              color: isGlowing ? accent.withValues(alpha: 0.3) : MyWalkColor.cardBorder,
               width: 0.5,
             ),
           ),
@@ -450,7 +450,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(name,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
                 const SizedBox(height: 4),
                 Text(detail,
                     style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
@@ -459,7 +459,7 @@ class _DedicationCeremonyScreenState extends State<DedicationCeremonyScreen>
             Icon(
               isGlowing ? Icons.check_circle_rounded : Icons.circle_outlined,
               size: 22,
-              color: isGlowing ? TributeColor.golden : Colors.white.withValues(alpha: 0.15),
+              color: isGlowing ? MyWalkColor.golden : Colors.white.withValues(alpha: 0.15),
             ),
           ]),
         ),
@@ -521,8 +521,8 @@ class _PulseRingState extends State<_PulseRing> with SingleTickerProviderStateMi
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(colors: [
-                TributeColor.golden.withValues(alpha: 0.4),
-                TributeColor.softGold.withValues(alpha: 0.15),
+                MyWalkColor.golden.withValues(alpha: 0.4),
+                MyWalkColor.softGold.withValues(alpha: 0.15),
                 Colors.transparent,
               ]),
             ),

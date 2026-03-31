@@ -20,13 +20,13 @@ class FruitDetailView extends StatelessWidget {
     final taggedHabits = habits.where((h) => h.fruitTags.contains(fruit)).toList();
 
     return Scaffold(
-      backgroundColor: TributeColor.charcoal,
+      backgroundColor: MyWalkColor.charcoal,
       appBar: AppBar(
-        backgroundColor: TributeColor.charcoal,
-        foregroundColor: TributeColor.warmWhite,
+        backgroundColor: MyWalkColor.charcoal,
+        foregroundColor: MyWalkColor.warmWhite,
         title: Text(fruit.label,
             style: const TextStyle(
-                fontSize: 17, fontWeight: FontWeight.w600, color: TributeColor.warmWhite)),
+                fontSize: 17, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
@@ -54,13 +54,13 @@ class FruitDetailView extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.w700,
-                            color: TributeColor.warmWhite)),
+                            color: MyWalkColor.warmWhite)),
                     Text(
                       fruit.greekWord,
                       style: TextStyle(
                         fontSize: 14,
                         fontStyle: FontStyle.italic,
-                        color: TributeColor.golden.withValues(alpha: 0.7),
+                        color: MyWalkColor.golden.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -74,7 +74,7 @@ class FruitDetailView extends StatelessWidget {
               fruit.shortDescription,
               style: TextStyle(
                 fontSize: 15,
-                color: TributeColor.warmWhite.withValues(alpha: 0.75),
+                color: MyWalkColor.warmWhite.withValues(alpha: 0.75),
                 height: 1.5,
               ),
             ),
@@ -95,7 +95,7 @@ class FruitDetailView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontStyle: FontStyle.italic,
-                    color: TributeColor.softGold.withValues(alpha: 0.75),
+                    color: MyWalkColor.softGold.withValues(alpha: 0.75),
                     height: 1.6,
                   ),
                   children: [
@@ -104,7 +104,7 @@ class FruitDetailView extends StatelessWidget {
                     TextSpan(
                       text: '  — Galatians 5:22-23',
                       style: TextStyle(
-                          fontSize: 11, color: TributeColor.softGold.withValues(alpha: 0.45)),
+                          fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.45)),
                     ),
                   ],
                 ),
@@ -123,7 +123,7 @@ class FruitDetailView extends StatelessWidget {
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.8,
-                color: TributeColor.softGold.withValues(alpha: 0.5),
+                color: MyWalkColor.softGold.withValues(alpha: 0.5),
               ),
             ),
             const SizedBox(height: 10),
@@ -188,10 +188,10 @@ class FruitDetailView extends StatelessWidget {
         children: [
           Text(value,
               style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.w700, color: TributeColor.golden)),
+                  fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
           const SizedBox(height: 2),
           Text(label,
-              style: TextStyle(fontSize: 10, color: TributeColor.softGold.withValues(alpha: 0.5))),
+              style: TextStyle(fontSize: 10, color: MyWalkColor.softGold.withValues(alpha: 0.5))),
         ],
       ),
     );
@@ -209,18 +209,18 @@ class FruitDetailView extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: TributeColor.cardBackground,
+          color: MyWalkColor.cardBackground,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           children: [
             Expanded(
               child: Text(habit.name,
-                  style: const TextStyle(fontSize: 14, color: TributeColor.warmWhite)),
+                  style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
             ),
             Text(
               _trackingLabel(habit.trackingType),
-              style: TextStyle(fontSize: 11, color: TributeColor.softGold.withValues(alpha: 0.4)),
+              style: TextStyle(fontSize: 11, color: MyWalkColor.softGold.withValues(alpha: 0.4)),
             ),
           ],
         ),
@@ -232,7 +232,7 @@ class FruitDetailView extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: TributeColor.cardBackground,
+        color: MyWalkColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(

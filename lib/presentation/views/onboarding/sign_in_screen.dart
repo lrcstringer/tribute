@@ -58,26 +58,26 @@ class _SignInScreenState extends State<SignInScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(colors: [
-                        TributeColor.golden.withValues(alpha: 0.2),
-                        TributeColor.golden.withValues(alpha: 0.04),
+                        MyWalkColor.golden.withValues(alpha: 0.2),
+                        MyWalkColor.golden.withValues(alpha: 0.04),
                       ]),
                     ),
                     child: const Icon(
                       Icons.lock_open_rounded,
                       size: 32,
-                      color: TributeColor.golden,
+                      color: MyWalkColor.golden,
                     ),
                   ),
                   const SizedBox(height: 24),
 
                   // Heading
                   const Text(
-                    'Your tribute,\nalways with you.',
+                    'Your walk,\nalways with you.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
-                      color: TributeColor.warmWhite,
+                      color: MyWalkColor.warmWhite,
                       height: 1.3,
                     ),
                   ),
@@ -100,13 +100,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: TributeColor.cardBackground,
+                      color: MyWalkColor.cardBackground,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: TributeColor.cardBorder, width: 0.5),
+                      border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
                     ),
                     child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Icon(Icons.security_rounded,
-                          size: 16, color: TributeColor.golden.withValues(alpha: 0.7)),
+                          size: 16, color: MyWalkColor.golden.withValues(alpha: 0.7)),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Text(
                       auth.error!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 13, color: TributeColor.warmCoral),
+                      style: const TextStyle(fontSize: 13, color: MyWalkColor.warmCoral),
                     ),
                   ],
                 ],
@@ -151,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       width: 18,
                       height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: TributeColor.charcoal),
+                          strokeWidth: 2, color: MyWalkColor.charcoal),
                     )
                   : Icon(
                       isApple ? Icons.apple : Icons.g_mobiledata_rounded,
@@ -166,8 +166,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: TributeColor.golden,
-                foregroundColor: TributeColor.charcoal,
+                backgroundColor: MyWalkColor.golden,
+                foregroundColor: MyWalkColor.charcoal,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),

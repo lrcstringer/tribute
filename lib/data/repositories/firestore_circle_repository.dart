@@ -71,6 +71,9 @@ class FirestoreCircleRepository implements CircleRepository {
   CollectionReference _milestoneShares(String circleId) =>
       _circles.doc(circleId).collection('milestone_shares');
 
+  CollectionReference _circleHabitMilestones(String circleId) =>
+      _circles.doc(circleId).collection('circle_habit_milestones');
+
   CollectionReference _weeklyPulse(String circleId) =>
       _circles.doc(circleId).collection('weekly_pulse');
 
@@ -150,6 +153,7 @@ class FirestoreCircleRepository implements CircleRepository {
           userId: md['userId'] as String? ?? '',
           role: md['role'] as String? ?? 'member',
           joinedAt: _tsToIso(md['joinedAt']),
+          displayName: md['displayName'] as String? ?? 'Circle Member',
         );
       }).toList(),
     );
@@ -356,7 +360,7 @@ class FirestoreCircleRepository implements CircleRepository {
     final inviteCode = snap.exists
         ? (snap.data()! as Map<String, dynamic>)['inviteCode'] as String? ?? ''
         : '';
-    return 'https://tribute.app/join?code=$inviteCode';
+    return 'https://mywalk.faith/join?code=$inviteCode';
   }
 
   @override
@@ -448,13 +452,20 @@ class FirestoreCircleRepository implements CircleRepository {
         {'circleId': circleId, 'settings': settings.toMap()});
   }
 
+  @override
+  Future<void> updateMemberRole(
+      String circleId, String targetUserId, String role) async {
+    await _call('circleUpdateMemberRole',
+        {'circleId': circleId, 'targetUserId': targetUserId, 'role': role});
+  }
+
   // ── Feature 1: Prayer List ────────────────────────────────────────────────
 
   @override
   Future<List<PrayerRequest>> getPrayerRequests(String circleId) async {
     final uid = _uid;
     final snap = await _prayerRequests(circleId)
-        .where('status', whereIn: ['active', 'answered'])
+        .where('status', whereIn: ['ACTIVE', 'ANSWERED'])
         .orderBy('createdAt', descending: true)
         .get();
     return snap.docs.map((d) {
@@ -468,11 +479,13 @@ class FirestoreCircleRepository implements CircleRepository {
     required String circleId,
     required String requestText,
     required PrayerDuration duration,
+    bool anonymous = false,
   }) async {
     await _call('prayerRequestCreate', {
       'circleId': circleId,
       'requestText': requestText,
       'duration': _prayerDurationToString(duration),
+      'anonymous': anonymous,
     });
   }
 
@@ -730,6 +743,27 @@ class FirestoreCircleRepository implements CircleRepository {
   Future<void> celebrateMilestone(String circleId, String shareId) async {
     await _call('circleCelebrateMilestone',
         {'circleId': circleId, 'shareId': shareId});
+  }
+
+  // ── Circle Habit Milestones ───────────────────────────────────────────────
+
+  @override
+  Future<List<CircleHabitMilestone>> getCircleHabitMilestones(
+      String circleId) async {
+    final snap = await _circleHabitMilestones(circleId)
+        .orderBy('createdAt', descending: true)
+        .get();
+    return snap.docs.map((d) {
+      final data = d.data() as Map<String, dynamic>;
+      return CircleHabitMilestone(
+        id: data['id'] as String? ?? d.id,
+        circleId: data['circleId'] as String? ?? circleId,
+        habitId: data['habitId'] as String? ?? '',
+        habitName: data['habitName'] as String? ?? '',
+        milestoneValue: (data['milestoneValue'] as int?) ?? 0,
+        createdAt: _tsToIso(data['createdAt']),
+      );
+    }).toList();
   }
 
   // ── Feature 6: Weekly Pulse ───────────────────────────────────────────────
