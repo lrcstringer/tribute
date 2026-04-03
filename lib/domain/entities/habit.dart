@@ -128,6 +128,7 @@ class Habit {
   final double dailyTarget;
   final String targetUnit;
   final bool isBuiltIn;
+  final bool isArchived;
   final DateTime createdAt;
   final int sortOrder;
   // Comma-separated weekday numbers using Swift convention (1=Sun..7=Sat).
@@ -154,6 +155,7 @@ class Habit {
     this.dailyTarget = 1,
     this.targetUnit = '',
     this.isBuiltIn = false,
+    this.isArchived = false,
     required this.createdAt,
     this.sortOrder = 0,
     this.activeDays = '1,2,3,4,5,6,7',
@@ -218,6 +220,7 @@ class Habit {
     double? dailyTarget,
     String? targetUnit,
     bool? isBuiltIn,
+    bool? isArchived,
     DateTime? createdAt,
     int? sortOrder,
     String? activeDays,
@@ -240,6 +243,7 @@ class Habit {
         dailyTarget: dailyTarget ?? this.dailyTarget,
         targetUnit: targetUnit ?? this.targetUnit,
         isBuiltIn: isBuiltIn ?? this.isBuiltIn,
+        isArchived: isArchived ?? this.isArchived,
         createdAt: createdAt ?? this.createdAt,
         sortOrder: sortOrder ?? this.sortOrder,
         activeDays: activeDays ?? this.activeDays,
@@ -319,6 +323,7 @@ class Habit {
         'dailyTarget': dailyTarget,
         'targetUnit': targetUnit,
         'isBuiltIn': isBuiltIn,
+        'isArchived': isArchived,
         'createdAt': Timestamp.fromDate(createdAt),
         'sortOrder': sortOrder,
         'activeDays': activeDays,
@@ -354,6 +359,7 @@ class Habit {
       dailyTarget: (data['dailyTarget'] as num?)?.toDouble() ?? 1,
       targetUnit: data['targetUnit'] as String? ?? '',
       isBuiltIn: (data['isBuiltIn'] as bool?) ?? false,
+      isArchived: (data['isArchived'] as bool?) ?? false,
       createdAt: createdAt,
       sortOrder: (data['sortOrder'] as num?)?.toInt() ?? 0,
       activeDays: data['activeDays'] as String? ?? '1,2,3,4,5,6,7',

@@ -1,7 +1,9 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/repositories/user_preferences_repository.dart';
+import '../../providers/fruit_portfolio_provider.dart';
 import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
@@ -23,12 +25,19 @@ class _SettingsViewState extends State<SettingsView> {
   bool _remindersEnabled = false;
   TimeOfDay _reminderTime = const TimeOfDay(hour: 8, minute: 0);
   bool _notifDenied = false;
+  List<Habit> _archivedHabits = [];
 
   @override
   void initState() {
     super.initState();
     _loadPrefs();
     _checkNotifStatus();
+    _loadArchivedHabits();
+  }
+
+  Future<void> _loadArchivedHabits() async {
+    final habits = await context.read<HabitProvider>().loadArchivedHabits();
+    if (mounted) setState(() => _archivedHabits = habits);
   }
 
   Future<void> _loadPrefs() async {
@@ -77,7 +86,7 @@ class _SettingsViewState extends State<SettingsView> {
         backgroundColor: MyWalkColor.cardBackground,
         title: const Text('Reset All Data', style: TextStyle(color: MyWalkColor.warmWhite)),
         content: Text(
-          'This will permanently delete all your habits, entries, and progress. This cannot be undone.',
+          'This will permanently delete all your habits, practices, and progress. This cannot be undone.',
           style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
         ),
         actions: [
@@ -99,14 +108,21 @@ class _SettingsViewState extends State<SettingsView> {
 
   Future<void> _resetAllData() async {
     final provider = context.read<HabitProvider>();
+    final fruit = context.read<FruitPortfolioProvider>();
     final prefs = context.read<UserPreferencesRepository>();
-    final habits = List<Habit>.from(provider.habits);
-    for (final h in habits) {
-      if (!h.isBuiltIn) await provider.deleteHabit(h);
-    }
-    await prefs.remove('tribute_reminders_enabled');
-    await prefs.remove('tribute_reminder_hour');
-    await prefs.remove('tribute_reminder_minute');
+
+    await Future.wait([
+      provider.resetAllData(),
+      fruit.reset(),
+    ]);
+
+    await Future.wait([
+      prefs.remove('tribute_reminders_enabled'),
+      prefs.remove('tribute_reminder_hour'),
+      prefs.remove('tribute_reminder_minute'),
+      prefs.remove('tribute_onboarding_date'),
+    ]);
+
     if (mounted) setState(() => _remindersEnabled = false);
     await NotificationService.shared.cancelDailyReminders();
     if (mounted) {
@@ -167,7 +183,7 @@ class _SettingsViewState extends State<SettingsView> {
                   padding: const EdgeInsets.all(16),
                   decoration: MyWalkDecorations.card,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const Text('MY WALK',
+                    const Text('MyWalk',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: MyWalkColor.golden)),
                     Text('Track your habits. Give them to God.',
                         style: TextStyle(fontSize: 14, color: MyWalkColor.softGold.withValues(alpha: 0.7))),
@@ -189,6 +205,12 @@ class _SettingsViewState extends State<SettingsView> {
                 _sectionHeader('Your Habits'),
                 const SizedBox(height: 8),
                 _habitsSection(habits.toList()),
+                if (_archivedHabits.isNotEmpty) ...[
+                  const SizedBox(height: 20),
+                  _sectionHeader('Archived Habits'),
+                  const SizedBox(height: 8),
+                  _archivedHabitsSection(),
+                ],
                 const SizedBox(height: 20),
                 _sectionHeader('Lifetime Stats'),
                 const SizedBox(height: 8),
@@ -229,7 +251,8 @@ class _SettingsViewState extends State<SettingsView> {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(auth.displayName ?? 'Signed In',
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: MyWalkColor.warmWhite)),
-              Text('Apple Account', style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
+              Text(AuthService.isApplePlatform ? 'Apple Account' : 'Google Account',
+                  style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4))),
             ])),
             const Icon(Icons.check_circle_rounded, color: MyWalkColor.sage, size: 18),
           ]),
@@ -397,23 +420,72 @@ class _SettingsViewState extends State<SettingsView> {
       ],
       if (_notifDenied && _remindersEnabled) ...[
         const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(children: [
-            const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
-            const SizedBox(width: 8),
-            const Expanded(
-              child: Text('Notifications disabled — enable in Settings',
-                  style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
+        GestureDetector(
+          onTap: () => AppSettings.openAppSettings(type: AppSettingsType.notification),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: MyWalkColor.warmCoral.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: MyWalkColor.warmCoral.withValues(alpha: 0.2), width: 0.5),
             ),
-          ]),
+            child: Row(children: [
+              const Icon(Icons.warning_amber, size: 14, color: MyWalkColor.warmCoral),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text('Notifications disabled — tap to enable',
+                    style: TextStyle(fontSize: 12, color: MyWalkColor.warmCoral)),
+              ),
+              const Icon(Icons.chevron_right, size: 14, color: MyWalkColor.warmCoral),
+            ]),
+          ),
         ),
       ],
     ]);
+  }
+
+  Widget _archivedHabitsSection() {
+    return Column(
+      children: _archivedHabits.map((habit) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: MyWalkDecorations.card,
+          child: Row(children: [
+            Icon(_habitIcon(habit), size: 16,
+                color: Colors.white.withValues(alpha: 0.3)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(habit.name,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white.withValues(alpha: 0.45))),
+            ),
+            GestureDetector(
+              onTap: () async {
+                await context.read<HabitProvider>().unarchiveHabit(habit);
+                await _loadArchivedHabits();
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: MyWalkColor.golden.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                      color: MyWalkColor.golden.withValues(alpha: 0.25), width: 0.5),
+                ),
+                child: const Text('Restore',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: MyWalkColor.golden)),
+              ),
+            ),
+          ]),
+        ),
+      )).toList(),
+    );
   }
 
   Widget _habitsSection(List<Habit> habits) {

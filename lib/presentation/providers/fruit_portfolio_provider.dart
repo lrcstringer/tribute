@@ -29,6 +29,12 @@ class FruitPortfolioProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> reset() async {
+    await _repo.resetPortfolio();
+    _portfolio = FruitPortfolio.empty();
+    notifyListeners();
+  }
+
   /// Called by HabitProvider after a successful habit check-in.
   Future<void> onHabitCompleted(List<FruitType> fruitTags) async {
     if (fruitTags.isEmpty) return;

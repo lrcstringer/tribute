@@ -64,7 +64,7 @@ class FirestoreHabitRepository implements HabitRepository {
     return List.generate(habitsSnap.docs.length, (i) {
       final data = habitsSnap.docs[i].data();
       return Habit.fromFirestore(data, entries: entriesList[i]);
-    });
+    }).where((h) => !h.isArchived).toList();
   }
 
   @override
@@ -112,6 +112,28 @@ class FirestoreHabitRepository implements HabitRepository {
           'allTimeTotalValue': FieldValue.increment(deltaValue),
         });
       }
+    });
+  }
+
+  @override
+  Future<void> setArchived(String habitId, {required bool archived}) async {
+    await _habitsRef.doc(habitId).update({'isArchived': archived});
+  }
+
+  @override
+  Future<List<Habit>> loadArchivedHabits() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return const [];
+    final snap = await _habitsRef.where('isArchived', isEqualTo: true).get();
+    return snap.docs.map((d) => Habit.fromFirestore(d.data())).toList();
+  }
+
+  @override
+  Future<void> clearHabitEntries(String habitId) async {
+    await _deleteSubcollection(_entriesRef(habitId));
+    await _habitsRef.doc(habitId).update({
+      'allTimeCompletedCount': 0,
+      'allTimeTotalValue': 0.0,
     });
   }
 

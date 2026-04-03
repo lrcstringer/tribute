@@ -31,7 +31,10 @@ import 'presentation/providers/circle_habit_milestone_provider.dart';
 import 'presentation/providers/weekly_pulse_provider.dart';
 import 'presentation/providers/circle_events_provider.dart';
 import 'presentation/providers/fruit_portfolio_provider.dart';
+import 'presentation/providers/journal_provider.dart';
 import 'data/repositories/firestore_fruit_portfolio_repository.dart';
+import 'data/repositories/firestore_journal_repository.dart';
+import 'data/services/media_upload_service.dart';
 import 'app.dart';
 
 void main() async {
@@ -66,6 +69,9 @@ void main() async {
   final iapRepository = FirestoreIAPRepository();
   final storeProvider = StoreProvider(iapRepository: iapRepository);
   final pendingInviteService = PendingInviteService(sharedPrefs);
+
+  final journalRepository = FirestoreJournalRepository();
+  await MediaUploadService.instance.init(sharedPrefs, journalRepository);
 
   runApp(
     MultiProvider(
@@ -116,6 +122,9 @@ void main() async {
         ),
         ChangeNotifierProvider<CircleEventsProvider>(
           create: (context) => CircleEventsProvider(context.read<CircleRepository>()),
+        ),
+        ChangeNotifierProvider<JournalProvider>(
+          create: (_) => JournalProvider(journalRepository)..loadEntries(),
         ),
       ],
       child: const MyWalkApp(),

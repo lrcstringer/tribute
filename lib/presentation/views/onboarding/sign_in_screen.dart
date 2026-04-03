@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../data/datasources/remote/auth_service.dart';
 import '../../theme/app_theme.dart';
+import '../shared/terms_view.dart';
 
 /// Step 1 of onboarding — sign in with Apple (iOS) or Google (Android).
 /// Mandatory: the user cannot proceed without signing in so that all data
@@ -16,13 +18,22 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   bool _showContent = false;
+  late final TapGestureRecognizer _termsTap;
 
   @override
   void initState() {
     super.initState();
+    _termsTap = TapGestureRecognizer()
+      ..onTap = () => TermsView.show(context);
     Future.delayed(const Duration(milliseconds: 200), () {
       if (mounted) setState(() => _showContent = true);
     });
+  }
+
+  @override
+  void dispose() {
+    _termsTap.dispose();
+    super.dispose();
   }
 
   Future<void> _handleSignIn(AuthService auth) async {
@@ -85,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                   // Sub-heading
                   Text(
-                    'Sign in so your habits, entries, and progress'
+                    'Sign in so your habits, practices, and progress'
                     ' are safely backed up and available on any device.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -111,7 +122,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Expanded(
                         child: Text(
                           'We never share your data. Sign-in is used only to'
-                          ' keep your habits safe and synced across your devices.',
+                          ' keep your habits & practices safe and synced across your devices.',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withValues(alpha: 0.45),
@@ -174,10 +185,24 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            'By continuing you agree to our Terms of Service and Privacy Policy.',
+          RichText(
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.3)),
+            text: TextSpan(
+              style: TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.3)),
+              children: [
+                const TextSpan(text: 'By continuing you agree to our '),
+                TextSpan(
+                  text: 'Terms of Service and Privacy Policy',
+                  style: const TextStyle(
+                    color: MyWalkColor.softGold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: MyWalkColor.softGold,
+                  ),
+                  recognizer: _termsTap,
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
           ),
         ]),
       ),

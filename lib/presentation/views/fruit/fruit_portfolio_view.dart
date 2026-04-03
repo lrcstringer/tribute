@@ -38,14 +38,37 @@ class FruitPortfolioView extends StatelessWidget {
             // Subtitle
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                child: Text(
-                  'Your habits are cultivating these fruits.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontStyle: FontStyle.italic,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.5),
-                  ),
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '\u201cBut the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.\u201d',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontStyle: FontStyle.italic,
+                        color: MyWalkColor.warmWhite.withValues(alpha: 0.7),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '\u2014 Galatians 5:22\u201323',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: MyWalkColor.softGold.withValues(alpha: 0.6),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'Your habits and practices prepare the ground for the on-going work of the Lord in your life.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: MyWalkColor.warmWhite.withValues(alpha: 0.45),
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -87,12 +110,6 @@ class FruitPortfolioView extends StatelessWidget {
               ),
             ),
 
-            // Neglected fruits section
-            if (portfolio.neglectedFruits.isNotEmpty)
-              SliverToBoxAdapter(
-                child: _NeglectedSection(portfolio: portfolio),
-              ),
-
             const SliverToBoxAdapter(child: SizedBox(height: 60)),
           ],
         ],
@@ -124,20 +141,17 @@ class _FruitTile extends StatelessWidget {
     double iconOpacity;
 
     if (isActive) {
-      bgColor = fruit.color.withValues(alpha: 0.10);
+      bgColor = fruit.color.withValues(alpha: 0.18);
       border = Border.all(color: fruit.color, width: 1.5);
       iconOpacity = 1.0;
     } else if (isDormant) {
-      bgColor = MyWalkColor.warmWhite.withValues(alpha: 0.04);
-      border = Border.all(color: Colors.white.withValues(alpha: 0.12));
-      iconOpacity = 0.7;
+      bgColor = fruit.color.withValues(alpha: 0.10);
+      border = Border.all(color: fruit.color.withValues(alpha: 0.6));
+      iconOpacity = 0.75;
     } else {
-      bgColor = Colors.transparent;
-      border = Border.all(
-        color: Colors.white.withValues(alpha: 0.1),
-        style: BorderStyle.solid,
-      );
-      iconOpacity = 0.35;
+      bgColor = fruit.color.withValues(alpha: 0.06);
+      border = Border.all(color: fruit.color.withValues(alpha: 0.45));
+      iconOpacity = 0.55;
     }
 
     return GestureDetector(
@@ -155,7 +169,7 @@ class _FruitTile extends StatelessWidget {
           children: [
             Opacity(
               opacity: iconOpacity,
-              child: Icon(fruit.icon, size: 24, color: isActive ? fruit.color : MyWalkColor.softGold),
+              child: Icon(fruit.icon, size: 24, color: fruit.color),
             ),
             const SizedBox(height: 6),
             Text(
@@ -166,9 +180,7 @@ class _FruitTile extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: isActive
-                    ? fruit.color
-                    : MyWalkColor.warmWhite.withValues(alpha: iconOpacity * 0.8),
+                color: fruit.color.withValues(alpha: iconOpacity),
               ),
             ),
             if (entry.weeklyCompletions > 0) ...[
@@ -198,7 +210,6 @@ class _WeeklySummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeFruits = portfolio.activeFruits.length;
-    final balance = portfolio.weeklyBalance;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -206,93 +217,12 @@ class _WeeklySummary extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
-        '$activeFruits ${activeFruits == 1 ? 'fruit' : 'fruits'} cultivated this week  ·  $balance% balanced orchard',
+        'Your habits and practices this week touched on $activeFruits ${activeFruits == 1 ? 'fruit' : 'fruits'}',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 13,
           color: MyWalkColor.softGold.withValues(alpha: 0.65),
         ),
-      ),
-    );
-  }
-}
-
-// ── Neglected Section ──────────────────────────────────────────────────────────
-
-class _NeglectedSection extends StatelessWidget {
-  final FruitPortfolio portfolio;
-
-  const _NeglectedSection({required this.portfolio});
-
-  @override
-  Widget build(BuildContext context) {
-    final neglected = portfolio.neglectedFruits;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'FRUITS TO CULTIVATE',
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.8,
-              color: MyWalkColor.softGold.withValues(alpha: 0.5),
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            "These fruits aren't missing — they're waiting. Add a small practice when you're ready.",
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.4),
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: neglected
-                  .map((f) => Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: GestureDetector(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => FruitLibraryView(initialFruit: f)),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: f.color.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                  color: f.color.withValues(alpha: 0.25)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(f.icon, size: 12, color: f.color),
-                                const SizedBox(width: 6),
-                                Text(f.label,
-                                    style: TextStyle(
-                                        fontSize: 12, color: f.color)),
-                                const SizedBox(width: 6),
-                                Icon(Icons.add,
-                                    size: 12,
-                                    color: f.color.withValues(alpha: 0.6)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ))
-                  .toList(),
-            ),
-          ),
-        ],
       ),
     );
   }

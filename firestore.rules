@@ -54,6 +54,11 @@ service cloud.firestore {
       match /fruit_portfolio/{fruitId} {
         allow read, write: if isOwner(userId);
       }
+
+      // ── journal subcollection ─────────────────────────────────────────────
+      match /journal/{entryId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     // ─── inviteCodes ──────────────────────────────────────────────────────

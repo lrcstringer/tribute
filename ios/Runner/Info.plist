@@ -80,5 +80,12 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!-- Journal: camera, photo library, microphone -->
+		<key>NSCameraUsageDescription</key>
+		<string>Take photos for your journal entries.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Add photos from your library to journal entries.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Record voice notes for your journal entries.</string>
 	</dict>
 </plist>

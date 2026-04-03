@@ -62,6 +62,21 @@ class FirestoreFruitPortfolioRepository implements FruitPortfolioRepository {
   }
 
   @override
+  Future<void> resetPortfolio() async {
+    const batchSize = 100;
+    QuerySnapshot<Map<String, dynamic>> snap;
+    do {
+      snap = await _portfolioRef.limit(batchSize).get();
+      if (snap.docs.isEmpty) break;
+      final batch = _db.batch();
+      for (final doc in snap.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    } while (snap.docs.length == batchSize);
+  }
+
+  @override
   Future<void> updateHabitCount(List<FruitType> fruits, int delta) async {
     if (fruits.isEmpty) return;
     final batch = _db.batch();

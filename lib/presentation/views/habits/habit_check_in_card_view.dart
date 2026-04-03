@@ -12,6 +12,7 @@ import '../shared/golden_pulse_view.dart';
 import '../shared/milestone_celebration_view.dart';
 import '../shared/mywalk_paywall_view.dart';
 import 'habit_detail_view.dart';
+import '../journal/journal_entry_composer.dart';
 
 class HabitCheckInCardView extends StatefulWidget {
   final Habit habit;
@@ -250,6 +251,17 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
                 ),
               ],
             ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () => _openJournal(context),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Icon(
+              Icons.edit_note,
+              size: 18,
+              color: MyWalkColor.softGold.withValues(alpha: 0.45),
+            ),
           ),
         ),
         if (_isCompleted)
@@ -522,6 +534,20 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
       case HabitCategory.abstain: return Icons.shield_rounded;
       case HabitCategory.custom: return Icons.star;
     }
+  }
+
+  void _openJournal(BuildContext context) {
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => JournalEntryComposer(
+          habitId: _habit.id,
+          habitName: _habit.name,
+          fruitTag: _habit.fruitTags.firstOrNull,
+          sourceType: 'habit',
+        ),
+      ),
+    );
   }
 
   void _showDetail(BuildContext context) {

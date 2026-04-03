@@ -14,6 +14,7 @@ import '../circles/share_gratitude_sheet.dart';
 import '../circles/sos_view.dart';
 import '../habits/add_habit_view.dart';
 import '../habits/habit_check_in_card_view.dart';
+import '../settings/settings_view.dart';
 import '../shared/engagement_banner_view.dart';
 import '../shared/golden_pulse_view.dart';
 import '../shared/mywalk_paywall_view.dart';
@@ -130,6 +131,19 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
                   pinned: false,
                   expandedHeight: 0,
                   title: _titleSection(),
+                  actions: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.settings_outlined,
+                        color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                      ),
+                      onPressed: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SettingsView()),
+                      ),
+                      tooltip: 'Settings',
+                    ),
+                  ],
                 ),
                 SliverToBoxAdapter(
                   child: Column(
@@ -431,7 +445,7 @@ class _GratitudeCheckInCardState extends State<_GratitudeCheckInCard> {
   bool _isCompleted = false;
   bool _showPulse = false;
   Scripture? _verse;
-  bool _expanded = false;
+  bool _expanded = true;
   bool _showSharePrompt = false;
   List<Circle>? _userCircles;
 

@@ -165,7 +165,11 @@ class _EditHabitViewState extends State<EditHabitView> {
           if (isAbstain) _copingSection() else _triggerSection(),
           if (!widget.habit.isBuiltIn) ...[
             const SizedBox(height: 40),
-            _deleteSection(),
+            Row(children: [
+              Expanded(child: _archiveButton()),
+              const SizedBox(width: 12),
+              Expanded(child: _deleteSection()),
+            ]),
           ],
           const SizedBox(height: 40),
         ]),
@@ -242,6 +246,60 @@ class _EditHabitViewState extends State<EditHabitView> {
         ],
       ],
     );
+  }
+
+  Widget _archiveButton() {
+    return GestureDetector(
+      onTap: _confirmArchive,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: MyWalkColor.softGold.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: MyWalkColor.softGold.withValues(alpha: 0.25), width: 0.5),
+        ),
+        child: const Center(
+          child: Text(
+            'Archive',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: MyWalkColor.softGold),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmArchive() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: MyWalkColor.cardBackground,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          'Archive habit?',
+          style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 17, fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          '"${widget.habit.name}" will be hidden from your active habits. '
+          'Your history and progress are preserved — you can restore it any time from Settings.',
+          style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel', style: TextStyle(color: MyWalkColor.softGold)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Archive', style: TextStyle(color: MyWalkColor.softGold, fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && mounted) {
+      await context.read<HabitProvider>().archiveHabit(widget.habit);
+      if (mounted) Navigator.pop(context);
+    }
   }
 
   Widget _deleteSection() {

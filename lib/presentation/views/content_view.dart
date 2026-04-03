@@ -8,11 +8,10 @@ import '../../domain/repositories/circle_repository.dart';
 import '../../domain/services/week_cycle_manager.dart';
 import 'circles/circle_invitation_dialog.dart';
 import 'today/today_view.dart';
-import 'week/week_view.dart';
-import 'journey/journey_view.dart';
+import 'progress/progress_view.dart';
 import 'fruit/fruit_portfolio_view.dart';
 import 'circles/circles_tab.dart';
-import 'settings/settings_view.dart';
+import 'journal/journal_tab.dart';
 import 'shared/week_look_back_view.dart';
 import 'shared/sunday_dedication_view.dart';
 
@@ -30,11 +29,14 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
   bool _showAutoCarryBanner = false;
   bool _hasNewGratitudes = false;
   bool _checkingGratitudes = false;
+  bool _prevAuthenticated = false;
   StreamSubscription<String>? _inviteSub;
 
   @override
   void initState() {
     super.initState();
+    _prevAuthenticated = AuthService.shared.isAuthenticated;
+    AuthService.shared.addListener(_onAuthChanged);
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _onAppear();
@@ -49,9 +51,21 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    AuthService.shared.removeListener(_onAuthChanged);
     _inviteSub?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  void _onAuthChanged() {
+    final isNowAuthenticated = AuthService.shared.isAuthenticated;
+    if (_prevAuthenticated && !isNowAuthenticated && mounted) {
+      setState(() => _selectedTab = 0);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have been signed out.')),
+      );
+    }
+    _prevAuthenticated = isNowAuthenticated;
   }
 
   /// Picks up any invite code that was saved before ContentView was mounted
@@ -141,11 +155,10 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
                 showAutoCarryBanner: _showAutoCarryBanner,
                 onDismissAutoCarry: () => setState(() => _showAutoCarryBanner = false),
               ),
-              WeekView(weekCycleManager: wcm),
-              const JourneyView(),
+              ProgressView(weekCycleManager: wcm),
+              const JournalTab(),
               const FruitPortfolioView(),
               const CirclesTab(),
-              const SettingsView(),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -159,15 +172,16 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
             items: [
               const BottomNavigationBarItem(
                 icon: Icon(Icons.card_giftcard),
-                label: 'Give',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today),
-                label: 'Week',
+                label: 'Today',
               ),
               const BottomNavigationBarItem(
                 icon: Icon(Icons.bar_chart),
-                label: 'Journey',
+                label: 'Progress',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.book_outlined),
+                activeIcon: Icon(Icons.book),
+                label: 'Journal',
               ),
               const BottomNavigationBarItem(
                 icon: Icon(Icons.eco_outlined),
@@ -179,10 +193,6 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
                     ? Badge(child: const Icon(Icons.groups))
                     : const Icon(Icons.groups),
                 label: 'Circles',
-              ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
               ),
             ],
           ),

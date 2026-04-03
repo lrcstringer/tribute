@@ -134,6 +134,38 @@ class HabitProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> archiveHabit(Habit habit) async {
+    if (habit.isBuiltIn) return;
+    await _repository.setArchived(habit.id, archived: true);
+    _habits = _habits.where((h) => h.id != habit.id).toList();
+    notifyListeners();
+  }
+
+  Future<void> unarchiveHabit(Habit habit) async {
+    await _repository.setArchived(habit.id, archived: false);
+    await loadHabits();
+  }
+
+  Future<List<Habit>> loadArchivedHabits() {
+    return _repository.loadArchivedHabits();
+  }
+
+  /// Deletes all user-created habits and clears all entries + aggregates for
+  /// built-in habits. Reloads from the repository when done.
+  Future<void> resetAllData() async {
+    final active = List<Habit>.from(_habits);
+    final archived = await _repository.loadArchivedHabits();
+    await Future.wait([
+      for (final h in active)
+        h.isBuiltIn
+            ? _repository.clearHabitEntries(h.id)
+            : _repository.deleteHabit(h.id),
+      for (final h in archived)
+        _repository.deleteHabit(h.id),
+    ]);
+    await loadHabits();
+  }
+
   Future<void> reorderHabits(List<Habit> reordered) async {
     _habits = reordered;
     await _repository.updateHabitSortOrders(reordered);

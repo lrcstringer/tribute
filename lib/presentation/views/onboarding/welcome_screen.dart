@@ -108,7 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                               end: Alignment.bottomCenter,
                             ).createShader(bounds),
                             child: Text(
-                              'MY WALK',
+                              'MyWalk',
                               style: TextStyle(
                                 fontSize: 52,
                                 fontWeight: FontWeight.w700,
@@ -137,7 +137,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         offset: _showTagline ? Offset.zero : const Offset(0, 0.3),
                         duration: const Duration(milliseconds: 700),
                         child: Text(
-                          'Track your habits. Give them to God.',
+                          'Track your habits & practices.\nGive them to the Lord.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 16,
