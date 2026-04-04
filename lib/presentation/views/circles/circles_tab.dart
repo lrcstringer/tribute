@@ -184,9 +184,71 @@ class _CirclesListViewState extends State<_CirclesListView> {
           slivers: [
             SliverAppBar(
               backgroundColor: MyWalkColor.charcoal,
-              title: const Text('Circles',
-                  style: TextStyle(color: MyWalkColor.warmWhite, fontSize: 22, fontWeight: FontWeight.w700)),
-              floating: true, snap: true,
+              foregroundColor: MyWalkColor.warmWhite,
+              expandedHeight: 220,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.parallax,
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    // Triptych — three equal panels side by side
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: Image.asset(
+                            'assets/circles/circles5.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          child: Image.asset(
+                            'assets/circles/circles7.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          child: Image.asset(
+                            'assets/circles/circles3.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Gradient fade to app background
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            MyWalkColor.charcoal.withValues(alpha: 0.45),
+                            MyWalkColor.charcoal,
+                          ],
+                          stops: const [0.0, 0.6, 1.0],
+                        ),
+                      ),
+                    ),
+                    // Screen title
+                    const Positioned(
+                      left: 20,
+                      right: 20,
+                      bottom: 14,
+                      child: Text(
+                        'Circles',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                          color: MyWalkColor.warmWhite,
+                          height: 1.1,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               actions: [
                 if (_circles.isNotEmpty)
                   PopupMenuButton<String>(
@@ -195,9 +257,11 @@ class _CirclesListViewState extends State<_CirclesListView> {
                     onSelected: (v) => v == 'create' ? _openCreate() : _openJoin(),
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'create',
-                          child: Text('Create Circle', style: TextStyle(color: MyWalkColor.warmWhite))),
+                          child: Text('Create Circle',
+                              style: TextStyle(color: MyWalkColor.warmWhite))),
                       PopupMenuItem(value: 'join',
-                          child: Text('Join Circle', style: TextStyle(color: MyWalkColor.warmWhite))),
+                          child: Text('Join Circle',
+                              style: TextStyle(color: MyWalkColor.warmWhite))),
                     ],
                   ),
               ],

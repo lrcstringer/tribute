@@ -178,6 +178,7 @@ flutter:
     - assets/
     - assets/data/
     - assets/beatitudes_golden_etched_separate/
+    - assets/circles/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
