@@ -173,8 +173,7 @@ class _CircleDetailViewState extends State<CircleDetailView>
               onPressed: () => _shareInvite(detail),
             ),
           ],
-          floating: true,
-          snap: true,
+          pinned: true,
           bottom: TabBar(
             controller: _tabController,
             isScrollable: true,
