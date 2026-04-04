@@ -177,6 +177,10 @@ class _CirclesListViewState extends State<_CirclesListView> {
 
   @override
   Widget build(BuildContext context) {
+    // Scale the header height so the full image width is always visible.
+    // groups.png is 2192×549 — aspect ratio ≈ 0.2505.
+    final imageHeight = MediaQuery.of(context).size.width * (549.0 / 2192.0);
+
     return Scaffold(
       backgroundColor: MyWalkColor.charcoal,
       body: SafeArea(
@@ -185,7 +189,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
             SliverAppBar(
               backgroundColor: MyWalkColor.charcoal,
               foregroundColor: MyWalkColor.warmWhite,
-              expandedHeight: 220,
+              expandedHeight: imageHeight,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.parallax,
@@ -195,7 +199,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                     // Pre-composed triptych
                     Image.asset(
                       'assets/circles/groups.png',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitWidth,
                     ),
                     // Gradient fade to app background
                     Container(
