@@ -912,97 +912,56 @@ class _SubcategoryPickerSheetState extends State<SubcategoryPickerSheet> {
 
   Widget _categoryGrid() {
     final categories = widget.catProvider.categories;
-    final groups = <String, List<HabitCategoryModel>>{};
-    final groupOrder = <String>[];
-    for (final cat in categories) {
-      if (!groups.containsKey(cat.groupLabel)) {
-        groups[cat.groupLabel] = [];
-        groupOrder.add(cat.groupLabel);
-      }
-      groups[cat.groupLabel]!.add(cat);
-    }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final label in groupOrder) ...[
-          _groupDivider(label),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.2,
-            children: groups[label]!.map((cat) => GestureDetector(
-              onTap: () {
-                if (cat.isCustom) {
-                  Navigator.pop<_CategoryResult>(context, (
-                    categoryId: cat.id,
-                    subcategoryId: 'custom',
-                    categoryName: cat.name,
-                    subcategoryName: '',
-                  ));
-                } else {
-                  setState(() {
-                    _selectedCategory = cat;
-                    _step = 2;
-                  });
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                decoration: BoxDecoration(
-                  color: MyWalkColor.cardBackground,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
-                    const SizedBox(height: 8),
-                    Text(
-                      cat.name,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: MyWalkColor.warmWhite,
-                      ),
-                    ),
-                  ],
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
+      childAspectRatio: 1.2,
+      children: categories.map((cat) => GestureDetector(
+        onTap: () {
+          if (cat.isCustom) {
+            Navigator.pop<_CategoryResult>(context, (
+              categoryId: cat.id,
+              subcategoryId: 'custom',
+              categoryName: cat.name,
+              subcategoryName: '',
+            ));
+          } else {
+            setState(() {
+              _selectedCategory = cat;
+              _step = 2;
+            });
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          decoration: BoxDecoration(
+            color: MyWalkColor.cardBackground,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
+              const SizedBox(height: 8),
+              Text(
+                cat.name,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: MyWalkColor.warmWhite,
                 ),
               ),
-            )).toList(),
+            ],
           ),
-          const SizedBox(height: 16),
-        ],
-      ],
-    );
-  }
-
-  Widget _groupDivider(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Divider(color: MyWalkColor.golden.withValues(alpha: 0.2), thickness: 0.5),
-          const SizedBox(height: 6),
-          Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              fontSize: 10,
-              letterSpacing: 1.4,
-              fontWeight: FontWeight.w500,
-              color: Colors.white.withValues(alpha: 0.35),
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
+        ),
+      )).toList(),
     );
   }
 

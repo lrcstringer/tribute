@@ -60,6 +60,9 @@ class _MicroActionDetailSheetState extends State<MicroActionDetailSheet> {
         fruitPurposeStatement: _action.purposeStatement,
         sourceType: 'micro_action_library',
         sourceActionId: _action.id,
+        categoryId: 'fruit_of_the_spirit',
+        categoryName: 'The Fruit of the Spirit',
+        subcategoryName: _action.fruit.label,
       );
 
       await fruitProvider.onHabitTagsChanged([], [_action.fruit]);

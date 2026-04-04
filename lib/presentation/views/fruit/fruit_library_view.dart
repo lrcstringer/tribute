@@ -4,6 +4,7 @@ import '../../../domain/entities/habit.dart';
 import '../../../domain/services/fruit_service.dart';
 import '../../theme/app_theme.dart';
 import 'micro_action_detail_sheet.dart';
+import '../habits/add_habit_view.dart';
 
 /// Full-screen micro-action browser, organised by fruit tab.
 class FruitLibraryView extends StatefulWidget {
@@ -107,9 +108,86 @@ class _FruitLibraryViewState extends State<FruitLibraryView>
     final actions = MicroActionLibrary.actionsFor(fruit);
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
-      itemCount: actions.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
-      itemBuilder: (_, i) => _MicroActionCard(action: actions[i]),
+      itemCount: actions.length + 1,
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
+      itemBuilder: (context, i) {
+        if (i == actions.length) return _customPracticeCard(context, fruit);
+        return _MicroActionCard(action: actions[i]);
+      },
+    );
+  }
+
+  Widget _customPracticeCard(BuildContext context, FruitType fruit) {
+    return GestureDetector(
+      onTap: () => showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: MyWalkColor.charcoal,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (_) => DraggableScrollableSheet(
+          initialChildSize: 0.9,
+          maxChildSize: 0.95,
+          minChildSize: 0.6,
+          expand: false,
+          builder: (_, sc) => AddHabitView(
+            scrollController: sc,
+            prefilledCategoryId: 'fruit_of_the_spirit',
+            prefilledCategoryName: 'The Fruit of the Spirit',
+            prefilledSubcategoryName: fruit.label,
+          ),
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: MyWalkColor.cardBackground,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: MyWalkColor.golden.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyWalkColor.golden.withValues(alpha: 0.1),
+              ),
+              child: Icon(Icons.add_circle_outline, size: 18, color: MyWalkColor.golden),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Create My Own Practice',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: MyWalkColor.warmWhite,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    'Name it, set a goal, and make it yours.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white.withValues(alpha: 0.45),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios,
+                size: 12, color: Colors.white.withValues(alpha: 0.3)),
+          ],
+        ),
+      ),
     );
   }
 }

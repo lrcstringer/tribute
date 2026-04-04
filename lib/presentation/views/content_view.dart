@@ -9,7 +9,7 @@ import '../../domain/services/week_cycle_manager.dart';
 import 'circles/circle_invitation_dialog.dart';
 import 'today/today_view.dart';
 import 'progress/progress_view.dart';
-import 'fruit/fruit_portfolio_view.dart';
+import 'kingdom_life/kingdom_life_view.dart';
 import 'circles/circles_tab.dart';
 import 'journal/journal_tab.dart';
 import 'shared/week_look_back_view.dart';
@@ -157,7 +157,7 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
               ),
               ProgressView(weekCycleManager: wcm),
               const JournalTab(),
-              const FruitPortfolioView(),
+              const KingdomLifeView(),
               const CirclesTab(),
             ],
           ),
@@ -184,9 +184,9 @@ class _ContentViewState extends State<ContentView> with WidgetsBindingObserver {
                 label: 'Journal',
               ),
               const BottomNavigationBarItem(
-                icon: Icon(Icons.eco_outlined),
-                activeIcon: Icon(Icons.eco),
-                label: 'Fruit',
+                icon: Icon(Icons.auto_awesome_outlined),
+                activeIcon: Icon(Icons.auto_awesome),
+                label: 'Kingdom Life',
               ),
               BottomNavigationBarItem(
                 icon: _hasNewGratitudes

@@ -16,8 +16,17 @@ import '../shared/mywalk_paywall_view.dart';
 
 class AddHabitView extends StatefulWidget {
   final ScrollController? scrollController;
+  final String? prefilledCategoryId;
+  final String? prefilledCategoryName;
+  final String? prefilledSubcategoryName;
 
-  const AddHabitView({super.key, this.scrollController});
+  const AddHabitView({
+    super.key,
+    this.scrollController,
+    this.prefilledCategoryId,
+    this.prefilledCategoryName,
+    this.prefilledSubcategoryName,
+  });
 
   @override
   State<AddHabitView> createState() => _AddHabitViewState();
@@ -37,6 +46,21 @@ class _AddHabitViewState extends State<AddHabitView> {
 
   // Legacy enum kept for backward-compat with trigger chips / purpose defaults
   HabitCategory _selectedCategory = HabitCategory.custom;
+
+  bool get _isPreFilled => widget.prefilledCategoryId != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.prefilledCategoryId != null) {
+      _categoryId = widget.prefilledCategoryId;
+      _categoryName = widget.prefilledCategoryName;
+      _subcategoryId = 'custom';
+      _subcategoryName = widget.prefilledSubcategoryName ?? '';
+      _purposeStatement = HabitCategory.custom.defaultPurpose;
+      _step = 3;
+    }
+  }
 
   // Habit form fields
   String _habitName = '';
@@ -76,9 +100,15 @@ class _AddHabitViewState extends State<AddHabitView> {
       title = 'Set It Up';
       leading = IconButton(
         icon: const Icon(Icons.arrow_back_ios, color: MyWalkColor.warmWhite, size: 18),
-        onPressed: () => setState(() {
-          _step = (_selectedCategoryModel?.isCustom ?? true) ? 1 : 2;
-        }),
+        onPressed: () {
+          if (_isPreFilled) {
+            Navigator.pop(context);
+          } else {
+            setState(() {
+              _step = (_selectedCategoryModel?.isCustom ?? true) ? 1 : 2;
+            });
+          }
+        },
       );
     }
 
@@ -118,84 +148,41 @@ class _AddHabitViewState extends State<AddHabitView> {
   Widget _categoryGrid() {
     final categories = context.watch<HabitCategoryProvider>().categories;
 
-    // Build ordered group map
-    final groups = <String, List<HabitCategoryModel>>{};
-    final groupOrder = <String>[];
-    for (final cat in categories) {
-      if (!groups.containsKey(cat.groupLabel)) {
-        groups[cat.groupLabel] = [];
-        groupOrder.add(cat.groupLabel);
-      }
-      groups[cat.groupLabel]!.add(cat);
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (final label in groupOrder) ...[
-          _groupDivider(label),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.2,
-            children: groups[label]!.map((cat) => GestureDetector(
-              onTap: () => _selectCategoryModel(cat),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                decoration: BoxDecoration(
-                  color: MyWalkColor.cardBackground,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
-                    const SizedBox(height: 8),
-                    Text(
-                      cat.name,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: MyWalkColor.warmWhite,
-                      ),
-                    ),
-                  ],
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 2,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
+      childAspectRatio: 1.2,
+      children: categories.map((cat) => GestureDetector(
+        onTap: () => _selectCategoryModel(cat),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+          decoration: BoxDecoration(
+            color: MyWalkColor.cardBackground,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: MyWalkColor.cardBorder, width: 0.5),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(iconForKey(cat.iconKey), size: 24, color: MyWalkColor.golden),
+              const SizedBox(height: 8),
+              Text(
+                cat.name,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: MyWalkColor.warmWhite,
                 ),
               ),
-            )).toList(),
+            ],
           ),
-          const SizedBox(height: 16),
-        ],
-      ],
-    );
-  }
-
-  Widget _groupDivider(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Divider(color: MyWalkColor.golden.withValues(alpha: 0.2), thickness: 0.5),
-          const SizedBox(height: 6),
-          Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              fontSize: 10,
-              letterSpacing: 1.4,
-              fontWeight: FontWeight.w500,
-              color: Colors.white.withValues(alpha: 0.35),
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
+        ),
+      )).toList(),
     );
   }
 
@@ -207,7 +194,10 @@ class _AddHabitViewState extends State<AddHabitView> {
         .subcategoriesFor(_selectedCategoryModel!.id);
 
     return Column(
-      children: subcategories.map((sub) => _subcategoryCard(sub)).toList(),
+      children: [
+        ...subcategories.map((sub) => _subcategoryCard(sub)),
+        _customSubcategoryCard(),
+      ],
     );
   }
 
@@ -276,6 +266,56 @@ class _AddHabitViewState extends State<AddHabitView> {
                 ],
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _customSubcategoryCard() {
+    return GestureDetector(
+      onTap: _selectCustomSubcategory,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: MyWalkColor.cardBackground,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: MyWalkColor.golden.withValues(alpha: 0.3),
+            width: 0.5,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.add_circle_outline, size: 20, color: MyWalkColor.golden),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Create My Own Practice',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: MyWalkColor.warmWhite,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    'Name it, set a goal, and make it yours.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white.withValues(alpha: 0.45),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios,
+                size: 12, color: Colors.white.withValues(alpha: 0.3)),
           ],
         ),
       ),
@@ -816,7 +856,7 @@ class _AddHabitViewState extends State<AddHabitView> {
   }
 
   Widget _categoryChipsRow() {
-    if (_categoryId == null) return const SizedBox.shrink();
+    if (_categoryId == null || _isPreFilled) return const SizedBox.shrink();
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -891,6 +931,27 @@ class _AddHabitViewState extends State<AddHabitView> {
         _step = 2;
       });
     }
+  }
+
+  void _selectCustomSubcategory() {
+    final legacyEnum = _toOldEnum(_selectedCategoryModel!.id, null);
+    setState(() {
+      _selectedSubcategoryModel = null;
+      _selectedCategory = legacyEnum;
+      _categoryId = _selectedCategoryModel!.id;
+      _subcategoryId = 'custom';
+      _categoryName = _selectedCategoryModel!.name;
+      _subcategoryName = '';
+      _trackingType = HabitTrackingType.checkIn;
+      _dailyTarget = 1;
+      _targetUnit = '';
+      _habitName = '';
+      _purposeStatement = legacyEnum.defaultPurpose;
+      _suggestedFruits = FruitSuggestionService.suggest(legacyEnum);
+      _selectedFruits = [];
+      _fruitPurposeStatement = '';
+      _step = 3;
+    });
   }
 
   void _selectSubcategory(HabitSubcategoryModel sub) {

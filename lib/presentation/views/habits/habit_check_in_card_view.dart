@@ -149,13 +149,13 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         GestureDetector(
           onTap: () => _showDetail(context),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
             decoration: MyWalkDecorations.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _header(accentColor),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 _trackingUI(accentColor),
                 if (_isCompleted && _completionVerse != null) ...[
                   const SizedBox(height: 12),
@@ -195,8 +195,8 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
     return Row(
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: 34,
+          height: 34,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: RadialGradient(
@@ -304,7 +304,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         style: ElevatedButton.styleFrom(
           backgroundColor: accentColor,
           foregroundColor: MyWalkColor.charcoal,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         child: const Text('Check In', style: TextStyle(fontWeight: FontWeight.w600)),
@@ -369,7 +369,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         style: ElevatedButton.styleFrom(
           backgroundColor: MyWalkColor.sage,
           foregroundColor: MyWalkColor.charcoal,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
@@ -386,8 +386,8 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           alignment: Alignment.center,
           children: [
             SizedBox(
-              width: 80,
-              height: 80,
+              width: 64,
+              height: 64,
               child: CircularProgressIndicator(
                 value: ratio,
                 strokeWidth: 6,
@@ -405,7 +405,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -419,7 +419,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
           ],
         ),
         if (target > 0) ...[
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Text(
             'Goal: ${target.toInt()} min',
             style: TextStyle(fontSize: 10, color: Colors.white.withValues(alpha: 0.3)),
@@ -459,7 +459,7 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             Text(
               '${_countValue.toInt()}$unit',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: _isCompleted ? accentColor : MyWalkColor.warmWhite,
               ),

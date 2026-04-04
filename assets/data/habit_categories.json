@@ -40,16 +40,42 @@
       "isCustom": false
     },
     {
+      "id": "fruit_of_the_spirit",
+      "name": "The Fruit of the Spirit",
+      "description": "Grow in love, joy, peace and the character of Christ.",
+      "iconKey": "eco",
+      "colourHex": "#66CDAA",
+      "group": "fruit_of_the_spirit",
+      "groupLabel": "The Fruit of the Spirit",
+      "categoryVerse": "But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law.",
+      "categoryVerseRef": "Galatians 5:22-23",
+      "sortOrder": 4,
+      "isCustom": false
+    },
+    {
+      "id": "the_beatitudes",
+      "name": "The Beatitudes",
+      "description": "Live out the character of the Kingdom of God.",
+      "iconKey": "self_improvement",
+      "colourHex": "#D4A843",
+      "group": "the_beatitudes",
+      "groupLabel": "The Beatitudes",
+      "categoryVerse": "Blessed are the poor in spirit, for theirs is the kingdom of heaven.",
+      "categoryVerseRef": "Matthew 5:3",
+      "sortOrder": 5,
+      "isCustom": false
+    },
+    {
       "id": "create_my_own",
-      "name": "Create My Own",
+      "name": "Created by Me",
       "description": "Build a habit that is uniquely yours.",
       "iconKey": "auto_awesome",
       "colourHex": "#DAA520",
       "group": "create_my_own",
-      "groupLabel": "Create My Own",
+      "groupLabel": "Created by Me",
       "categoryVerse": "So, whether you eat or drink, or whatever you do, do all to the glory of God.",
       "categoryVerseRef": "1 Corinthians 10:31",
-      "sortOrder": 4,
+      "sortOrder": 6,
       "isCustom": true
     }
   ],
