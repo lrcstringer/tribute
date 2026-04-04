@@ -204,7 +204,7 @@ class _CirclesListViewState extends State<_CirclesListView> {
                         ),
                         Expanded(
                           child: Image.asset(
-                            'assets/circles/circles7.png',
+                            'assets/circles/circles8.png',
                             fit: BoxFit.cover,
                           ),
                         ),
