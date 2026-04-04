@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+class JournalColor {
+  static const bgPrimary    = Color(0xFFF3EDE2);
+  static const bgCard       = Color(0xFFFBF7F0);
+  static const accentMuted  = Color(0xFFDCE3D6);
+  static const accentBlue   = Color(0xFFC9D3D6);
+  static const textPrimary  = Color(0xFF5B4B3E);
+  static const textSecondary = Color(0xFF7A6B5D);
+}
+
 class MyWalkColor {
   static const charcoal = Color(0xFF1E1E2E);
   static const warmWhite = Color(0xFFFAF7F2);

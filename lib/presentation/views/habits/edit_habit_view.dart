@@ -317,7 +317,10 @@ class _EditHabitViewState extends State<EditHabitView> {
     );
     if (confirmed == true && mounted) {
       await context.read<HabitProvider>().archiveHabit(widget.habit);
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // dismiss EditHabitView
+        Navigator.pop(context); // dismiss HabitDetailView
+      }
     }
   }
 
@@ -374,7 +377,10 @@ class _EditHabitViewState extends State<EditHabitView> {
     );
     if (confirmed == true && mounted) {
       await context.read<HabitProvider>().deleteHabit(widget.habit);
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context); // dismiss EditHabitView
+        Navigator.pop(context); // dismiss HabitDetailView
+      }
     }
   }
 

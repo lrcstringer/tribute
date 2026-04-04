@@ -146,7 +146,12 @@ class _AddHabitViewState extends State<AddHabitView> {
   // ── Step 1: Category grid ────────────────────────────────────────────────
 
   Widget _categoryGrid() {
-    final categories = context.watch<HabitCategoryProvider>().categories;
+    const hiddenCategoryIds = {'fruit_of_the_spirit', 'the_beatitudes'};
+    final categories = context
+        .watch<HabitCategoryProvider>()
+        .categories
+        .where((c) => !hiddenCategoryIds.contains(c.id))
+        .toList();
 
     return GridView.count(
       shrinkWrap: true,
@@ -1159,8 +1164,7 @@ class _AddHabitViewState extends State<AddHabitView> {
             return FruitTagChip(
               fruit: fruit,
               isSelected: _selectedFruits.contains(fruit),
-              isSuggested:
-                  !_selectedFruits.contains(fruit) && _suggestedFruits.contains(fruit),
+              isSuggested: false,
               onTap: () {
                 setState(() {
                   if (_selectedFruits.contains(fruit)) {

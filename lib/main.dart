@@ -33,6 +33,7 @@ import 'presentation/providers/circle_events_provider.dart';
 import 'presentation/providers/fruit_portfolio_provider.dart';
 import 'presentation/providers/habit_category_provider.dart';
 import 'presentation/providers/journal_provider.dart';
+import 'presentation/providers/journal_theme_provider.dart';
 import 'data/repositories/firestore_fruit_portfolio_repository.dart';
 import 'data/repositories/local_habit_category_repository.dart';
 import 'data/repositories/firestore_journal_repository.dart';
@@ -131,6 +132,9 @@ void main() async {
         ),
         ChangeNotifierProvider<JournalProvider>(
           create: (_) => JournalProvider(journalRepository)..loadEntries(),
+        ),
+        ChangeNotifierProvider<JournalThemeProvider>(
+          create: (_) => JournalThemeProvider()..load(),
         ),
       ],
       child: const MyWalkApp(),

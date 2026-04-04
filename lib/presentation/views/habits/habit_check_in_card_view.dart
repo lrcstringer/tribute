@@ -265,11 +265,13 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
         ),
         GestureDetector(
           onTap: () => _openJournal(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8),
+          behavior: HitTestBehavior.opaque,
+          child: SizedBox(
+            width: 44,
+            height: 44,
             child: Icon(
               Icons.edit_note,
-              size: 18,
+              size: 20,
               color: MyWalkColor.softGold.withValues(alpha: 0.45),
             ),
           ),

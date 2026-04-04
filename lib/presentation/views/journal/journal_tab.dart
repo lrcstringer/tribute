@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/journal_entry.dart';
+import '../../../domain/entities/journal_theme.dart';
 import '../../../domain/entities/fruit.dart';
 import '../../providers/journal_provider.dart';
+import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
 import 'journal_entry_composer.dart';
 import 'journal_entry_detail_view.dart';
+import 'journal_theme_picker.dart';
 
 class JournalTab extends StatefulWidget {
   const JournalTab({super.key});
@@ -23,10 +26,11 @@ class _JournalTabState extends State<JournalTab> {
     super.dispose();
   }
 
-  void _showSortSheet(BuildContext context, JournalProvider provider) {
+  void _showSortSheet(
+      BuildContext context, JournalProvider provider, JournalTheme theme) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: MyWalkColor.cardBackground,
+      backgroundColor: theme.bgCard,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -36,12 +40,12 @@ class _JournalTabState extends State<JournalTab> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
                 child: Text(
                   'Sort by',
                   style: TextStyle(
-                    color: MyWalkColor.warmWhite,
+                    color: theme.textPrimary,
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
                   ),
@@ -50,9 +54,11 @@ class _JournalTabState extends State<JournalTab> {
               for (final order in JournalSortOrder.values)
                 ListTile(
                   title: Text(_sortLabel(order),
-                      style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14)),
+                      style: TextStyle(
+                          color: theme.textPrimary, fontSize: 14)),
                   trailing: current == order
-                      ? const Icon(Icons.check, color: MyWalkColor.softGold, size: 18)
+                      ? Icon(Icons.check,
+                          color: theme.textSecondary, size: 18)
                       : null,
                   onTap: () {
                     provider.setSortOrder(order);
@@ -83,63 +89,103 @@ class _JournalTabState extends State<JournalTab> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<JournalProvider>();
+    final theme = context.watch<JournalThemeProvider>().theme;
     final entries = provider.filteredEntries;
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: theme.bgPrimary,
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push<void>(
           context,
           MaterialPageRoute(builder: (_) => const JournalEntryComposer()),
         ),
-        backgroundColor: MyWalkColor.golden,
-        foregroundColor: MyWalkColor.charcoal,
+        backgroundColor: theme.textPrimary,
+        foregroundColor: theme.bgCard,
         child: const Icon(Icons.edit_outlined),
       ),
       body: CustomScrollView(
         slivers: [
+          // ── Hero image app bar ───────────────────────────────────────────
           SliverAppBar(
-            backgroundColor: MyWalkColor.charcoal,
-            foregroundColor: MyWalkColor.warmWhite,
+            backgroundColor: theme.bgPrimary,
+            foregroundColor: theme.textPrimary,
+            expandedHeight: 220,
             pinned: true,
-            title: const Text(
-              'Journal',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: MyWalkColor.warmWhite,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.parallax,
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    theme.heroImageAsset,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          theme.bgPrimary.withValues(alpha: 0.5),
+                          theme.bgPrimary,
+                        ],
+                        stops: const [0.0, 0.65, 1.0],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 14,
+                    child: Text(
+                      'Journal',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: theme.textPrimary,
+                        height: 1.1,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.sort, size: 22),
-                onPressed: () => _showSortSheet(context, provider),
+                icon: Icon(Icons.palette_outlined,
+                    size: 22, color: theme.textPrimary),
+                onPressed: () => showJournalThemePicker(context),
+                tooltip: 'Theme',
+              ),
+              IconButton(
+                icon: Icon(Icons.sort, size: 22, color: theme.textPrimary),
+                onPressed: () => _showSortSheet(context, provider, theme),
                 tooltip: 'Sort',
               ),
             ],
           ),
 
-          // Search bar
+          // ── Search bar ──────────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
               child: TextField(
                 controller: _searchCtrl,
                 onChanged: provider.setSearchQuery,
-                style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 14),
+                style: TextStyle(color: theme.textPrimary, fontSize: 14),
                 decoration: InputDecoration(
                   hintText: 'Search entries...',
                   hintStyle: TextStyle(
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.35),
+                    color: theme.textSecondary,
                     fontSize: 14,
                   ),
                   prefixIcon: Icon(Icons.search,
-                      size: 18, color: MyWalkColor.warmWhite.withValues(alpha: 0.35)),
+                      size: 18, color: theme.textSecondary),
                   suffixIcon: provider.searchQuery.isNotEmpty
                       ? IconButton(
                           icon: Icon(Icons.close,
-                              size: 16,
-                              color: MyWalkColor.warmWhite.withValues(alpha: 0.4)),
+                              size: 16, color: theme.textSecondary),
                           onPressed: () {
                             _searchCtrl.clear();
                             provider.setSearchQuery('');
@@ -147,9 +193,9 @@ class _JournalTabState extends State<JournalTab> {
                         )
                       : null,
                   filled: true,
-                  fillColor: MyWalkColor.inputBackground,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  fillColor: theme.bgCard,
+                  contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
@@ -159,18 +205,18 @@ class _JournalTabState extends State<JournalTab> {
             ),
           ),
 
-          // Loading
+          // ── Loading ──────────────────────────────────────────────────────
           if (provider.isLoading)
-            const SliverFillRemaining(
+            SliverFillRemaining(
               child: Center(
                 child: CircularProgressIndicator(
-                  color: MyWalkColor.softGold,
+                  color: theme.textSecondary,
                   strokeWidth: 2,
                 ),
               ),
             )
 
-          // Empty state
+          // ── Empty state ──────────────────────────────────────────────────
           else if (entries.isEmpty)
             SliverFillRemaining(
               hasScrollBody: false,
@@ -183,7 +229,7 @@ class _JournalTabState extends State<JournalTab> {
                       Icon(
                         Icons.book_outlined,
                         size: 48,
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.15),
+                        color: theme.textSecondary,
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -193,7 +239,7 @@ class _JournalTabState extends State<JournalTab> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 15,
-                          color: MyWalkColor.warmWhite.withValues(alpha: 0.35),
+                          color: theme.textSecondary,
                           height: 1.5,
                         ),
                       ),
@@ -203,7 +249,7 @@ class _JournalTabState extends State<JournalTab> {
               ),
             )
 
-          // Entry list
+          // ── Entry list ────────────────────────────────────────────────────
           else
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
@@ -213,10 +259,12 @@ class _JournalTabState extends State<JournalTab> {
                     final entry = entries[i];
                     return _JournalEntryCard(
                       entry: entry,
+                      theme: theme,
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => JournalEntryDetailView(entry: entry),
+                          builder: (_) =>
+                              JournalEntryDetailView(entry: entry),
                         ),
                       ),
                     );
@@ -235,9 +283,14 @@ class _JournalTabState extends State<JournalTab> {
 
 class _JournalEntryCard extends StatelessWidget {
   final JournalEntry entry;
+  final JournalTheme theme;
   final VoidCallback onTap;
 
-  const _JournalEntryCard({required this.entry, required this.onTap});
+  const _JournalEntryCard({
+    required this.entry,
+    required this.theme,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -247,9 +300,10 @@ class _JournalEntryCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MyWalkColor.cardBackground,
+          color: theme.bgCard,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: MyWalkColor.cardBorder),
+          border: Border.all(
+              color: theme.textSecondary.withValues(alpha: 0.15)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +315,7 @@ class _JournalEntryCard extends StatelessWidget {
                   _shortDate(entry.createdAt),
                   style: TextStyle(
                     fontSize: 12,
-                    color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                    color: theme.textSecondary,
                   ),
                 ),
                 const Spacer(),
@@ -270,26 +324,26 @@ class _JournalEntryCard extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 6),
                     child: Icon(Icons.cloud_upload_outlined,
                         size: 14,
-                        color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+                        color: theme.textSecondary.withValues(alpha: 0.6)),
                   ),
                 if (entry.imageUrls.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(right: 6),
                     child: Icon(Icons.image_outlined,
                         size: 14,
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.35)),
+                        color: theme.textSecondary.withValues(alpha: 0.5)),
                   ),
                 if (entry.voiceUrl != null)
                   Icon(Icons.mic_outlined,
                       size: 14,
-                      color: MyWalkColor.warmWhite.withValues(alpha: 0.35)),
+                      color: theme.textSecondary.withValues(alpha: 0.5)),
               ],
             ),
 
             const SizedBox(height: 8),
 
             // Source chip
-            _SourceChip(entry: entry),
+            _SourceChip(entry: entry, theme: theme),
 
             // Text preview
             if (entry.text != null && entry.text!.isNotEmpty) ...[
@@ -300,7 +354,7 @@ class _JournalEntryCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 14,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.8),
+                  color: theme.textPrimary,
                   height: 1.5,
                 ),
               ),
@@ -324,8 +378,9 @@ class _JournalEntryCard extends StatelessWidget {
 
 class _SourceChip extends StatelessWidget {
   final JournalEntry entry;
+  final JournalTheme theme;
 
-  const _SourceChip({required this.entry});
+  const _SourceChip({required this.entry, required this.theme});
 
   @override
   Widget build(BuildContext context) {
@@ -339,22 +394,22 @@ class _SourceChip extends StatelessWidget {
       chipColor = entry.fruitTag!.color;
       label = entry.fruitTag!.label;
     } else {
-      chipColor = MyWalkColor.softGold;
+      chipColor = theme.textSecondary;
       label = 'Journal';
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: chipColor.withValues(alpha: 0.1),
+        color: chipColor.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: chipColor.withValues(alpha: 0.25)),
+        border: Border.all(color: chipColor.withValues(alpha: 0.3)),
       ),
       child: Text(
         label,
         style: TextStyle(
           fontSize: 11,
-          color: chipColor.withValues(alpha: 0.85),
+          color: chipColor.withValues(alpha: 0.9),
           fontWeight: FontWeight.w500,
         ),
       ),

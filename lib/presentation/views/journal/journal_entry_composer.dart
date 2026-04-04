@@ -9,7 +9,9 @@ import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../domain/entities/fruit.dart';
 import '../../../domain/entities/journal_entry.dart';
+import '../../../domain/entities/journal_theme.dart';
 import '../../providers/journal_provider.dart';
+import '../../providers/journal_theme_provider.dart';
 import '../../theme/app_theme.dart';
 
 const _kMaxRecordSeconds = 180; // 3 minutes
@@ -44,29 +46,25 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
   final _player = AudioPlayer();
 
   // Images
-  final List<String> _existingImageUrls = [];   // from edit entry
+  final List<String> _existingImageUrls = [];
   final List<String> _removedImageUrls = [];
-  final List<String> _newImagePaths = [];        // picked locally
+  final List<String> _newImagePaths = [];
 
   // Voice
-  String? _existingVoiceUrl;    // from edit entry
+  String? _existingVoiceUrl;
   bool _removeExistingVoice = false;
-  String? _newVoicePath;        // recorded locally
+  String? _newVoicePath;
 
   bool _isRecording = false;
   bool _isPlayingBack = false;
   Duration _recordingDuration = Duration.zero;
 
-  /// Monotonically increasing generation counter — stops stale timer loops.
   int _timerGeneration = 0;
-
-  /// Path of the last tmp recording; kept for disposal cleanup.
   String? _tmpVoicePath;
 
   bool _isSaving = false;
 
   bool get _isEditMode => widget.initialEntry != null;
-
   int get _totalImageCount => _existingImageUrls.length + _newImagePaths.length;
 
   @override
@@ -91,8 +89,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
     _textCtrl.dispose();
     _recorder.dispose();
     _player.dispose();
-    // Delete the temporary recording file if the user left without saving.
-    // The staged copy (in the entry directory) is separate and unaffected.
     if (_tmpVoicePath != null) {
       try { File(_tmpVoicePath!).deleteSync(); } catch (_) {}
     }
@@ -107,28 +103,25 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
       return;
     }
 
-    final permission = source == ImageSource.camera ? Permission.camera : Permission.photos;
+    final permission =
+        source == ImageSource.camera ? Permission.camera : Permission.photos;
     final status = await permission.request();
     if (!status.isGranted) {
-      _showPermissionDenied(source == ImageSource.camera ? 'Camera' : 'Photo library');
+      _showPermissionDenied(
+          source == ImageSource.camera ? 'Camera' : 'Photo library');
       return;
     }
 
     final xfile = await _imagePicker.pickImage(
-      source: source,
-      imageQuality: 80,
-    );
+        source: source, imageQuality: 80);
     if (xfile == null || !mounted) return;
 
-    final remaining = 5 - _totalImageCount;
-    if (remaining <= 0) return;
-
+    if (5 - _totalImageCount <= 0) return;
     setState(() => _newImagePaths.add(xfile.path));
   }
 
-  void _removeNewImage(int index) {
-    setState(() => _newImagePaths.removeAt(index));
-  }
+  void _removeNewImage(int index) =>
+      setState(() => _newImagePaths.removeAt(index));
 
   void _removeExistingImage(String url) {
     setState(() {
@@ -158,18 +151,13 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
     final path = '${appDir.path}/journal_voice_tmp.m4a';
 
     await _recorder.start(
-      const RecordConfig(encoder: AudioEncoder.aacLc),
-      path: path,
-    );
+        const RecordConfig(encoder: AudioEncoder.aacLc), path: path);
 
     setState(() {
       _isRecording = true;
       _recordingDuration = Duration.zero;
       _newVoicePath = null;
     });
-
-    // Start duration timer. Generation counter ensures a stale timer from a
-    // previous recording session cannot outlive its intended lifecycle.
     _startDurationTimer();
   }
 
@@ -177,10 +165,13 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
     final generation = ++_timerGeneration;
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 1));
-      if (!mounted || !_isRecording || _timerGeneration != generation) return false;
+      if (!mounted || !_isRecording || _timerGeneration != generation) {
+        return false;
+      }
       final next = _recordingDuration + const Duration(seconds: 1);
       if (next.inSeconds >= _kMaxRecordSeconds) {
-        setState(() => _recordingDuration = const Duration(seconds: _kMaxRecordSeconds));
+        setState(() => _recordingDuration =
+            const Duration(seconds: _kMaxRecordSeconds));
         await _stopRecording();
         return false;
       }
@@ -204,12 +195,10 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
       await _player.stop();
       return;
     }
-
     final source = _newVoicePath != null
         ? DeviceFileSource(_newVoicePath!)
         : (_existingVoiceUrl != null ? UrlSource(_existingVoiceUrl!) : null);
     if (source == null) return;
-
     await _player.play(source);
   }
 
@@ -227,7 +216,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
   // ── Save ────────────────────────────────────────────────────────────────
 
   Future<void> _save() async {
-    // Stop any in-progress recording before saving so the voice note is captured.
     if (_isRecording) {
       await _stopRecording();
       if (!mounted) return;
@@ -249,7 +237,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
 
     try {
       final provider = context.read<JournalProvider>();
-
       if (_isEditMode) {
         await provider.updateEntry(
           widget.initialEntry!,
@@ -257,7 +244,8 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
           clearText: text.isEmpty,
           newImageLocalPaths: _newImagePaths,
           newVoiceLocalPath: _newVoicePath,
-          removedImageUrls: _removedImageUrls.isNotEmpty ? _removedImageUrls : null,
+          removedImageUrls:
+              _removedImageUrls.isNotEmpty ? _removedImageUrls : null,
           removeVoice: _removeExistingVoice,
         );
       } else {
@@ -271,7 +259,6 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
           sourceType: widget.sourceType,
         );
       }
-
       if (mounted) Navigator.pop(context);
     } catch (_) {
       if (mounted) {
@@ -291,34 +278,42 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
   }
 
   void _showPermissionDenied(String resource) {
+    final theme = context.read<JournalThemeProvider>().theme;
     showDialog<void>(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: MyWalkColor.cardBackground,
+        backgroundColor: theme.bgCard,
         title: Text('$resource access denied',
-            style: const TextStyle(color: MyWalkColor.warmWhite, fontSize: 16)),
+            style: TextStyle(color: theme.textPrimary, fontSize: 16)),
         content: Text(
           'Please allow $resource access in Settings to use this feature.',
-          style: TextStyle(color: MyWalkColor.warmWhite.withValues(alpha: 0.7), fontSize: 14),
+          style: TextStyle(
+              color: theme.textSecondary.withValues(alpha: 0.85),
+              fontSize: 14),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel',
+                style: TextStyle(color: theme.accentAction)),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               openAppSettings();
             },
-            child: const Text('Open Settings'),
+            child: Text('Open Settings',
+                style: TextStyle(color: theme.accentAction)),
           ),
         ],
       ),
     );
   }
 
-  void _showImageSourceSheet() {
+  void _showImageSourceSheet(JournalTheme theme) {
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: MyWalkColor.cardBackground,
+      backgroundColor: theme.bgCard,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -327,16 +322,20 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.camera_alt_outlined, color: MyWalkColor.softGold),
-              title: const Text('Take a photo', style: TextStyle(color: MyWalkColor.warmWhite)),
+              leading: Icon(Icons.camera_alt_outlined,
+                  color: theme.textSecondary),
+              title: Text('Take a photo',
+                  style: TextStyle(color: theme.textPrimary)),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.photo_library_outlined, color: MyWalkColor.softGold),
-              title: const Text('Choose from library', style: TextStyle(color: MyWalkColor.warmWhite)),
+              leading: Icon(Icons.photo_library_outlined,
+                  color: theme.textSecondary),
+              title: Text('Choose from library',
+                  style: TextStyle(color: theme.textPrimary)),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -352,40 +351,43 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<JournalThemeProvider>().theme;
+
     final fruitTag = widget.initialEntry?.fruitTag ?? widget.fruitTag;
     final habitName = widget.initialEntry?.habitName ?? widget.habitName;
     final sourceType = widget.initialEntry?.sourceType ?? widget.sourceType;
 
-    final hasVoice = _newVoicePath != null || (_existingVoiceUrl != null && !_removeExistingVoice);
+    final hasVoice = _newVoicePath != null ||
+        (_existingVoiceUrl != null && !_removeExistingVoice);
 
     return Scaffold(
-      backgroundColor: MyWalkColor.charcoal,
+      backgroundColor: theme.bgPrimary,
       appBar: AppBar(
-        backgroundColor: MyWalkColor.charcoal,
-        foregroundColor: MyWalkColor.warmWhite,
+        backgroundColor: theme.bgPrimary,
+        foregroundColor: theme.textPrimary,
         title: Text(
           _isEditMode ? 'Edit Entry' : 'New Entry',
           style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
         ),
         actions: [
           if (_isSaving)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SizedBox(
                 width: 20,
                 height: 20,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: MyWalkColor.softGold,
+                  color: theme.accentAction,
                 ),
               ),
             )
           else
             TextButton(
               onPressed: _save,
-              child: const Text('Save',
+              child: Text('Save',
                   style: TextStyle(
-                    color: MyWalkColor.softGold,
+                    color: theme.accentAction,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   )),
@@ -397,7 +399,11 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
         children: [
           // Source chip
           if (sourceType != 'free' || fruitTag != null || habitName != null)
-            _SourceChip(habitName: habitName, fruitTag: fruitTag, sourceType: sourceType),
+            _SourceChip(
+                habitName: habitName,
+                fruitTag: fruitTag,
+                sourceType: sourceType,
+                theme: theme),
 
           // Text field
           TextField(
@@ -405,15 +411,15 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
             maxLines: null,
             minLines: 6,
             autofocus: !_isEditMode,
-            style: const TextStyle(
-              color: MyWalkColor.warmWhite,
+            style: TextStyle(
+              color: theme.textPrimary,
               fontSize: 16,
               height: 1.6,
             ),
             decoration: InputDecoration(
               hintText: 'Write something...',
               hintStyle: TextStyle(
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.3),
+                color: theme.textSecondary,
                 fontSize: 16,
               ),
               border: InputBorder.none,
@@ -422,14 +428,17 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
             ),
           ),
 
-          const Divider(color: Colors.white12, height: 24),
+          Divider(
+              color: theme.textSecondary.withValues(alpha: 0.15),
+              height: 24),
 
           // Images section
           _ImagesSection(
+            theme: theme,
             existingUrls: _existingImageUrls,
             newPaths: _newImagePaths,
             totalCount: _totalImageCount,
-            onAddTap: _showImageSourceSheet,
+            onAddTap: () => _showImageSourceSheet(theme),
             onRemoveExisting: _removeExistingImage,
             onRemoveNew: _removeNewImage,
           ),
@@ -438,6 +447,7 @@ class _JournalEntryComposerState extends State<JournalEntryComposer> {
 
           // Voice section
           _VoiceSection(
+            theme: theme,
             isRecording: _isRecording,
             hasVoice: hasVoice,
             isPlaying: _isPlayingBack,
@@ -458,8 +468,14 @@ class _SourceChip extends StatelessWidget {
   final String? habitName;
   final FruitType? fruitTag;
   final String sourceType;
+  final JournalTheme theme;
 
-  const _SourceChip({this.habitName, this.fruitTag, required this.sourceType});
+  const _SourceChip({
+    this.habitName,
+    this.fruitTag,
+    required this.sourceType,
+    required this.theme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -476,7 +492,7 @@ class _SourceChip extends StatelessWidget {
       label = fruitTag!.label;
       icon = fruitTag!.icon;
     } else {
-      chipColor = MyWalkColor.softGold;
+      chipColor = theme.textSecondary;
       label = 'Journal';
       icon = Icons.book_outlined;
     }
@@ -486,7 +502,8 @@ class _SourceChip extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: chipColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
@@ -495,7 +512,8 @@ class _SourceChip extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon, size: 13, color: chipColor.withValues(alpha: 0.8)),
+                Icon(icon, size: 13,
+                    color: chipColor.withValues(alpha: 0.8)),
                 const SizedBox(width: 5),
                 Text(
                   label,
@@ -517,6 +535,7 @@ class _SourceChip extends StatelessWidget {
 // ── Images Section ──────────────────────────────────────────────────────────
 
 class _ImagesSection extends StatelessWidget {
+  final JournalTheme theme;
   final List<String> existingUrls;
   final List<String> newPaths;
   final int totalCount;
@@ -525,6 +544,7 @@ class _ImagesSection extends StatelessWidget {
   final ValueChanged<int> onRemoveNew;
 
   const _ImagesSection({
+    required this.theme,
     required this.existingUrls,
     required this.newPaths,
     required this.totalCount,
@@ -536,7 +556,6 @@ class _ImagesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final showAddButton = totalCount < 5;
-
     if (totalCount == 0 && !showAddButton) return const SizedBox.shrink();
 
     return Column(
@@ -545,13 +564,13 @@ class _ImagesSection extends StatelessWidget {
         Row(
           children: [
             Icon(Icons.image_outlined,
-                size: 16, color: MyWalkColor.warmWhite.withValues(alpha: 0.5)),
+                size: 16, color: theme.textSecondary),
             const SizedBox(width: 6),
             Text(
               'Photos',
               style: TextStyle(
                 fontSize: 13,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.5),
+                color: theme.textSecondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -563,21 +582,18 @@ class _ImagesSection extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              // Existing images (from edit mode)
               for (final url in existingUrls)
                 _ImageThumb.network(
-                  url: url,
-                  onRemove: () => onRemoveExisting(url),
-                ),
+                    url: url,
+                    theme: theme,
+                    onRemove: () => onRemoveExisting(url)),
 
-              // Newly picked images
               for (var i = 0; i < newPaths.length; i++)
                 _ImageThumb.file(
-                  path: newPaths[i],
-                  onRemove: () => onRemoveNew(i),
-                ),
+                    path: newPaths[i],
+                    theme: theme,
+                    onRemove: () => onRemoveNew(i)),
 
-              // Add button
               if (showAddButton)
                 GestureDetector(
                   onTap: onAddTap,
@@ -586,23 +602,23 @@ class _ImagesSection extends StatelessWidget {
                     height: 80,
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
-                      color: MyWalkColor.inputBackground,
+                      color: theme.bgCard,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white12),
+                      border: Border.all(
+                          color: theme.textSecondary.withValues(alpha: 0.2)),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add_a_photo_outlined,
-                            size: 22,
-                            color: MyWalkColor.warmWhite.withValues(alpha: 0.4)),
+                            size: 22, color: theme.textSecondary),
                         const SizedBox(height: 4),
                         Text(
                           'Add\nPhoto',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 11,
-                            color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
+                            color: theme.textSecondary,
                           ),
                         ),
                       ],
@@ -619,32 +635,49 @@ class _ImagesSection extends StatelessWidget {
 
 class _ImageThumb extends StatelessWidget {
   final Widget child;
+  final JournalTheme theme;
   final VoidCallback onRemove;
 
-  const _ImageThumb({required this.child, required this.onRemove});
+  const _ImageThumb({
+    required this.child,
+    required this.theme,
+    required this.onRemove,
+  });
 
-  factory _ImageThumb.network({required String url, required VoidCallback onRemove}) {
+  factory _ImageThumb.network({
+    required String url,
+    required JournalTheme theme,
+    required VoidCallback onRemove,
+  }) {
     return _ImageThumb(
+      theme: theme,
       onRemove: onRemove,
       child: Image.network(
         url,
         width: 80,
         height: 80,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => const Icon(Icons.broken_image, color: Colors.white24),
+        errorBuilder: (_, _, _) =>
+            Icon(Icons.broken_image, color: theme.textSecondary),
       ),
     );
   }
 
-  factory _ImageThumb.file({required String path, required VoidCallback onRemove}) {
+  factory _ImageThumb.file({
+    required String path,
+    required JournalTheme theme,
+    required VoidCallback onRemove,
+  }) {
     return _ImageThumb(
+      theme: theme,
       onRemove: onRemove,
       child: Image.file(
         File(path),
         width: 80,
         height: 80,
         fit: BoxFit.cover,
-        errorBuilder: (_, _, _) => const Icon(Icons.broken_image, color: Colors.white24),
+        errorBuilder: (_, _, _) =>
+            Icon(Icons.broken_image, color: theme.textSecondary),
       ),
     );
   }
@@ -658,7 +691,8 @@ class _ImageThumb extends StatelessWidget {
           height: 80,
           margin: const EdgeInsets.only(right: 8, top: 8),
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(10)),
           child: child,
         ),
         Positioned(
@@ -668,11 +702,12 @@ class _ImageThumb extends StatelessWidget {
             onTap: onRemove,
             child: Container(
               padding: const EdgeInsets.all(2),
-              decoration: const BoxDecoration(
-                color: MyWalkColor.charcoal,
+              decoration: BoxDecoration(
+                color: theme.bgPrimary,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.close, size: 14, color: MyWalkColor.warmWhite),
+              child: Icon(Icons.close,
+                  size: 14, color: theme.textPrimary),
             ),
           ),
         ),
@@ -684,6 +719,7 @@ class _ImageThumb extends StatelessWidget {
 // ── Voice Section ───────────────────────────────────────────────────────────
 
 class _VoiceSection extends StatelessWidget {
+  final JournalTheme theme;
   final bool isRecording;
   final bool hasVoice;
   final bool isPlaying;
@@ -693,6 +729,7 @@ class _VoiceSection extends StatelessWidget {
   final VoidCallback onDiscard;
 
   const _VoiceSection({
+    required this.theme,
     required this.isRecording,
     required this.hasVoice,
     required this.isPlaying,
@@ -702,7 +739,7 @@ class _VoiceSection extends StatelessWidget {
     required this.onDiscard,
   });
 
-  static const _warningThreshold = 30; // seconds remaining before warning
+  static const _warningThreshold = 30;
 
   String _fmt(Duration d) {
     final m = d.inMinutes.remainder(60).toString().padLeft(2, '0');
@@ -723,28 +760,26 @@ class _VoiceSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: MyWalkColor.inputBackground,
+        color: theme.bgCard,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white10),
+        border: Border.all(
+            color: theme.textSecondary.withValues(alpha: 0.15)),
       ),
       child: Row(
         children: [
           Icon(Icons.mic_none_outlined,
-              size: 18, color: MyWalkColor.warmWhite.withValues(alpha: 0.4)),
+              size: 18, color: theme.textSecondary),
           const SizedBox(width: 10),
           Text(
             'Voice note',
-            style: TextStyle(
-              fontSize: 14,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.4),
-            ),
+            style: TextStyle(fontSize: 14, color: theme.textSecondary),
           ),
           const SizedBox(width: 6),
           Text(
             '· 3 min max',
             style: TextStyle(
               fontSize: 12,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.2),
+              color: theme.textSecondary.withValues(alpha: 0.55),
             ),
           ),
           const Spacer(),
@@ -754,13 +789,12 @@ class _VoiceSection extends StatelessWidget {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: MyWalkColor.softGold.withValues(alpha: 0.1),
+                color: theme.accentAction.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.3),
-                ),
+                    color: theme.accentAction.withValues(alpha: 0.35)),
               ),
-              child: const Icon(Icons.mic, size: 20, color: MyWalkColor.softGold),
+              child: Icon(Icons.mic, size: 20, color: theme.accentAction),
             ),
           ),
         ],
@@ -771,23 +805,21 @@ class _VoiceSection extends StatelessWidget {
   // ── Recording ────────────────────────────────────────────────────────────
 
   Widget _buildRecordingState() {
-    final elapsed = recordingDuration.inSeconds.clamp(0, _kMaxRecordSeconds);
+    final elapsed =
+        recordingDuration.inSeconds.clamp(0, _kMaxRecordSeconds);
     final progress = elapsed / _kMaxRecordSeconds;
     final secondsRemaining = _kMaxRecordSeconds - elapsed;
     final isWarning = secondsRemaining <= _warningThreshold;
 
-    // Coral red normally, shifts to amber when approaching the limit.
     const recordingRed = Color(0xFFE05C5C);
     const warningAmber = Color(0xFFD4843B);
     final ringColor = isWarning ? warningAmber : recordingRed;
-
-    // Pulsing dot: toggles opacity on every second tick.
     final dotVisible = recordingDuration.inSeconds.isEven;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 22, 20, 26),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: theme.bgCard,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: ringColor.withValues(alpha: 0.25)),
       ),
@@ -804,9 +836,7 @@ class _VoiceSection extends StatelessWidget {
                   width: 8,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: ringColor,
-                    shape: BoxShape.circle,
-                  ),
+                      color: ringColor, shape: BoxShape.circle),
                 ),
               ),
               const SizedBox(width: 8),
@@ -820,9 +850,7 @@ class _VoiceSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: isWarning
-                        ? warningAmber
-                        : MyWalkColor.warmWhite.withValues(alpha: 0.65),
+                    color: isWarning ? warningAmber : theme.textSecondary,
                     letterSpacing: 0.3,
                   ),
                 ),
@@ -831,7 +859,7 @@ class _VoiceSection extends StatelessWidget {
           ),
           const SizedBox(height: 28),
 
-          // Progress ring with time display
+          // Progress ring with time
           SizedBox(
             width: 144,
             height: 144,
@@ -843,6 +871,8 @@ class _VoiceSection extends StatelessWidget {
                   painter: _RecordingRingPainter(
                     progress: progress,
                     ringColor: ringColor,
+                    trackColor:
+                        theme.textSecondary.withValues(alpha: 0.15),
                   ),
                 ),
                 Column(
@@ -853,7 +883,7 @@ class _VoiceSection extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w300,
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.95),
+                        color: theme.textPrimary,
                         letterSpacing: 2,
                       ),
                     ),
@@ -862,7 +892,7 @@ class _VoiceSection extends StatelessWidget {
                       '/ 3:00',
                       style: TextStyle(
                         fontSize: 12,
-                        color: MyWalkColor.warmWhite.withValues(alpha: 0.28),
+                        color: theme.textSecondary,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -883,9 +913,7 @@ class _VoiceSection extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: ringColor.withValues(alpha: 0.1),
                 border: Border.all(
-                  color: ringColor.withValues(alpha: 0.5),
-                  width: 1.5,
-                ),
+                    color: ringColor.withValues(alpha: 0.5), width: 1.5),
               ),
               child: Icon(Icons.stop_rounded, size: 28, color: ringColor),
             ),
@@ -893,10 +921,8 @@ class _VoiceSection extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             'Tap to stop',
-            style: TextStyle(
-              fontSize: 12,
-              color: MyWalkColor.warmWhite.withValues(alpha: 0.25),
-            ),
+            style:
+                TextStyle(fontSize: 12, color: theme.textSecondary),
           ),
         ],
       ),
@@ -911,9 +937,10 @@ class _VoiceSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
       decoration: BoxDecoration(
-        color: MyWalkColor.cardBackground,
+        color: theme.bgCard,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: MyWalkColor.softGold.withValues(alpha: 0.18)),
+        border: Border.all(
+            color: theme.accentAction.withValues(alpha: 0.25)),
       ),
       child: Row(
         children: [
@@ -924,16 +951,17 @@ class _VoiceSection extends StatelessWidget {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: MyWalkColor.softGold.withValues(alpha: 0.1),
+                color: theme.accentAction.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: MyWalkColor.softGold.withValues(alpha: 0.3),
-                ),
+                    color: theme.accentAction.withValues(alpha: 0.35)),
               ),
               child: Icon(
-                isPlaying ? Icons.stop_rounded : Icons.play_arrow_rounded,
+                isPlaying
+                    ? Icons.stop_rounded
+                    : Icons.play_arrow_rounded,
                 size: 22,
-                color: MyWalkColor.softGold,
+                color: theme.accentAction,
               ),
             ),
           ),
@@ -946,7 +974,7 @@ class _VoiceSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: MyWalkColor.warmWhite.withValues(alpha: 0.8),
+                  color: theme.textPrimary,
                 ),
               ),
               if (showDuration) ...[
@@ -955,7 +983,7 @@ class _VoiceSection extends StatelessWidget {
                   _fmt(recordingDuration),
                   style: TextStyle(
                     fontSize: 12,
-                    color: MyWalkColor.softGold.withValues(alpha: 0.55),
+                    color: theme.accentAction.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -969,14 +997,11 @@ class _VoiceSection extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: theme.textSecondary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.delete_outline,
-                size: 18,
-                color: MyWalkColor.warmWhite.withValues(alpha: 0.35),
-              ),
+              child: Icon(Icons.delete_outline,
+                  size: 18, color: theme.textSecondary),
             ),
           ),
         ],
@@ -988,10 +1013,15 @@ class _VoiceSection extends StatelessWidget {
 // ── Recording Ring Painter ────────────────────────────────────────────────────
 
 class _RecordingRingPainter extends CustomPainter {
-  final double progress; // 0.0 → 1.0
+  final double progress;
   final Color ringColor;
+  final Color trackColor;
 
-  const _RecordingRingPainter({required this.progress, required this.ringColor});
+  const _RecordingRingPainter({
+    required this.progress,
+    required this.ringColor,
+    required this.trackColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -999,17 +1029,15 @@ class _RecordingRingPainter extends CustomPainter {
     const strokeWidth = 7.0;
     final radius = (size.width - strokeWidth) / 2;
 
-    // Background track
     canvas.drawCircle(
       center,
       radius,
       Paint()
-        ..color = Colors.white.withValues(alpha: 0.07)
+        ..color = trackColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth,
     );
 
-    // Progress arc (clockwise from 12 o'clock)
     if (progress > 0) {
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
@@ -1027,5 +1055,7 @@ class _RecordingRingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_RecordingRingPainter old) =>
-      old.progress != progress || old.ringColor != ringColor;
+      old.progress != progress ||
+      old.ringColor != ringColor ||
+      old.trackColor != trackColor;
 }

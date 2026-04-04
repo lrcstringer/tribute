@@ -303,20 +303,6 @@ class MicroActionLibrary {
     // ── Peace ─────────────────────────────────────────────────────────────────
     FruitType.peace: [
       const MicroAction(
-        id: 'peace_1',
-        fruit: FruitType.peace,
-        name: 'Breath prayer',
-        description:
-            'Practise a simple breath prayer for 5 minutes: inhale "You are here," exhale "I trust you."',
-        trackingType: HabitTrackingType.timed,
-        targetValue: 5,
-        defaultFrequency: 'daily',
-        purposeStatement: 'Peace comes to those who practise returning.',
-        promptText: 'Did you return to God through prayer today?',
-        completionText: 'You returned. That is enough.',
-        anchorVerse: 'Isaiah 26:3',
-      ),
-      const MicroAction(
         id: 'peace_2',
         fruit: FruitType.peace,
         name: 'Take one step toward peace',
