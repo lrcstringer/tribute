@@ -213,6 +213,8 @@ class HabitProvider extends ChangeNotifier {
     String? subcategoryId,
     String? categoryName,
     String? subcategoryName,
+    String notes = '',
+    String referenceUrl = '',
   }) async {
     final created = Habit.create(
       name: name,
@@ -229,6 +231,8 @@ class HabitProvider extends ChangeNotifier {
       fruitPurposeStatement: fruitPurposeStatement,
       sourceType: sourceType,
       sourceActionId: sourceActionId,
+      notes: notes,
+      referenceUrl: referenceUrl,
     );
     final habit = (categoryId != null)
         ? created.copyWith(

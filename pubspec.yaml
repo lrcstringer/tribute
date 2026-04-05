@@ -109,6 +109,8 @@ dependencies:
 
   # Smooth freehand stroke rendering (journal doodle)
   perfect_freehand: ^2.0.1
+  flutter_quill: ^11.5.0
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

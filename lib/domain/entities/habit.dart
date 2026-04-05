@@ -150,6 +150,10 @@ class Habit {
   final String? subcategoryId;
   final String? categoryName;
   final String? subcategoryName;
+  // Personal notes (stored as flutter_quill Delta JSON; empty string = no notes)
+  final String notes;
+  // Optional reference URL the user can attach to this habit (empty string = none)
+  final String referenceUrl;
 
   const Habit({
     required this.id,
@@ -177,6 +181,8 @@ class Habit {
     this.subcategoryId,
     this.categoryName,
     this.subcategoryName,
+    this.notes = '',
+    this.referenceUrl = '',
   });
 
   factory Habit.create({
@@ -195,6 +201,8 @@ class Habit {
     String? fruitPurposeStatement,
     String sourceType = 'user_created',
     String? sourceActionId,
+    String notes = '',
+    String referenceUrl = '',
   }) {
     final purpose =
         purposeStatement.isEmpty ? category.defaultPurpose : purposeStatement;
@@ -218,6 +226,8 @@ class Habit {
       fruitPurposeStatement: fruitPurposeStatement,
       sourceType: sourceType,
       sourceActionId: sourceActionId,
+      notes: notes,
+      referenceUrl: referenceUrl,
     );
   }
 
@@ -246,6 +256,8 @@ class Habit {
     String? subcategoryId,
     String? categoryName,
     String? subcategoryName,
+    String? notes,
+    String? referenceUrl,
   }) =>
       Habit(
         id: id,
@@ -273,6 +285,8 @@ class Habit {
         subcategoryId: subcategoryId ?? this.subcategoryId,
         categoryName: categoryName ?? this.categoryName,
         subcategoryName: subcategoryName ?? this.subcategoryName,
+        notes: notes ?? this.notes,
+        referenceUrl: referenceUrl ?? this.referenceUrl,
       );
 
   Set<int> get activeDaySet {
@@ -356,6 +370,8 @@ class Habit {
         'subcategoryId': subcategoryId,
         'categoryName': categoryName,
         'subcategoryName': subcategoryName,
+        'notes': notes,
+        'referenceUrl': referenceUrl,
       };
 
   factory Habit.fromFirestore(
@@ -399,6 +415,8 @@ class Habit {
       subcategoryId: data['subcategoryId'] as String?,
       categoryName: data['categoryName'] as String?,
       subcategoryName: data['subcategoryName'] as String?,
+      notes: data['notes'] as String? ?? '',
+      referenceUrl: data['referenceUrl'] as String? ?? '',
     );
   }
 }

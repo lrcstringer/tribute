@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/scripture.dart';
+import '../../providers/habit_provider.dart';
 import '../../providers/store_provider.dart';
 import '../../../domain/services/milestone_service.dart';
 import '../../theme/app_theme.dart';
@@ -23,7 +27,62 @@ class HabitDetailView extends StatefulWidget {
 class _HabitDetailViewState extends State<HabitDetailView> {
   static const _milestoneService = MilestoneService.instance;
 
-  Habit get _habit => widget.habit;
+  late Habit _liveHabit;
+  late HabitProvider _habitProvider;
+  QuillController? _notesController;
+
+  // Canonical getter used everywhere in the view — always the freshest data.
+  Habit get _habit => _liveHabit;
+
+  @override
+  void initState() {
+    super.initState();
+    _liveHabit = widget.habit;
+    _rebuildNotesController(_liveHabit.notes);
+    _habitProvider = context.read<HabitProvider>();
+    _habitProvider.addListener(_onHabitProviderChanged);
+  }
+
+  @override
+  void dispose() {
+    _habitProvider.removeListener(_onHabitProviderChanged);
+    _notesController?.dispose();
+    super.dispose();
+  }
+
+  /// Called whenever HabitProvider notifies. Looks up this habit by ID and,
+  /// if any editable field changed (e.g. after saving from EditHabitView),
+  /// updates [_liveHabit] and rebuilds the notes controller when needed.
+  void _onHabitProviderChanged() {
+    if (!mounted) return;
+    final updated = _habitProvider.habits.firstWhere(
+      (h) => h.id == _liveHabit.id,
+      orElse: () => _liveHabit,
+    );
+    if (identical(updated, _liveHabit)) return;
+    setState(() {
+      if (updated.notes != _liveHabit.notes) {
+        _rebuildNotesController(updated.notes);
+      }
+      _liveHabit = updated;
+    });
+  }
+
+  void _rebuildNotesController(String notes) {
+    _notesController?.dispose();
+    _notesController = null;
+    if (notes.isNotEmpty) {
+      try {
+        _notesController = QuillController(
+          document: Document.fromJson(jsonDecode(notes) as List),
+          selection: const TextSelection.collapsed(offset: 0),
+          readOnly: true,
+        );
+      } catch (_) {
+        // Corrupt notes JSON — leave controller null so the section is hidden.
+      }
+    }
+  }
 
   Color _accentColor() =>
       _habit.trackingType == HabitTrackingType.abstain
@@ -85,6 +144,14 @@ class _HabitDetailViewState extends State<HabitDetailView> {
             const SizedBox(height: 20),
           ],
           _purposeSection(),
+          if (_notesController != null) ...[
+            const SizedBox(height: 20),
+            _notesDisplaySection(),
+          ],
+          if (_habit.referenceUrl.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            _referenceUrlRow(),
+          ],
           const SizedBox(height: 20),
           _verseSection(verse),
           const SizedBox(height: 20),
@@ -557,6 +624,72 @@ class _HabitDetailViewState extends State<HabitDetailView> {
                 style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite)),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _notesDisplaySection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: MyWalkDecorations.card,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Notes',
+            style: TextStyle(
+                fontSize: 13, fontWeight: FontWeight.w600, color: MyWalkColor.softGold),
+          ),
+          const SizedBox(height: 10),
+          QuillEditor.basic(
+            controller: _notesController!,
+            config: QuillEditorConfig(
+              scrollable: false,
+              padding: EdgeInsets.zero,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _referenceUrlRow() {
+    final url = _habit.referenceUrl;
+    return GestureDetector(
+      onTap: () async {
+        final uri = Uri.tryParse(url);
+        if (uri != null && await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: MyWalkDecorations.card,
+        child: Row(
+          children: [
+            Icon(Icons.link_rounded,
+                size: 16, color: MyWalkColor.softGold.withValues(alpha: 0.7)),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                url,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: MyWalkColor.softGold.withValues(alpha: 0.9),
+                  decoration: TextDecoration.underline,
+                  decorationColor: MyWalkColor.softGold.withValues(alpha: 0.4),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.open_in_new_rounded,
+                size: 14, color: Colors.white.withValues(alpha: 0.3)),
+          ],
+        ),
       ),
     );
   }

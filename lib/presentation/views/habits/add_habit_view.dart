@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/habit_category_model.dart';
@@ -52,6 +54,7 @@ class _AddHabitViewState extends State<AddHabitView> {
   @override
   void initState() {
     super.initState();
+    _notesController = QuillController.basic();
     if (widget.prefilledCategoryId != null) {
       _categoryId = widget.prefilledCategoryId;
       _categoryName = widget.prefilledCategoryName;
@@ -60,6 +63,13 @@ class _AddHabitViewState extends State<AddHabitView> {
       _purposeStatement = HabitCategory.custom.defaultPurpose;
       _step = 3;
     }
+  }
+
+  @override
+  void dispose() {
+    _notesController.dispose();
+    _referenceUrlController.dispose();
+    super.dispose();
   }
 
   // Habit form fields
@@ -74,6 +84,8 @@ class _AddHabitViewState extends State<AddHabitView> {
   List<FruitType> _selectedFruits = [];
   String _fruitPurposeStatement = '';
   List<FruitType> _suggestedFruits = [];
+  late QuillController _notesController;
+  final TextEditingController _referenceUrlController = TextEditingController();
 
   // ── App bar ──────────────────────────────────────────────────────────────
 
@@ -589,6 +601,14 @@ class _AddHabitViewState extends State<AddHabitView> {
         _anchoringSection(isAbstain),
         const SizedBox(height: 28),
 
+        // Notes
+        _notesSection(),
+        const SizedBox(height: 20),
+
+        // Reference URL
+        _referenceUrlSection(),
+        const SizedBox(height: 28),
+
         // Save button
         SizedBox(
           width: double.infinity,
@@ -998,11 +1018,148 @@ class _AddHabitViewState extends State<AddHabitView> {
     });
   }
 
+  // ── Notes section ────────────────────────────────────────────────────────
+
+  Widget _notesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'NOTES',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Personal notes, reminders, or reflections for this habit.',
+          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            color: MyWalkColor.cardBackground,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: MyWalkColor.surfaceOverlay,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                ),
+                child: QuillSimpleToolbar(
+                  controller: _notesController,
+                  config: QuillSimpleToolbarConfig(
+                    showBoldButton: true,
+                    showItalicButton: true,
+                    showListBullets: true,
+                    showListNumbers: true,
+                    showUndo: true,
+                    showRedo: true,
+                    multiRowsDisplay: false,
+                    showDividers: false,
+                    showHeaderStyle: false,
+                    showColorButton: false,
+                    showBackgroundColorButton: false,
+                    showClearFormat: false,
+                    showStrikeThrough: false,
+                    showInlineCode: false,
+                    showLink: false,
+                    showSearchButton: false,
+                    showSubscript: false,
+                    showSuperscript: false,
+                    showSmallButton: false,
+                    showFontFamily: false,
+                    showFontSize: false,
+                    showAlignmentButtons: false,
+                    showLeftAlignment: false,
+                    showCenterAlignment: false,
+                    showRightAlignment: false,
+                    showJustifyAlignment: false,
+                    showIndent: false,
+                    showQuote: false,
+                    showCodeBlock: false,
+                    showDirection: false,
+                  ),
+                ),
+              ),
+              QuillEditor.basic(
+                controller: _notesController,
+                config: QuillEditorConfig(
+                  placeholder: 'Add personal notes…',
+                  minHeight: 100,
+                  maxHeight: 200,
+                  scrollable: true,
+                  padding: const EdgeInsets.all(12),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _referenceUrlSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'REFERENCE LINK',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Attach an article, video, or resource that inspires this habit.',
+          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _referenceUrlController,
+          keyboardType: TextInputType.url,
+          autocorrect: false,
+          style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: MyWalkColor.cardBackground,
+            hintText: 'https://…',
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: MyWalkColor.sage, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            prefixIcon: Icon(Icons.link_rounded,
+                size: 18, color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+          ),
+        ),
+      ],
+    );
+  }
+
   void _saveHabit() {
     final trimmed = _habitName.trim();
     if (trimmed.isEmpty) return;
     final isPremium = context.read<StoreProvider>().isPremium;
     final purpose = isPremium ? _purposeStatement : _selectedCategory.defaultPurpose;
+    final plainNotes = _notesController.document.toPlainText().trim();
+    final notesJson = plainNotes.isEmpty
+        ? ''
+        : jsonEncode(_notesController.document.toDelta().toJson());
+    final refUrl = _referenceUrlController.text.trim();
     context.read<HabitProvider>().addHabit(
       name: trimmed,
       category: _selectedCategory,
@@ -1022,6 +1179,8 @@ class _AddHabitViewState extends State<AddHabitView> {
       subcategoryName: _subcategoryName?.trim().isEmpty ?? true
           ? null
           : _subcategoryName,
+      notes: notesJson,
+      referenceUrl: refUrl,
     );
     if (_selectedFruits.isNotEmpty) {
       context.read<FruitPortfolioProvider>().onHabitTagsChanged([], _selectedFruits);

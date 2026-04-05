@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entities/habit.dart';
 import '../../../domain/entities/habit_category_model.dart';
@@ -28,6 +30,8 @@ class _EditHabitViewState extends State<EditHabitView> {
   late final TextEditingController _triggerController;
   late final TextEditingController _copingController;
   late final TextEditingController _fruitPurposeController;
+  late final QuillController _notesController;
+  late final TextEditingController _referenceUrlController;
   late double _dailyTarget;
   late String _targetUnit;
   late Set<int> _activeDays;
@@ -48,6 +52,19 @@ class _EditHabitViewState extends State<EditHabitView> {
     _triggerController = TextEditingController(text: h.trigger);
     _copingController = TextEditingController(text: h.copingPlan);
     _fruitPurposeController = TextEditingController(text: h.fruitPurposeStatement ?? '');
+    if (h.notes.isNotEmpty) {
+      try {
+        _notesController = QuillController(
+          document: Document.fromJson(jsonDecode(h.notes) as List),
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      } catch (_) {
+        _notesController = QuillController.basic();
+      }
+    } else {
+      _notesController = QuillController.basic();
+    }
+    _referenceUrlController = TextEditingController(text: h.referenceUrl);
     _dailyTarget = h.dailyTarget;
     _targetUnit = h.targetUnit;
     _activeDays = h.activeDaySet;
@@ -65,6 +82,8 @@ class _EditHabitViewState extends State<EditHabitView> {
     _triggerController.dispose();
     _copingController.dispose();
     _fruitPurposeController.dispose();
+    _notesController.dispose();
+    _referenceUrlController.dispose();
     super.dispose();
   }
 
@@ -75,6 +94,11 @@ class _EditHabitViewState extends State<EditHabitView> {
     if (trimmed.isEmpty) return;
     final isPremium = context.read<StoreProvider>().isPremium;
     final fruitPurpose = _fruitPurposeController.text.trim();
+    final plainNotes = _notesController.document.toPlainText().trim();
+    final notesJson = plainNotes.isEmpty
+        ? ''
+        : jsonEncode(_notesController.document.toDelta().toJson());
+    final refUrl = _referenceUrlController.text.trim();
     final updated = widget.habit.copyWith(
       name: !widget.habit.isBuiltIn ? trimmed : null,
       purposeStatement: isPremium ? _purposeController.text : null,
@@ -89,6 +113,8 @@ class _EditHabitViewState extends State<EditHabitView> {
       subcategoryId: _subcategoryId,
       categoryName: _categoryName,
       subcategoryName: _subcategoryName,
+      notes: notesJson,
+      referenceUrl: refUrl,
     );
     context.read<HabitProvider>().updateHabit(updated);
     // Update portfolio habit counts for changed tags.
@@ -182,6 +208,10 @@ class _EditHabitViewState extends State<EditHabitView> {
           _dayOfWeekSection(isAbstain),
           const SizedBox(height: 20),
           if (isAbstain) _copingSection() else _triggerSection(),
+          const SizedBox(height: 20),
+          _notesSection(),
+          const SizedBox(height: 20),
+          _referenceUrlSection(),
           if (!widget.habit.isBuiltIn) ...[
             const SizedBox(height: 40),
             Row(children: [
@@ -263,6 +293,136 @@ class _EditHabitViewState extends State<EditHabitView> {
             ),
           ),
         ],
+      ],
+    );
+  }
+
+  Widget _notesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'NOTES',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Personal notes, reminders, or reflections for this habit.',
+          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          decoration: BoxDecoration(
+            color: MyWalkColor.cardBackground,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: MyWalkColor.surfaceOverlay,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                ),
+                child: QuillSimpleToolbar(
+                  controller: _notesController,
+                  config: QuillSimpleToolbarConfig(
+                    showBoldButton: true,
+                    showItalicButton: true,
+                    showListBullets: true,
+                    showListNumbers: true,
+                    showUndo: true,
+                    showRedo: true,
+                    multiRowsDisplay: false,
+                    showDividers: false,
+                    showHeaderStyle: false,
+                    showColorButton: false,
+                    showBackgroundColorButton: false,
+                    showClearFormat: false,
+                    showStrikeThrough: false,
+                    showInlineCode: false,
+                    showLink: false,
+                    showSearchButton: false,
+                    showSubscript: false,
+                    showSuperscript: false,
+                    showSmallButton: false,
+                    showFontFamily: false,
+                    showFontSize: false,
+                    showAlignmentButtons: false,
+                    showLeftAlignment: false,
+                    showCenterAlignment: false,
+                    showRightAlignment: false,
+                    showJustifyAlignment: false,
+                    showIndent: false,
+                    showQuote: false,
+                    showCodeBlock: false,
+                    showDirection: false,
+                  ),
+                ),
+              ),
+              QuillEditor.basic(
+                controller: _notesController,
+                config: QuillEditorConfig(
+                  placeholder: 'Add personal notes…',
+                  minHeight: 100,
+                  maxHeight: 200,
+                  scrollable: true,
+                  padding: const EdgeInsets.all(12),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _referenceUrlSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'REFERENCE LINK',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: MyWalkColor.softGold.withValues(alpha: 0.5),
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Attach an article, video, or resource that inspires this habit.',
+          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.4)),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _referenceUrlController,
+          keyboardType: TextInputType.url,
+          autocorrect: false,
+          style: const TextStyle(fontSize: 14, color: MyWalkColor.warmWhite),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: MyWalkColor.cardBackground,
+            hintText: 'https://…',
+            hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.3)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: MyWalkColor.sage, width: 1),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            prefixIcon: Icon(Icons.link_rounded,
+                size: 18, color: MyWalkColor.softGold.withValues(alpha: 0.5)),
+          ),
+        ),
       ],
     );
   }
