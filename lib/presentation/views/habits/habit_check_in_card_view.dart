@@ -263,19 +263,37 @@ class _HabitCheckInCardViewState extends State<HabitCheckInCardView> {
             ],
           ),
         ),
+        const SizedBox(width: 8),
         GestureDetector(
           onTap: () => _openJournal(context),
-          behavior: HitTestBehavior.opaque,
-          child: SizedBox(
-            width: 44,
-            height: 44,
-            child: Icon(
-              Icons.edit_note,
-              size: 20,
-              color: MyWalkColor.softGold.withValues(alpha: 0.45),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: MyWalkColor.softGold.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                  color: MyWalkColor.softGold.withValues(alpha: 0.2), width: 0.5),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.edit_note,
+                    size: 14,
+                    color: MyWalkColor.softGold.withValues(alpha: 0.75)),
+                const SizedBox(width: 4),
+                Text(
+                  'Journal',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: MyWalkColor.softGold.withValues(alpha: 0.75),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+        const SizedBox(width: 8),
         if (_isCompleted)
           Icon(Icons.check_circle_rounded, color: accentColor, size: 24)
         else

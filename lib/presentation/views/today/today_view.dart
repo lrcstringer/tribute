@@ -281,6 +281,14 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
           ),
         ),
 
+        // Add a habit — pinned bottom-left, hidden when at limit or in retroactive mode.
+        if (!_isRetroactive && !atLimit)
+          Positioned(
+            bottom: 24,
+            left: 20,
+            child: _addHabitButton(),
+          ),
+
         // SOS floating button — only when the user has at least one Breaking Habits habit.
         if (!_isRetroactive && abstainHabits.isNotEmpty)
           Positioned(
@@ -411,16 +419,17 @@ class _TodayViewState extends State<TodayView> with WidgetsBindingObserver {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-      child: TextButton.icon(
-        onPressed: () => _showAddHabit(context),
-        icon: const Icon(Icons.add_circle_outline, size: 18, color: MyWalkColor.softGold),
-        label: Text(
-          'Add a habit',
-          style: TextStyle(color: MyWalkColor.softGold.withValues(alpha: 0.6), fontSize: 13),
-        ),
-      ),
+    return const SizedBox.shrink();
+  }
+
+  Widget _addHabitButton() {
+    return FloatingActionButton.extended(
+      onPressed: () => _showAddHabit(context),
+      backgroundColor: MyWalkColor.softGold.withValues(alpha: 0.12),
+      foregroundColor: MyWalkColor.softGold,
+      elevation: 0,
+      icon: const Icon(Icons.add_rounded, size: 18),
+      label: const Text('Add a habit', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
     );
   }
 
