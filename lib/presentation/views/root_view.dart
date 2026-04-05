@@ -83,8 +83,12 @@ class _RootViewState extends State<RootView> {
     if (AuthService.shared.isAuthenticated) {
       if (_ready && !_onboardingComplete) _rehydrateAndCheck();
     } else {
-      // User signed out — return to the sign-in / onboarding screen.
-      if (mounted) setState(() => _onboardingComplete = false);
+      // User signed out — pop any pushed screens first (e.g. Settings) so
+      // the navigation stack is clear, then swap to the sign-in screen.
+      if (mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        setState(() => _onboardingComplete = false);
+      }
     }
   }
 
